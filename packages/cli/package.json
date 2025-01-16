@@ -1,0 +1,9 @@
+{
+  "name": "@minivue/cli",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {},
+  "engines": {
+    "node": ">=20.16.0"
+  }
+}
