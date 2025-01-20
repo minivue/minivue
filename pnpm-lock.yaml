@@ -26,16 +26,16 @@ importers:
         version: 3.5.13(typescript@5.7.3)
     devDependencies:
       '@types/node':
-        specifier: ^22.10.7
+        specifier: 22.10.7
         version: 22.10.7
       '@types/wechat-miniprogram':
-        specifier: ^3.4.8
+        specifier: 3.4.8
         version: 3.4.8
       esbuild:
         specifier: 0.24.2
         version: 0.24.2
       typescript:
-        specifier: ^5.7.3
+        specifier: 5.7.3
         version: 5.7.3
 
 packages:

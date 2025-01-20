@@ -11,7 +11,7 @@
   },
   "packageManager": "pnpm@9.15.4",
   "engines": {
-    "node": ">=20.16.0"
+    "node": ">=20.15.1"
   },
   "dependencies": {
     "@vue/reactivity": "^3.5.13",
