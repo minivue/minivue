@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "dependencies": {
+    "@vue/reactivity": "^3.5.13",
+    "vue": "^3.5.13"
+  },
   "devDependencies": {
     "@types/node": "22.10.7",
     "@types/wechat-miniprogram": "3.4.8",
@@ -12,9 +16,5 @@
   "packageManager": "pnpm@9.15.4",
   "engines": {
     "node": ">=20.15.1"
-  },
-  "dependencies": {
-    "@vue/reactivity": "^3.5.13",
-    "vue": "^3.5.13"
   }
 }
