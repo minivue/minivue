@@ -1,0 +1,36 @@
+export {
+  computed,
+  reactive,
+  ref,
+  readonly,
+  unref,
+  proxyRefs,
+  isRef,
+  toRef,
+  toValue,
+  toRefs,
+  isProxy,
+  isReactive,
+  isReadonly,
+  isShallow,
+  customRef,
+  triggerRef,
+  shallowRef,
+  shallowReactive,
+  shallowReadonly,
+  markRaw,
+  toRaw,
+  effect,
+  stop,
+  getCurrentWatcher,
+  onWatcherCleanup,
+  ReactiveEffect,
+  effectScope,
+  EffectScope,
+  getCurrentScope,
+  onScopeDispose,
+} from '@vue/reactivity'
+
+export { definePage } from './page'
+export { defineComponent } from './component'
+export { onShow, onHide, onLoad, onUnload } from './lifecycle'

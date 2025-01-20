@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* 基本选项 */
+    "target": "ESNext", // 指定编译后的 JavaScript 目标版本，esbuild 支持 "es5", "es6", "es2015" 等
+    "module": "ESNext", // 指定模块系统，esbuild 支持 "esnext", "commonjs" 等
+    "jsx": "react", // 指定 JSX 的处理方式，esbuild 支持 "preserve", "react", "react-jsx" 等
+
+    /* 模块解析选项 */
+    "moduleResolution": "bundler", // 指定模块解析策略，esbuild 支持 "node"
+    "baseUrl": "./", // 解析非相对模块的基目录
+    "paths": { // 路径映射，esbuild 支持路径别名
+      "@/*": ["src/*"]
+    },
+
+    /* 输出选项 */
+    "outDir": "./dist", // 指定输出目录
+    "sourceMap": true, // 生成 source map 文件
+
+    /* 严格类型检查选项 */
+    "strict": true, // 启用所有严格类型检查选项
+    "noImplicitAny": true, // 禁止隐式的 any 类型
+    "strictNullChecks": true, // 启用严格的 null 检查
+
+    /* 其他选项 */
+    "esModuleInterop": true, // 启用 ES 模块的兼容性处理
+    "resolveJsonModule": true // 允许导入 JSON 模块
+  },
+
+  /* 包含和排除文件 */
+  "include": ["src/**/*", "global.d.ts"], // 包含的文件或目录
+  "exclude": ["node_modules", "dist"] // 排除的文件或目录
+}

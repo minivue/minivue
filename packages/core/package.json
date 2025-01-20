@@ -1,8 +1,20 @@
 {
   "name": "@minivue/core",
+  "version": "0.0.1",
   "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "@types/wechat-miniprogram": "3.4.8",
+    "esbuild": "0.24.2",
+    "typescript": "5.7.3"
+  },
   "packageManager": "pnpm@9.15.4",
   "engines": {
     "node": ">=20.16.0"
+  },
+  "dependencies": {
+    "@vue/reactivity": "^3.5.13",
+    "vue": "^3.5.13"
   }
 }
