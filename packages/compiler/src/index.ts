@@ -259,7 +259,8 @@ async function removeComponentImportsAndReferences(source: string, componentLibs
 }
 
 // vue转换小程序插件
-function plugin(): Plugin {
+export default function plugin({ test }: { test: string }): Plugin {
+  console.log(test)
   const cache = new Map<string, string>();
   return {
     name: "vue",

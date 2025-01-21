@@ -1,13 +1,9 @@
 {
   "name": "minivue-srcs",
   "private": true,
-  "workspaces": [
-    "playground/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=minivue-playground",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,vue,md}\""
   },

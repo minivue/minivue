@@ -1,8 +1,0 @@
-{
-  "name": "minivue-playground",
-  "private": true,
-  "packageManager": "pnpm@9.15.4",
-  "engines": {
-    "node": ">=20.15.1"
-  }
-}

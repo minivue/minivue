@@ -1,10 +1,19 @@
 import { build } from 'esbuild'
 
-await build({
+const config = {
   entryPoints: ['src/index.ts'],
-  bundle: true,
-  outdir: 'dist',
-  format: 'cjs',
-  target: 'node12',
-  minify: true,
-})
+  packages: 'external'
+}
+
+await Promise.all([
+  build({
+    ...config,
+    outdir: 'dist/cjs',
+    format: 'cjs'
+  }),
+  build({
+    ...config,
+    outdir: 'dist/esm',
+    format: 'esm'
+  })
+])
