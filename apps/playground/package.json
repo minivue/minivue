@@ -3,16 +3,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "dev": "node build",
+    "build:web": "nuxt build",
+    "dev:web": "nuxt dev",
+    "generate:web": "nuxt generate",
+    "preview:web": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "nuxt": "^3.15.2",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "fast-glob": "^3.3.3",
+    "esbuild": "^0.24.2",
+    "@minivue/core": "workspace:*",
+    "@minivue/compiler": "workspace:*"
   },
   "packageManager": "pnpm@9.15.4",
   "engines": {

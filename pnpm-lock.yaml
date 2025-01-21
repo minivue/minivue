@@ -23,6 +23,19 @@ importers:
       vue-router:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
+    devDependencies:
+      '@minivue/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
+      '@minivue/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      esbuild:
+        specifier: ^0.24.2
+        version: 0.24.2
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
 
   packages/cli: {}
 

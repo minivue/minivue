@@ -218,7 +218,7 @@ async function removeComponentImportsAndReferences(source: string, componentLibs
       const path = node.source.value
       if (path.endsWith('.vue') || componentLibs.includes(path)) {
         const name = basename(path, '.vue')
-        const componentPath = `${path.replace('~', '').replace(/\.vue$/, '')}/${name}`
+        const componentPath = `${path.replace('@', '').replace(/\.vue$/, '')}/${name}`
         // 提取导入的组件名称
         node.specifiers.forEach(specifier => {
           const key = specifier.local.value
@@ -228,8 +228,8 @@ async function removeComponentImportsAndReferences(source: string, componentLibs
         return false // 从源码中删除
       } else if (node.source.value === 'vue') {
         // 待优化
-        node.source.value = '../core'
-        node.source.raw = `'../core'`
+        node.source.value = '@minivue/core'
+        node.source.raw = `'@minivue/core'`
       }
     }
     return true // 保留其他节点
@@ -259,8 +259,7 @@ async function removeComponentImportsAndReferences(source: string, componentLibs
 }
 
 // vue转换小程序插件
-export default function plugin({ test }: { test: string }): Plugin {
-  console.log(test)
+export default function plugin(): Plugin {
   const cache = new Map<string, string>();
   return {
     name: "vue",
