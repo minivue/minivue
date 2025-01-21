@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "minivue": "dist/index.js"
+    "minivue": "bin/minivue.js"
   },
   "scripts": {
     "build": "node build"
