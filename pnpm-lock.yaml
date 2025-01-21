@@ -14,6 +14,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@minivue/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       nuxt:
         specifier: ^3.15.2
         version: 3.15.2(@parcel/watcher@2.5.0)(@types/node@22.10.7)(db0@0.2.1)(ioredis@5.4.2)(magicast@0.3.5)(rollup@4.31.0)(terser@5.37.0)(typescript@5.7.3)(vite@6.0.10(@types/node@22.10.7)(jiti@2.4.2)(terser@5.37.0)(yaml@2.7.0))(yaml@2.7.0)
@@ -24,20 +27,24 @@ importers:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
     devDependencies:
+      '@minivue/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+
+  packages/cli:
+    dependencies:
       '@minivue/compiler':
         specifier: workspace:*
-        version: link:../../packages/compiler
-      '@minivue/core':
-        specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../compiler
+      cac:
+        specifier: ^6.7.14
+        version: 6.7.14
       esbuild:
-        specifier: ^0.24.2
+        specifier: 0.24.2
         version: 0.24.2
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
-
-  packages/cli: {}
 
   packages/compiler:
     dependencies:

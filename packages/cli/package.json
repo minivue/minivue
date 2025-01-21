@@ -2,8 +2,20 @@
   "name": "@minivue/cli",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
+  "bin": {
+    "minivue": "dist/index.js"
+  },
+  "scripts": {
+     "build": "node build"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "fast-glob": "^3.3.3",
+    "esbuild": "0.24.2",
+    "@minivue/compiler": "workspace:*"
+  },
   "packageManager": "pnpm@9.15.4",
-  "scripts": {},
   "engines": {
     "node": ">=20.15.1"
   }
