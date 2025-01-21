@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "minivue build",
+    "dev": "minivue dev",
+    "build": "minivue build",
     "build:web": "nuxt build",
     "dev:web": "nuxt dev",
     "generate:web": "nuxt generate",

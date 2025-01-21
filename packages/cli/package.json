@@ -7,7 +7,7 @@
     "minivue": "dist/index.js"
   },
   "scripts": {
-     "build": "node build"
+    "build": "node build"
   },
   "dependencies": {
     "cac": "^6.7.14",
