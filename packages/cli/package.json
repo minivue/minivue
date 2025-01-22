@@ -7,12 +7,15 @@
     "minivue": "bin/minivue.js"
   },
   "scripts": {
-    "build": "node build"
+    "build": "node build",
+    "lint": "eslint \"src/**/*.ts\"",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "cac": "^6.7.14",
     "fast-glob": "^3.3.3",
     "esbuild": "0.24.2",
+    "typescript": "5.7.3",
     "@minivue/compiler": "workspace:*"
   },
   "packageManager": "pnpm@9.15.4",

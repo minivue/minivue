@@ -5,7 +5,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev --filter=minivue-playground",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,vue,md}\""
+    "tsc": "turbo run tsc",
+    "stylelint": "turbo run stylelint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

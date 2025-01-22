@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build"
+    "build": "node build",
+    "lint": "eslint \"src/**/*.ts\"",
+    "tsc": "tsc --noEmit"
   },
   "exports": {
     ".": {

@@ -9,7 +9,10 @@
     "dev:web": "nuxt dev",
     "generate:web": "nuxt generate",
     "preview:web": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint \"src/**/*.ts\"",
+    "stylelint": "stylelint \"src/**/*.{css,vue}\"",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@minivue/core": "workspace:*",
