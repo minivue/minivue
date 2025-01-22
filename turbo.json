@@ -2,8 +2,6 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "tsc": {},
-    "lint": {},
-    "stylelint": {},
     "build": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build"],

@@ -4,10 +4,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=minivue-playground",
-    "lint": "turbo run lint",
-    "tsc": "turbo run tsc",
-    "stylelint": "turbo run stylelint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint": "eslint --cache .",
+    "check": "tsc --incremental --noEmit",
+    "stylelint": "stylelint \"**/*.{css,vue}\"",
+    "format": "prettier --write \"**/*.{ts,vue}\""
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

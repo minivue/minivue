@@ -10,8 +10,6 @@
     "generate:web": "nuxt generate",
     "preview:web": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint",
-    "stylelint": "stylelint \"**/*.{css,vue}\"",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {

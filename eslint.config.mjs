@@ -6,13 +6,13 @@ import globals from 'globals'
 import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
-  { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
+  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/.nuxt'] },
   {
     extends: [
       eslint.configs.recommended,
       ...typescriptEslint.configs.strict,
       ...typescriptEslint.configs.stylistic,
-      ...eslintPluginVue.configs['flat/recommended'],
+      ...eslintPluginVue.configs['flat/strongly-recommended'],
     ],
     files: ['**/*.{ts,vue}'],
     languageOptions: {
@@ -24,7 +24,7 @@ export default typescriptEslint.config(
       },
     },
     rules: {
-      // your rules
+      'vue/multi-word-component-names': 'off',
     },
   },
   eslintConfigPrettier,

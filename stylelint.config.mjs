@@ -6,4 +6,9 @@ export default {
     'stylelint-config-standard-vue',
     'stylelint-config-recess-order',
   ],
+  overrides: [
+    {
+      files: ['*.vue', '*.css'],
+    },
+  ],
 }
