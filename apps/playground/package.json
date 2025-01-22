@@ -12,10 +12,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@minivue/core": "workspace:*",
     "nuxt": "^3.15.2",
     "vue": "latest",
-    "vue-router": "latest",
-    "@minivue/core": "workspace:*"
+    "vue-router": "latest"
   },
   "devDependencies": {
     "@minivue/cli": "workspace:*"

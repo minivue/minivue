@@ -8,11 +8,9 @@ body {
 }
 </style>
 
-<config lang="json">{
-  "pages": [
-    "pages/index/index",
-    "pages/about/about"
-  ],
+<config lang="json">
+{
+  "pages": ["pages/index/index", "pages/about/about"],
   "window": {
     "navigationBarTitleText": "WPS 灵犀",
     "navigationBarBackgroundColor": "#ffffff",
@@ -22,4 +20,5 @@ body {
   "resizable": false,
   "frameset": false,
   "lazyCodeLoading": "requiredComponents"
-}</config>
+}
+</config>

@@ -5,13 +5,13 @@
     <template v-if="test === 'test'">
       <div>test</div>
     </template>
-    <template v-else-if="test === 'test'">
+    <template v-else-if="test === 'abc'">
       <div>test</div>
     </template>
     <template v-else>
       <div>test</div>
     </template>
-    <div style="font-weight: bold;color: #000;" v-for="(obj, idx) in array" :key="obj.id">
+    <div v-for="(obj, idx) in array" :key="obj.id" style="font-weight: bold; color: #000">
       {{ idx }}:{{ obj.name }}
     </div>
     <div>{{ test + demo }}</div>
@@ -25,17 +25,20 @@ import { definePage, ref } from '@minivue/core'
 
 export default definePage({
   setup() {
-    const array: Record<string, string>[] = [{
-      id: '1',
-      name: 'name1'
-    }, {
-      id: '2',
-      name: 'name2'
-    }]
+    const array: Record<string, string>[] = [
+      {
+        id: '1',
+        name: 'name1',
+      },
+      {
+        id: '2',
+        name: 'name2',
+      },
+    ]
     const test = ref('什么鬼')
     const time = ref('')
     const demo = 'demo'
-    function onTap() {
+    function onTap(d: any) {
       console.log('onTap')
     }
     return {
@@ -43,19 +46,25 @@ export default definePage({
       test,
       demo,
       time,
-      onTap
+      onTap,
     }
-  }
+  },
 })
 </script>
 
 <style>
 .index {
+  font-size: large;
   color: red;
+}
+
+body {
   font-size: large;
 }
 </style>
 
-<config lang="json">{
+<config lang="json">
+{
   "navigationBarTitleText": "首页"
-}</config>
+}
+</config>
