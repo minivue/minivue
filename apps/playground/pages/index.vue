@@ -52,6 +52,7 @@ export default definePage({
 <style>
 .index {
   color: red;
+  font-size: large;
 }
 </style>
 
