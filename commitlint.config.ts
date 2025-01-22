@@ -1,0 +1,30 @@
+export default {
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    'type-enum': [
+      2,
+      'always',
+      [
+        'feat',
+        'fix',
+        'docs',
+        'style',
+        'format',
+        'docs',
+        'perf',
+        'init',
+        'test',
+        'refactor',
+        'patch',
+        'file',
+        'publish',
+        'tag',
+        'config',
+        'git',
+        'chore',
+        'ci',
+        'revert',
+      ],
+    ],
+  },
+}
