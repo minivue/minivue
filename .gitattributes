@@ -1,0 +1,103 @@
+# =============================================
+# .gitattributes 文件模板
+# =============================================
+
+# -----------------------------------------------------------------------------
+# 1. 文本文件换行符处理
+# -----------------------------------------------------------------------------
+# 统一使用 LF（Unix 风格）换行符
+*.txt text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.xml text eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.java text eol=lf
+*.c text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.cs text eol=lf
+*.php text eol=lf
+*.rb text eol=lf
+*.go text eol=lf
+*.rs text eol=lf
+
+# -----------------------------------------------------------------------------
+# 2. 二进制文件
+# -----------------------------------------------------------------------------
+# 标记二进制文件，Git 不进行差异比较和合并
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.jar binary
+*.exe binary
+*.dll binary
+
+# -----------------------------------------------------------------------------
+# 3. Git LFS 管理大文件
+# -----------------------------------------------------------------------------
+# 使用 Git LFS 管理大文件
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.avi filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.ai filter=lfs diff=lfs merge=lfs -text
+*.eps filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+
+# -----------------------------------------------------------------------------
+# 4. 语言识别优化
+# -----------------------------------------------------------------------------
+# 强制 GitHub 识别特定文件的语言类型
+*.myextension linguist-language=Python
+*.vue linguist-language=JavaScript
+
+# 标记生成的文件，GitHub 不会将其计入语言统计
+*.min.js linguist-generated
+*.min.css linguist-generated
+dist/* linguist-generated
+build/* linguist-generated
+
+# -----------------------------------------------------------------------------
+# 5. 忽略特定文件或目录
+# -----------------------------------------------------------------------------
+# 在导出项目时忽略某些文件或目录
+docs/ export-ignore
+tests/ export-ignore
+node_modules/ export-ignore
+dist/ export-ignore
+build/ export-ignore
+
+# -----------------------------------------------------------------------------
+# 6. 优化 Git 性能
+# -----------------------------------------------------------------------------
+# 标记某些文件为不可合并或不可差异比较，以减少 Git 的处理负担
+*.log -diff -merge
+*.cache -diff -merge
+
+# -----------------------------------------------------------------------------
+# 7. 自定义文件属性
+# -----------------------------------------------------------------------------
+# 为特定文件或路径设置自定义属性
+*.sql diff=sql
+*.css merge=union
+
+# =============================================
+# 结束
+# =============================================
