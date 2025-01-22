@@ -1,7 +1,24 @@
 {
+  "editor.formatOnSave": true,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "eslint.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

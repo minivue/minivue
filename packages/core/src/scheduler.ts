@@ -1,4 +1,4 @@
-/* eslint-disable no-bitwise, unicorn/prefer-math-trunc, @typescript-eslint/prefer-literal-enum-member */
+/* eslint-disable unicorn/prefer-math-trunc, @typescript-eslint/prefer-literal-enum-member */
 import { NOOP } from './utils'
 
 export enum SchedulerJobFlags {
@@ -21,7 +21,6 @@ const pendingPostFlushCbs: SchedulerJob[] = []
 let activePostFlushCbs: SchedulerJob[] | null = null
 let postFlushIndex = 0
 
-// eslint-disable-next-line spaced-comment
 const resolvedPromise = /*@__PURE__*/ Promise.resolve() as Promise<any>
 let currentFlushPromise: Promise<void> | null = null
 
@@ -61,11 +60,7 @@ export function flushPostFlushCbs(): void {
     activePostFlushCbs = [...new Set(pendingPostFlushCbs)]
     pendingPostFlushCbs.length = 0
 
-    for (
-      postFlushIndex = 0;
-      postFlushIndex < activePostFlushCbs.length;
-      postFlushIndex++
-    ) {
+    for (postFlushIndex = 0; postFlushIndex < activePostFlushCbs.length; postFlushIndex++) {
       const cb = activePostFlushCbs[postFlushIndex]
       if (cb.flags! & SchedulerJobFlags.ALLOW_RECURSE) {
         cb.flags! &= ~SchedulerJobFlags.QUEUED
@@ -91,9 +86,8 @@ function flushJobs(seen?: CountMap): void {
   // inside try-catch. This can leave all warning code unshaked. Although
   // they would get eventually shaken by a minifier like terser, some minifiers
   // would fail to do that (e.g. https://github.com/evanw/esbuild/issues/1610)
-  const check =
-    __DEV__ ?
-      (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
+  const check = __DEV__
+    ? (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
     : /* istanbul ignore next -- @preserve  */ NOOP
 
   try {

@@ -16,8 +16,6 @@ import KButton from '@/components/KButton.vue';
 }
 </style>
 
-<config lang="json">
-{
+<config lang="json">{
   "navigationBarTitleText": "关于"
-}
-</config>
+}</config>

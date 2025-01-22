@@ -9,20 +9,16 @@ const hideHooks = [] as Function[]
 
 function triggerVisibilityHooks() {
   if (doc?.visibilityState === 'hidden') {
-    hideHooks.forEach(hook => hook())
+    hideHooks.forEach((hook) => hook())
   } else {
-    showHooks.forEach(hook => hook())
+    showHooks.forEach((hook) => hook())
   }
 }
 
 doc?.addEventListener('visibilitychange', triggerVisibilityHooks)
 
 // 将钩子注入到当前实例中
-function injectHook(
-  currentInstance: any,
-  lifecycle: PageLifecycle,
-  hook: Function,
-): void {
+function injectHook(currentInstance: any, lifecycle: PageLifecycle, hook: Function): void {
   const hiddenField = toHiddenField(lifecycle)
   if (currentInstance[hiddenField] === undefined) {
     currentInstance[hiddenField] = []
@@ -31,16 +27,16 @@ function injectHook(
 }
 
 // 创建页面钩子
-function createPageHook<T extends Function>(
-  lifecycle: PageLifecycle,
-) {
+function createPageHook<T extends Function>(lifecycle: PageLifecycle) {
   return (hook: T): void => {
     if (__MINIVUE__) {
       const currentPage = getCurrentPage()
       if (currentPage) {
         injectHook(currentPage, lifecycle, hook)
       } else if (__DEV__) {
-        console.warn('Page specific lifecycle injection APIs can only be used during execution of setup() in definePage() or defineComponent().')
+        console.warn(
+          'Page specific lifecycle injection APIs can only be used during execution of setup() in definePage() or defineComponent().',
+        )
       }
     } else {
       const currentInstance = getCurrentInstance() as any
@@ -70,5 +66,3 @@ export const onLoad = createPageHook(PageLifecycle.ON_LOAD)
 export const onUnload = createPageHook(PageLifecycle.ON_UNLOAD)
 export const onShow = createPageHook(PageLifecycle.ON_SHOW)
 export const onHide = createPageHook(PageLifecycle.ON_HIDE)
-
-

@@ -5,5 +5,5 @@ build({
   bundle: true,
   outdir: 'dist',
   format: 'esm',
-  packages: 'external'
+  packages: 'external',
 })

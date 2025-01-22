@@ -1,14 +1,7 @@
 import { isRef, isProxy, toRaw } from '@vue/reactivity'
 import { watch } from './watch'
 import { flushPostFlushCbs } from './scheduler'
-import {
-  isArray,
-  getType,
-  isSimpleValue,
-  isObject,
-  isPlainObject,
-  isFunction,
-} from './utils'
+import { isArray, getType, isSimpleValue, isObject, isPlainObject, isFunction } from './utils'
 
 export function deepToRaw(x: unknown): unknown {
   if (isSimpleValue(x) || isFunction(x)) {
@@ -39,10 +32,7 @@ export function deepToRaw(x: unknown): unknown {
 }
 
 export function deepWatch(
-  this: Pick<
-    WechatMiniprogram.Component.InstanceMethods<Record<string, unknown>>,
-    'setData'
-  >,
+  this: Pick<WechatMiniprogram.Component.InstanceMethods<Record<string, unknown>>, 'setData'>,
   key: string,
   value: unknown,
 ): void {

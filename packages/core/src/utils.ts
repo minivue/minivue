@@ -1,5 +1,6 @@
-export const EMPTY_OBJ: Readonly<Record<string, any>> =
-  __DEV__ ? Object.freeze({}) : /* istanbul ignore next -- @preserve */ {}
+export const EMPTY_OBJ: Readonly<Record<string, any>> = __DEV__
+  ? Object.freeze({})
+  : /* istanbul ignore next -- @preserve */ {}
 
 /* istanbul ignore next -- @preserve */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -9,10 +10,7 @@ export const { isArray } = Array
 
 export const extend = Object.assign
 
-export function exclude<T extends Record<string, unknown>, K extends keyof T>(
-  obj: T,
-  keys: K[],
-): Omit<T, K> {
+export function exclude<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
   const ret: Record<string, unknown> = {}
   Object.keys(obj).forEach((key) => {
     if (!keys.includes(key as K)) {

@@ -1,2 +1,2 @@
-declare var __DEV__: boolean
-declare var __MINIVUE__: boolean
+declare const __DEV__: boolean
+declare const __MINIVUE__: boolean
