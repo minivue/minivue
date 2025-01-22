@@ -10,7 +10,7 @@
     "generate:web": "nuxt generate",
     "preview:web": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "tsc": "tsc --noEmit"
+    "check": "tsc --incremental --noEmit"
   },
   "dependencies": {
     "@minivue/core": "workspace:*",

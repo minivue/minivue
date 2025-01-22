@@ -5,7 +5,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --filter=minivue-playground",
     "lint": "eslint --cache .",
-    "check": "tsc --incremental --noEmit",
+    "check": "turbo run check",
     "stylelint": "stylelint \"**/*.{css,vue}\"",
     "format": "prettier --write \"**/*.{ts,vue}\""
   },

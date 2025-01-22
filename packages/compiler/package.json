@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node build",
-    "tsc": "tsc --noEmit"
+    "check": "tsc --incremental --noEmit"
   },
   "exports": {
     ".": {
