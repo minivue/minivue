@@ -58,7 +58,7 @@ export default definePage({
   color: red;
 }
 
-body {
+bod {
   font-size: large;
 }
 </style>
