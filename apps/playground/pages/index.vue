@@ -38,7 +38,7 @@ export default definePage({
     const test = ref('什么鬼')
     const time = ref('')
     const demo = 'demo'
-    function onTap(d: any) {
+    function onTap() {
       console.log('onTap')
     }
     return {
