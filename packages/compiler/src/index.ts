@@ -1,4 +1,4 @@
-import { promises } from 'fs'
+import { readFile } from 'fs/promises'
 import { dirname, basename, relative, join } from 'path'
 import type { Plugin } from 'esbuild'
 import { parse } from '@vue/compiler-sfc'
@@ -14,7 +14,7 @@ export default function plugin(): Plugin {
     setup(build) {
       build.initialOptions.charset = 'utf8'
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
-        const source = await promises.readFile(path, 'utf8')
+        const source = await readFile(path, 'utf8')
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
