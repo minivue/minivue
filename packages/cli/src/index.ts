@@ -4,6 +4,7 @@ import minivue from '@minivue/compiler'
 import { basename, join } from 'path'
 import { BuildOptions, build, context } from 'esbuild'
 import fg from 'fast-glob'
+import { rimraf } from 'rimraf'
 
 const files = fg.sync(['pages/**/*.vue', 'components/**/*.vue'])
 const entrys = Object.fromEntries(
@@ -14,7 +15,7 @@ const entrys = Object.fromEntries(
   }),
 )
 
-const config: BuildOptions = {
+const opitons: BuildOptions = {
   entryPoints: {
     app: 'app.vue',
     ...entrys,
@@ -22,7 +23,7 @@ const config: BuildOptions = {
   bundle: true,
   outdir: 'dist',
   format: 'esm',
-  sourcemap: true,
+  sourcemap: false,
   target: 'es2018',
   minify: true,
   minifyIdentifiers: true,
@@ -40,14 +41,15 @@ const config: BuildOptions = {
 const cli = cac('minivue')
 
 cli.command('dev', 'dev your app').action(async () => {
-  const ctx = await context(config)
+  const ctx = await context(opitons)
   await ctx.watch()
   console.log('watching...')
 })
 
 cli.command('build', 'build your app').action(async () => {
   console.log('building...')
-  await build(config)
+  await rimraf('dist')
+  await build(opitons)
 })
 
 cli.help()

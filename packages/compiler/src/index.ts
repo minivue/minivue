@@ -7,8 +7,13 @@ import { writeWxml } from './wxml'
 import { writeWxss } from './wxss'
 import { writeJson } from './json'
 
+interface PluginOptions {
+  // 组件库列表，用于自动导入组件
+  components?: string[]
+}
+
 // vue转换小程序插件
-export default function plugin(): Plugin {
+export default function plugin(options: PluginOptions = {}): Plugin {
   return {
     name: 'vue',
     setup(build) {
@@ -20,10 +25,11 @@ export default function plugin(): Plugin {
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
         const { descriptor } = parse(source)
         const { template, styles, customBlocks } = descriptor
+        const { components } = options
 
         writeWxml(template, fileOutputDir, fileName)
         writeWxss(styles, fileOutputDir, fileName)
-        const { contents, importedComponentMap } = await compile(descriptor, path)
+        const { contents, importedComponentMap } = await compile(descriptor, path, components)
         writeJson(customBlocks, fileOutputDir, fileName, importedComponentMap)
 
         return {
