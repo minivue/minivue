@@ -23,6 +23,7 @@ const config: BuildOptions = {
   outdir: 'dist',
   format: 'esm',
   sourcemap: true,
+  target: 'es2018',
   minify: true,
   minifyIdentifiers: true,
   minifySyntax: true,
