@@ -7,12 +7,19 @@ import type {
   WatchHandle,
   WatchSource,
 } from '@vue/reactivity'
-import { watch as baseWatch } from '@vue/reactivity'
+import { watch as baseWatch } from 'vue'
 import type { SchedulerJob } from './scheduler'
 import { SchedulerJobFlags, queueJob, queuePostFlushCb } from './scheduler'
 import { EMPTY_OBJ, extend, isFunction } from './utils'
 
-export type { WatchHandle, WatchStopHandle, WatchEffect, WatchSource, WatchCallback, OnCleanup } from '@vue/reactivity'
+export type {
+  WatchHandle,
+  WatchStopHandle,
+  WatchEffect,
+  WatchSource,
+  WatchCallback,
+  OnCleanup,
+} from '@vue/reactivity'
 
 type MaybeUndefined<T, I> = I extends true ? T | undefined : T
 
@@ -43,7 +50,9 @@ export function watchPostEffect(effect: WatchEffect, options?: DebuggerOptions):
   return doWatch(
     effect,
     null,
-    __DEV__ ? extend({}, options as any, { flush: 'post' }) : /* istanbul ignore next -- @preserve */ { flush: 'post' },
+    __DEV__
+      ? extend({}, options as any, { flush: 'post' })
+      : /* istanbul ignore next -- @preserve */ { flush: 'post' },
   )
 }
 
@@ -51,7 +60,9 @@ export function watchSyncEffect(effect: WatchEffect, options?: DebuggerOptions):
   return doWatch(
     effect,
     null,
-    __DEV__ ? extend({}, options as any, { flush: 'sync' }) : /* istanbul ignore next -- @preserve */ { flush: 'sync' },
+    __DEV__
+      ? extend({}, options as any, { flush: 'sync' })
+      : /* istanbul ignore next -- @preserve */ { flush: 'sync' },
   )
 }
 
@@ -65,7 +76,10 @@ export function watch<T, Immediate extends Readonly<boolean> = false>(
 ): WatchHandle
 
 // Overload: reactive array or tuple of multiple sources + cb
-export function watch<T extends Readonly<MultiWatchSources>, Immediate extends Readonly<boolean> = false>(
+export function watch<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
   sources: readonly [...T] | T,
   cb: [T] extends [ReactiveMarker]
     ? WatchCallback<T, MaybeUndefined<T, Immediate>>
@@ -114,19 +128,22 @@ function doWatch(
   if (__DEV__ && !cb) {
     if (immediate !== undefined) {
       console.warn(
-        `watch() "immediate" option is only respected when using the ` + `watch(source, callback, options?) signature.`,
+        `watch() "immediate" option is only respected when using the ` +
+          `watch(source, callback, options?) signature.`,
       )
     }
 
     if (deep !== undefined) {
       console.warn(
-        `watch() "deep" option is only respected when using the ` + `watch(source, callback, options?) signature.`,
+        `watch() "deep" option is only respected when using the ` +
+          `watch(source, callback, options?) signature.`,
       )
     }
 
     if (once !== undefined) {
       console.warn(
-        `watch() "once" option is only respected when using the ` + `watch(source, callback, options?) signature.`,
+        `watch() "once" option is only respected when using the ` +
+          `watch(source, callback, options?) signature.`,
       )
     }
   }

@@ -25,7 +25,11 @@ import { deepToRaw, deepWatch } from './shared'
 import { flushPostFlushCbs } from './scheduler'
 
 type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N
-type IsKeyValues<T, K = string> = IfAny<T, false, T extends object ? (keyof T extends K ? true : false) : false>
+type IsKeyValues<T, K = string> = IfAny<
+  T,
+  false,
+  T extends object ? (keyof T extends K ? true : false) : false
+>
 
 type IsStringLiteral<T> = T extends string ? (string extends T ? false : true) : false
 
@@ -59,7 +63,8 @@ type TypeEmitsToOptions<T extends ComponentTypeEmits> = {
   [K in keyof T & string]: T[K] extends [...args: infer Args] ? (...args: Args) => any : () => any
 } & (T extends (...args: any[]) => any ? ParametersToFns<OverloadParameters<T>> : {})
 
-type ToResolvedProps<Props, Emits extends EmitsOptions> = Readonly<Props> & Readonly<EmitsToProps<Emits>>
+type ToResolvedProps<Props, Emits extends EmitsOptions> = Readonly<Props> &
+  Readonly<EmitsToProps<Emits>>
 
 let currentPage: any
 

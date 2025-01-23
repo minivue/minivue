@@ -3,7 +3,12 @@ import { dirname, basename, relative, join } from 'path'
 import { parse as swcParse, print as swcPrint, type SpreadElement, type Property } from '@swc/core'
 import type { Plugin } from 'esbuild'
 import { parse, compileScript } from '@vue/compiler-sfc'
-import { type AttributeNode, type DirectiveNode, type TemplateChildNode, NodeTypes } from '@vue/compiler-core'
+import {
+  type AttributeNode,
+  type DirectiveNode,
+  type TemplateChildNode,
+  NodeTypes,
+} from '@vue/compiler-core'
 import crypto from 'crypto'
 
 type AstProp = SpreadElement | Property
@@ -196,7 +201,9 @@ async function removeComponentImportsAndReferences(source: string, componentLibs
             stmt.type === 'ExpressionStatement' &&
             stmt.expression.type == 'CallExpression' &&
             stmt.expression.arguments.some(
-              (item) => item.expression.type === 'StringLiteral' && item.expression.value === '__isScriptSetup',
+              (item) =>
+                item.expression.type === 'StringLiteral' &&
+                item.expression.value === '__isScriptSetup',
             )
           ) {
             return false
@@ -320,10 +327,16 @@ export default function plugin(): Plugin {
         const id = hash(path) // 生成唯一 ID
         let scriptContent = (script || scriptSetup)?.content || ''
         if (scriptContent) {
-          const result = compileScript(descriptor, { id, isProd: true, sourceMap: false, hoistStatic: false })
+          const result = compileScript(descriptor, {
+            id,
+            isProd: true,
+            sourceMap: false,
+            hoistStatic: false,
+          })
           scriptContent = result.content
         }
-        const { code, importedComponentMap } = await removeComponentImportsAndReferences(scriptContent)
+        const { code, importedComponentMap } =
+          await removeComponentImportsAndReferences(scriptContent)
 
         let isComponent = false
         customBlocks.forEach(({ type, content }) => {
