@@ -50,3 +50,29 @@ export function deepWatch(
     },
   )
 }
+
+export function callSetup(setup: Function, query: Record<string, string | undefined>, ctx: any) {
+  const bindings = setup?.(query as any, ctx) as Record<string, any>
+  if (bindings !== undefined) {
+    let data: Record<string, unknown> | undefined
+    Object.keys(bindings).forEach((key) => {
+      const value = bindings[key]
+      if (isFunction(value)) {
+        if (ctx) {
+          ctx[key] = value
+        }
+        return
+      }
+
+      data = data || {}
+      data[key] = deepToRaw(value)
+      if (ctx) {
+        deepWatch.call(ctx, key, value)
+      }
+    })
+    if (data !== undefined && ctx && ctx.setData) {
+      ctx.setData(data, flushPostFlushCbs)
+    }
+    return data
+  }
+}

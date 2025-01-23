@@ -164,8 +164,7 @@ function doWatch(
       }
     }
   }
-
-  // @ts-expect-error
+  // @ts-ignore
   baseWatchOptions.augmentJob = (job: SchedulerJob) => {
     // Important: mark the job as a watcher callback so that scheduler knows
     // it is allowed to self-trigger
@@ -174,6 +173,7 @@ function doWatch(
     }
   }
 
+  // @ts-ignore
   const watchHandle = baseWatch(source, cb, baseWatchOptions)
 
   return watchHandle

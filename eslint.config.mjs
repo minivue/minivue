@@ -26,6 +26,13 @@ export default typescriptEslint.config(
     rules: {
       'vue/multi-word-component-names': 'off',
       'vue/prefer-import-from-vue': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/prefer-literal-enum-member': 'off',
+      '@typescript-eslint/no-this-alias': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
   eslintConfigPrettier,

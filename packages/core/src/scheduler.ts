@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-math-trunc, @typescript-eslint/prefer-literal-enum-member */
 import { NOOP } from './utils'
 
 export enum SchedulerJobFlags {
@@ -29,7 +28,6 @@ type CountMap = Map<SchedulerJob, number>
 
 export function nextTick<R = void>(fn?: () => R): Promise<Awaited<R>> {
   const p = currentFlushPromise || resolvedPromise
-  // eslint-disable-next-line promise/prefer-await-to-then
   return fn ? p.then(fn) : p
 }
 
@@ -43,7 +41,6 @@ export function queueJob(job: SchedulerJob): void {
 
 function queueFlush(): void {
   if (!currentFlushPromise) {
-    // eslint-disable-next-line promise/prefer-await-to-then
     currentFlushPromise = resolvedPromise.then(flushJobs)
   }
 }
