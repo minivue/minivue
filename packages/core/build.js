@@ -2,7 +2,7 @@ import { build } from 'esbuild'
 
 build({
   entryPoints: ['src/index.ts'],
-  external: ['vue'],
+  packages: 'external',
   bundle: true,
   outdir: 'dist',
   format: 'esm',

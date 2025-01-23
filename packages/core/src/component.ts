@@ -16,7 +16,6 @@ import type {
   ComponentInjectOptions,
   ExtractDefaultPropTypes,
   ComponentProvideOptions,
-  ComponentInternalInstance,
   ComponentObjectPropsOptions,
   CreateComponentPublicInstanceWithMixins,
 } from 'vue'
@@ -228,7 +227,7 @@ export function defineComponent<
     currentComponent = this
     callSetup(setup as any, query, currentComponent)
     const hooks = currentComponent[toHiddenField(PageLifecycle.ON_LOAD)]
-    hooks?.forEach((hook: Function) => hook(query))
+    hooks?.forEach((hook: () => void) => hook(query))
     currentComponent = null
   }
 

@@ -1,8 +1,10 @@
 import { build } from 'esbuild'
 
 const config = {
+  bundle: true,
   entryPoints: ['src/index.ts'],
-  packages: 'external',
+  external: ['@swc/core', '@vue/compiler-sfc', '@vue/compiler-core'],
+  platform: 'node',
 }
 
 await Promise.all([
