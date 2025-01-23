@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import { existsSync } from 'fs'
+import { dirname } from 'path'
 import { writeFile as _writeFile, mkdir } from 'fs/promises'
 /**
  * 从给定的字符串生成一个8字符的MD5哈希值。
@@ -18,8 +19,9 @@ export function hash(str: string) {
  * @param content - 要写入的内容。
  */
 export async function writeFile(fileOutputDir: string, content: string) {
-  if (!existsSync(fileOutputDir)) {
-    await mkdir(fileOutputDir, { recursive: true })
+  const dirPath = dirname(fileOutputDir)
+  if (!existsSync(dirPath)) {
+    await mkdir(dirPath, { recursive: true })
   }
   await _writeFile(fileOutputDir, content)
 }
