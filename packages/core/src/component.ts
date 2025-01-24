@@ -1,6 +1,6 @@
 import { defineComponent as _defineComponent } from 'vue'
 import { exclude, toHiddenField } from './utils'
-import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './constant'
+import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './page'
 import { callSetup } from './shared'
 import { DefineComponentFunction } from './type'
 

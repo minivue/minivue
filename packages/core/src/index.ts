@@ -31,6 +31,7 @@ export {
   onScopeDispose,
 } from '@vue/reactivity'
 
-export { definePage } from './page'
-export { defineComponent } from './component'
-export { onShow, onHide, onLoad, onUnload } from './lifecycle'
+export * from './app'
+export * from './page'
+export * from './component'
+export * from './lifecycle'

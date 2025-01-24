@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { doc } from './bom'
 import { getCurrentPage } from './page'
-import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './constant'
+import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './page'
 import { removeItem, toHiddenField } from './utils'
 
 const showHooks = [] as Function[]
