@@ -1,6 +1,6 @@
 import { defineComponent as _defineComponent } from 'vue'
 import { exclude, toHiddenField } from './utils'
-import { PageLifecycle } from './enums'
+import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './constant'
 import { callSetup } from './shared'
 import { DefineComponentFunction } from './type'
 
@@ -17,24 +17,24 @@ export const defineComponent: DefineComponentFunction = (options) => {
   const setup = options.setup
   options.data = callSetup(setup as any, {}, {}) as any
   options = exclude(options, ['setup', 'props'])
-  options[PageLifecycle.ON_LOAD] = function (this: any, query: Record<string, string | undefined>) {
+  options[PAGE_ON_LOAD] = function (this: any, query: Record<string, string | undefined>) {
     currentComponent = this
     callSetup(setup as any, query, currentComponent)
-    const hooks = currentComponent[toHiddenField(PageLifecycle.ON_LOAD)]
+    const hooks = currentComponent[toHiddenField(PAGE_ON_LOAD)]
     hooks?.forEach((hook: Function) => hook(query))
     currentComponent = null
   }
 
-  options[PageLifecycle.ON_UNLOAD] = function () {
-    const hooks = this[toHiddenField(PageLifecycle.ON_UNLOAD)]
+  options[PAGE_ON_UNLOAD] = function () {
+    const hooks = this[toHiddenField(PAGE_ON_UNLOAD)]
     hooks?.forEach((hook: Function) => hook())
   }
-  options[PageLifecycle.ON_SHOW] = function () {
-    const hooks = this[toHiddenField(PageLifecycle.ON_SHOW)]
+  options[PAGE_ON_SHOW] = function () {
+    const hooks = this[toHiddenField(PAGE_ON_SHOW)]
     hooks?.forEach((hook: Function) => hook())
   }
-  options[PageLifecycle.ON_HIDE] = function () {
-    const hooks = this[toHiddenField(PageLifecycle.ON_HIDE)]
+  options[PAGE_ON_HIDE] = function () {
+    const hooks = this[toHiddenField(PAGE_ON_HIDE)]
     hooks?.forEach((hook: Function) => hook())
   }
 

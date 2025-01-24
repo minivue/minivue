@@ -41,6 +41,7 @@ export default definePage({
     function onTap() {
       console.log('onTap')
     }
+
     return {
       array,
       test,

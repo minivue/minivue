@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { doc } from './bom'
 import { getCurrentPage } from './page'
-import { PageLifecycle } from './enums'
+import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './constant'
 import { removeItem, toHiddenField } from './utils'
 
 const showHooks = [] as Function[]
@@ -18,7 +18,7 @@ function triggerVisibilityHooks() {
 doc?.addEventListener('visibilitychange', triggerVisibilityHooks)
 
 // 将钩子注入到当前实例中
-function injectHook(currentInstance: any, lifecycle: PageLifecycle, hook: Function): void {
+function injectHook(currentInstance: any, lifecycle: string, hook: Function): void {
   const hiddenField = toHiddenField(lifecycle)
   if (currentInstance[hiddenField] === undefined) {
     currentInstance[hiddenField] = []
@@ -27,7 +27,7 @@ function injectHook(currentInstance: any, lifecycle: PageLifecycle, hook: Functi
 }
 
 // 创建页面钩子
-function createPageHook<T extends Function>(lifecycle: PageLifecycle) {
+function createPageHook<T extends Function>(lifecycle: string) {
   return (hook: T): void => {
     if (__MINIVUE__) {
       const currentPage = getCurrentPage()
@@ -40,21 +40,21 @@ function createPageHook<T extends Function>(lifecycle: PageLifecycle) {
       }
     } else {
       const currentInstance = getCurrentInstance() as any
-      if (lifecycle === PageLifecycle.ON_LOAD) {
+      if (lifecycle === PAGE_ON_LOAD) {
         onMounted(hook)
-      } else if (lifecycle === PageLifecycle.ON_UNLOAD) {
+      } else if (lifecycle === PAGE_ON_UNLOAD) {
         if (currentInstance) {
-          const showHooks = (currentInstance[PageLifecycle.ON_SHOW] || []) as Function[]
-          const hideHooks = (currentInstance[PageLifecycle.ON_HIDE] || []) as Function[]
+          const showHooks = (currentInstance[PAGE_ON_SHOW] || []) as Function[]
+          const hideHooks = (currentInstance[PAGE_ON_HIDE] || []) as Function[]
           showHooks.forEach((hook) => removeItem(showHooks, hook))
           hideHooks.forEach((hook) => removeItem(showHooks, hook))
         }
         onUnmounted(hook)
-      } else if (lifecycle === PageLifecycle.ON_SHOW) {
+      } else if (lifecycle === PAGE_ON_SHOW) {
         injectHook(currentInstance, lifecycle, hook)
         showHooks.push(hook)
         triggerVisibilityHooks()
-      } else if (lifecycle === PageLifecycle.ON_HIDE) {
+      } else if (lifecycle === PAGE_ON_HIDE) {
         injectHook(currentInstance, lifecycle, hook)
         hideHooks.push(hook)
       }
@@ -62,7 +62,7 @@ function createPageHook<T extends Function>(lifecycle: PageLifecycle) {
   }
 }
 
-export const onLoad = createPageHook(PageLifecycle.ON_LOAD)
-export const onUnload = createPageHook(PageLifecycle.ON_UNLOAD)
-export const onShow = createPageHook(PageLifecycle.ON_SHOW)
-export const onHide = createPageHook(PageLifecycle.ON_HIDE)
+export const onLoad = createPageHook(PAGE_ON_LOAD)
+export const onUnload = createPageHook(PAGE_ON_UNLOAD)
+export const onShow = createPageHook(PAGE_ON_SHOW)
+export const onHide = createPageHook(PAGE_ON_HIDE)
