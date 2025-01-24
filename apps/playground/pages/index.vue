@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link to="/test">test</nuxt-link>
+  <nuxt-link to="/about">test</nuxt-link>
   <div class="index">
     <button :test="test" @click="onTap">{{ demo }}</button>
     <template v-if="test === 'test'">

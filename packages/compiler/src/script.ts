@@ -8,9 +8,15 @@ import { hash } from './utils'
  * @param descriptor - SFC 的描述符，包含脚本、脚本设置和自定义块。
  * @param path - SFC 的文件路径。
  * @param components - 组件列表，用于自动导入组件。
+ * @param isApp - 是否是 app.vue。
  * @returns 包含编译后的脚本内容和导入组件映射的对象。
  */
-export async function compile(descriptor: SFCDescriptor, path: string, components: string[] = []) {
+export async function compile(
+  descriptor: SFCDescriptor,
+  path: string,
+  components: string[] = [],
+  isApp = false,
+) {
   const { script, scriptSetup, customBlocks } = descriptor
   const isComponent = customBlocks.some(({ content, type }) => {
     if (type === 'config') {
@@ -38,7 +44,9 @@ export async function compile(descriptor: SFCDescriptor, path: string, component
   // 代码转换
   let contents = code.replace('export default ', '')
 
-  if (!isComponent) {
+  if (isApp) {
+    contents = contents.replace('defineComponent', 'defineApp')
+  } else if (!isComponent) {
     contents = contents.replace('defineComponent', 'definePage')
   }
 

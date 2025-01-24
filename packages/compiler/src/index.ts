@@ -29,7 +29,12 @@ export default function plugin(options: PluginOptions = {}): Plugin {
 
         writeWxml(template, fileOutputDir, fileName)
         writeWxss(styles, fileOutputDir, fileName)
-        const { contents, importedComponentMap } = await compile(descriptor, path, components)
+        const { contents, importedComponentMap } = await compile(
+          descriptor,
+          path,
+          components,
+          isApp,
+        )
         writeJson(customBlocks, fileOutputDir, fileName, importedComponentMap)
 
         return {

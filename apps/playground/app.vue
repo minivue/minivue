@@ -2,13 +2,32 @@
   <NuxtPage />
 </template>
 
-<script>
-import { defineApp, onAppLaunch } from '@minivue/core'
+<script lang="ts">
+import {
+  defineApp,
+  onAppShow,
+  onAppError,
+  onAppLaunch,
+  onAppPageNotFound,
+  onAppUnhandledRejection,
+} from '@minivue/core'
 
-defineApp({
+export default defineApp({
   setup() {
     onAppLaunch((options) => {
       console.log('App launched', options)
+    })
+    onAppShow((options) => {
+      console.log('App showed', options)
+    })
+    onAppError((error) => {
+      console.error('App error', error)
+    })
+    onAppPageNotFound((options) => {
+      console.log('Page not found', options)
+    })
+    onAppUnhandledRejection((error) => {
+      console.error('Unhandled rejection', error)
     })
   },
 })

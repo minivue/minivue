@@ -8,47 +8,53 @@ type AppOptions = WechatMiniprogram.App.Options<WechatMiniprogram.IAnyObject>
 type AppInstance = WechatMiniprogram.App.Instance<WechatMiniprogram.IAnyObject>
 type HookOnShow = (options: AppShowOption) => void
 type HookOnLaunch = (options: AppLaunchOption) => void
+type HookOnHide = () => void
+type HookOnError = (error: string) => void
+type HookOnPageNotFound = (options: WechatMiniprogram.App.PageNotFoundOption) => void
+type HookOnUnhandledRejection = (
+  result: WechatMiniprogram.OnUnhandledRejectionCallbackResult,
+) => void
 
 // App的钩子
 export const APP_ON_SHOW = 'onShow'
 export const APP_ON_HIDE = 'onHide'
 export const APP_ON_ERROR = 'onError'
 export const APP_ON_LAUNCH = 'onLaunch'
-export const APP_ON_THEME_CHANGE = 'onThemeChange'
 export const APP_ON_PAGE_NOT_FOUND = 'onPageNotFound'
 export const APP_ON_UNHANDLED_REJECTION = 'onUnhandledRejection'
+
 export type AppLifecycle =
   | typeof APP_ON_SHOW
   | typeof APP_ON_HIDE
   | typeof APP_ON_ERROR
   | typeof APP_ON_LAUNCH
-  | typeof APP_ON_THEME_CHANGE
   | typeof APP_ON_PAGE_NOT_FOUND
   | typeof APP_ON_UNHANDLED_REJECTION
 
 let appInstance: AppInstance | undefined
-let appShowOptions = {} as AppShowOption
-let appLaunchOptions = {} as AppLaunchOption
 
-const hookWarn =
-  'App specific lifecycle injection APIs can only be used during execution of setup() '
-
-/**
- * 获取应用程序启动选项。
- *
- * @returns 应用程序启动选项。
- */
-export function getAppLaunchOptions() {
-  return appLaunchOptions
+function createAppHook<T>(name: AppLifecycle) {
+  return function (hook: T) {
+    if (appInstance) {
+      const hiddenField = toHiddenField(name)
+      const hooks = appInstance[hiddenField] || []
+      hooks.push(hook)
+      appInstance[hiddenField] = hooks
+    } else if (__DEV__) {
+      console.warn('lifecycle injection APIs can only be used during execution of setup() ')
+    }
+  }
 }
 
-/**
- * 获取应用程序显示选项。
- *
- * @returns 应用程序显示选项。
- */
-export function getAppShowOptions() {
-  return appShowOptions
+function triggerHook(ctx: AppInstance, name: AppLifecycle, e?: any) {
+  const hooks = ctx[toHiddenField(name)] || []
+  hooks.forEach((hook: Function) => hook(e))
+}
+
+function createAppLifecycle<T>(name: AppLifecycle) {
+  return function (this: AppInstance, e?: T) {
+    triggerHook(this, name, e)
+  }
 }
 
 /**
@@ -78,37 +84,24 @@ export const defineApp: DefineComponentFunction = (options) => {
   const newOptions = exclude(options, ['setup']) as AppOptions
   newOptions[APP_ON_LAUNCH] = function (this: AppInstance, e) {
     appInstance = this
-    appLaunchOptions = e
     // @ts-ignore
-    setup()
-    const hooks = appInstance[toHiddenField(APP_ON_LAUNCH)] || []
-    hooks.forEach((hook: HookOnLaunch) => hook(e))
+    setup({}, {})
+    triggerHook(appInstance, APP_ON_LAUNCH, e)
     appInstance = undefined
   }
-  newOptions[APP_ON_SHOW] = function (this: AppInstance, e) {
-    appShowOptions = e
-  }
+  newOptions[APP_ON_SHOW] = createAppLifecycle(APP_ON_SHOW)
+  newOptions[APP_ON_HIDE] = createAppLifecycle(APP_ON_HIDE)
+  newOptions[APP_ON_ERROR] = createAppLifecycle(APP_ON_ERROR)
+  newOptions[APP_ON_PAGE_NOT_FOUND] = createAppLifecycle(APP_ON_PAGE_NOT_FOUND)
+  newOptions[APP_ON_UNHANDLED_REJECTION] = createAppLifecycle(APP_ON_UNHANDLED_REJECTION)
   return App(newOptions) as any
 }
 
-export function onAppLaunch(hook: HookOnLaunch) {
-  if (appInstance) {
-    const hiddenField = toHiddenField(APP_ON_LAUNCH)
-    const hooks = appInstance[hiddenField] || []
-    hooks.push(hook)
-    appInstance[hiddenField] = hooks
-  } else if (__DEV__) {
-    console.warn(hookWarn)
-  }
-}
-
-export function onAppShow(hook: HookOnShow) {
-  if (appInstance) {
-    const hiddenField = toHiddenField(APP_ON_SHOW)
-    const hooks = appInstance[hiddenField] || []
-    hooks.push(hook)
-    appInstance[hiddenField] = hooks
-  } else if (__DEV__) {
-    console.warn(hookWarn)
-  }
-}
+export const onAppLaunch = createAppHook<HookOnLaunch>(APP_ON_LAUNCH)
+export const onAppShow = createAppHook<HookOnShow>(APP_ON_SHOW)
+export const onAppHide = createAppHook<HookOnHide>(APP_ON_HIDE)
+export const onAppError = createAppHook<HookOnError>(APP_ON_ERROR)
+export const onAppPageNotFound = createAppHook<HookOnPageNotFound>(APP_ON_PAGE_NOT_FOUND)
+export const onAppUnhandledRejection = createAppHook<HookOnUnhandledRejection>(
+  APP_ON_UNHANDLED_REJECTION,
+)

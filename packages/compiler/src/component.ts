@@ -154,6 +154,7 @@ export async function removeComponentImportsAndReferences(
         })
         return false // 从源码中删除
       } else if (node.source.value === 'vue') {
+        // vue 换成@minivue/core
         node.source.value = MINIVUE_PACKAGE_NAME
         node.source.raw = `'${MINIVUE_PACKAGE_NAME}'`
       }

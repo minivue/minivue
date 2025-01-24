@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=minivue-playground",
+    "dev:web": "turbo run dev:web --filter=minivue-playground",
     "lint": "eslint --cache .",
     "check": "turbo run check",
     "stylelint": "stylelint \"**/*.{css,vue}\"",

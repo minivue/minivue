@@ -13,6 +13,13 @@
       "outputs": ["dist/**"],
       "dependsOn": ["^build"],
       "outputLogs": "full"
+    },
+    "dev:web": {
+      "cache": false,
+      "persistent": true,
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"],
+      "outputLogs": "full"
     }
   }
 }
