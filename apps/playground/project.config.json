@@ -12,6 +12,7 @@
     "es6": false,
     "enhance": false,
     "postcss": false,
+    "skylineRenderEnable": true,
     "preloadBackgroundData": false,
     "minify": true,
     "minified": true,
@@ -53,7 +54,7 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "appid": "wx0b247efc57f7cc58",
-  "libVersion": "2.32.3",
+  "libVersion": "3.1.5",
   "qqLibVersion": "1.48.4",
   "srcMiniprogramRoot": "dist/",
   "editorSetting": {
