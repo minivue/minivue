@@ -6,6 +6,7 @@
 import {
   defineApp,
   onAppShow,
+  onAppHide,
   onAppError,
   onAppLaunch,
   onAppPageNotFound,
@@ -19,6 +20,9 @@ export default defineApp({
     })
     onAppShow((options) => {
       console.log('App showed', options)
+    })
+    onAppHide(() => {
+      console.log('App hided')
     })
     onAppError((error) => {
       console.error('App error', error)

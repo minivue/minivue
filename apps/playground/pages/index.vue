@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { definePage, ref } from '@minivue/core'
-
+import { onMounted } from 'vue'
 export default definePage({
   setup() {
     const array: Record<string, string>[] = [
@@ -41,7 +41,9 @@ export default definePage({
     function onTap() {
       console.log('onTap')
     }
-
+    onMounted(() => {
+      console.log('onMounted')
+    })
     return {
       array,
       test,

@@ -1,6 +1,7 @@
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount, onMounted } from 'vue'
 import { DefineComponentFunction } from './type'
 import { exclude, toHiddenField } from './utils'
+import { onVisibilityChange } from './bom'
 
 type AppShowOption = WechatMiniprogram.App.LaunchShowOption
 type AppLaunchOption = WechatMiniprogram.App.LaunchShowOption
@@ -40,9 +41,20 @@ function createAppHook<T>(name: AppLifecycle) {
       const hooks = appInstance[hiddenField] || []
       hooks.push(hook)
       appInstance[hiddenField] = hooks
-    } else if (__DEV__) {
+    } else if (__DEV__ && __MINIVUE__) {
       console.warn('lifecycle injection APIs can only be used during execution of setup() ')
     }
+  }
+}
+
+function injectHook(name: AppLifecycle, hook: Function) {
+  if (appInstance) {
+    const hiddenField = toHiddenField(name)
+    const hooks = appInstance[hiddenField] || []
+    hooks.push(hook)
+    appInstance[hiddenField] = hooks
+  } else if (__DEV__ && __MINIVUE__) {
+    console.warn('lifecycle injection APIs can only be used during execution of setup() ')
   }
 }
 
@@ -97,9 +109,47 @@ export const defineApp: DefineComponentFunction = (options) => {
   return App(newOptions) as any
 }
 
-export const onAppLaunch = createAppHook<HookOnLaunch>(APP_ON_LAUNCH)
-export const onAppShow = createAppHook<HookOnShow>(APP_ON_SHOW)
-export const onAppHide = createAppHook<HookOnHide>(APP_ON_HIDE)
+export function onAppLaunch(hook: HookOnLaunch) {
+  if (__MINIVUE__) {
+    injectHook(APP_ON_LAUNCH, hook)
+  } else {
+    onBeforeMount(() => {
+      hook({ path: '', query: {}, scene: 1001, shareTicket: ''})
+    })
+  }
+}
+
+export function onAppShow(hook: HookOnShow) {
+  if (__MINIVUE__) {
+    injectHook(APP_ON_SHOW, hook)
+  } else {
+    onMounted(() => {
+      onVisibilityChange((show) => {
+        if (show) {
+          hook({ path: '', query: {}, scene: 1001, shareTicket: ''})
+        }
+      })
+    })
+  }
+}
+
+export function onAppHide(hook: HookOnHide) {
+  if (__MINIVUE__) {
+    injectHook(APP_ON_HIDE, hook)
+  } else {
+    onMounted(() => {
+      onVisibilityChange((show) => {
+        if (!show) {
+          hook()
+        }
+      })
+    })
+  }
+}
+
+// export const onAppLaunch = createAppHook<HookOnLaunch>(APP_ON_LAUNCH)
+// export const onAppShow = createAppHook<HookOnShow>(APP_ON_SHOW)
+// export const onAppHide = createAppHook<HookOnHide>(APP_ON_HIDE)
 export const onAppError = createAppHook<HookOnError>(APP_ON_ERROR)
 export const onAppPageNotFound = createAppHook<HookOnPageNotFound>(APP_ON_PAGE_NOT_FOUND)
 export const onAppUnhandledRejection = createAppHook<HookOnUnhandledRejection>(

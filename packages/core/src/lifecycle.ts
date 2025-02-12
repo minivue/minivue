@@ -1,5 +1,4 @@
 import { onMounted, onUnmounted, getCurrentInstance } from 'vue'
-import { doc } from './bom'
 import { getCurrentPage } from './page'
 import { PAGE_ON_LOAD, PAGE_ON_UNLOAD, PAGE_ON_SHOW, PAGE_ON_HIDE } from './page'
 import { removeItem, toHiddenField } from './utils'
@@ -7,15 +6,6 @@ import { removeItem, toHiddenField } from './utils'
 const showHooks = [] as Function[]
 const hideHooks = [] as Function[]
 
-function triggerVisibilityHooks() {
-  if (doc?.visibilityState === 'hidden') {
-    hideHooks.forEach((hook) => hook())
-  } else {
-    showHooks.forEach((hook) => hook())
-  }
-}
-
-doc?.addEventListener('visibilitychange', triggerVisibilityHooks)
 
 // 将钩子注入到当前实例中
 function injectHook(currentInstance: any, lifecycle: string, hook: Function): void {
@@ -53,7 +43,6 @@ function createPageHook<T extends Function>(lifecycle: string) {
       } else if (lifecycle === PAGE_ON_SHOW) {
         injectHook(currentInstance, lifecycle, hook)
         showHooks.push(hook)
-        triggerVisibilityHooks()
       } else if (lifecycle === PAGE_ON_HIDE) {
         injectHook(currentInstance, lifecycle, hook)
         hideHooks.push(hook)
