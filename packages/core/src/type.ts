@@ -180,3 +180,18 @@ export type DefineComponentFunction = <
   TypeRefs,
   TypeEl
 >
+
+export type AppShowOption = WechatMiniprogram.App.LaunchShowOption
+export type AppLaunchOption = WechatMiniprogram.App.LaunchShowOption
+export type AppOptions = WechatMiniprogram.App.Options<WechatMiniprogram.IAnyObject>
+export type AppInstance = WechatMiniprogram.App.Instance<WechatMiniprogram.IAnyObject>
+
+export type PageInstance = WechatMiniprogram.Page.Instance<
+  WechatMiniprogram.IAnyObject,
+  WechatMiniprogram.IAnyObject
+>
+
+export type PageOptions = WechatMiniprogram.Page.Options<
+  WechatMiniprogram.IAnyObject,
+  WechatMiniprogram.IAnyObject
+>

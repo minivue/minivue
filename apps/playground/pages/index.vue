@@ -1,6 +1,6 @@
 <template>
-  <nuxt-link to="/about">test</nuxt-link>
   <div class="index">
+    <nuxt-link to="/about">test</nuxt-link>
     <button :test="test" @click="onTap">{{ demo }}</button>
     <template v-if="test === 'test'">
       <div>test</div>
@@ -21,8 +21,7 @@
 </template>
 
 <script lang="ts">
-import { definePage, ref } from '@minivue/core'
-import { onMounted } from 'vue'
+import { definePage, ref, onShow, onHide, onLoad } from '@minivue/core'
 export default definePage({
   setup() {
     const array: Record<string, string>[] = [
@@ -39,11 +38,22 @@ export default definePage({
     const time = ref('')
     const demo = 'demo'
     function onTap() {
+      test.value = 'fuck'
       console.log('onTap')
     }
-    onMounted(() => {
-      console.log('onMounted')
+
+    onLoad(() => {
+      console.warn('onPageLoad')
     })
+
+    onShow(() => {
+      console.warn('onPageShow')
+    })
+
+    onHide(() => {
+      console.warn('onPageHide')
+    })
+
     return {
       array,
       test,

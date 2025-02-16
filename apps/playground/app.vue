@@ -9,8 +9,8 @@ import {
   onAppHide,
   onAppError,
   onAppLaunch,
-  onAppPageNotFound,
-  onAppUnhandledRejection,
+  onPageNotFound,
+  onUnhandledRejection,
 } from '@minivue/core'
 
 export default defineApp({
@@ -27,10 +27,10 @@ export default defineApp({
     onAppError((error) => {
       console.error('App error', error)
     })
-    onAppPageNotFound((options) => {
+    onPageNotFound((options) => {
       console.log('Page not found', options)
     })
-    onAppUnhandledRejection((error) => {
+    onUnhandledRejection((error) => {
       console.error('Unhandled rejection', error)
     })
   },

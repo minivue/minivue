@@ -1,15 +1,17 @@
 <template>
   <div>
-    <h1 class="about">about</h1>
+    <h1 class="about">{{ msg }}</h1>
     <NuxtLink to="/">index</NuxtLink>
-    <KButton>test</KButton>
+    <KButton @click="onTap">test</KButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import KButton from '@/components/KButton.vue'
-const x = 1
-console.log(x)
+const msg = ref('about')
+function onTap() {
+  msg.value = 'fuck'
+}
 </script>
 
 <style>

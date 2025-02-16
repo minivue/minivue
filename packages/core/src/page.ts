@@ -1,22 +1,21 @@
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount, onMounted, onUnmounted } from 'vue'
 import { exclude, toHiddenField } from './utils'
-import { DefineComponentFunction } from './type'
+import { DefineComponentFunction, PageInstance, PageOptions } from './type'
 import { callSetup } from './shared'
+import {
+  createLifecycle,
+  injectHook,
+  ON_HIDE,
+  ON_LOAD,
+  ON_SHOW,
+  ON_UNLOAD,
+  triggerHook,
+} from './lifecycle'
 
-// Page的钩子
-export const PAGE_ON_LOAD = 'onLoad'
-export const PAGE_ON_UNLOAD = 'onUnload'
-export const PAGE_ON_SHOW = 'onShow'
-export const PAGE_ON_HIDE = 'onHide'
-export const PAGE_ON_SHARE_APP_MESSAGE = 'onShareAppMessage'
-export const PAGE_ON_SHARE_TIMELINE = 'onShareTimeline'
-export const PAGE_ON_ADD_TO_FAVORITES = 'onAddToFavorites'
+let pageInstance: PageInstance | undefined
 
-let currentPage: any
-
-export function getCurrentPage() {
-  return currentPage
-}
+type HookOnShow = () => void
+type HookOnHide = () => void
 
 export const definePage: DefineComponentFunction = (options) => {
   if (!__MINIVUE__) {
@@ -24,28 +23,43 @@ export const definePage: DefineComponentFunction = (options) => {
   }
   const setup = options.setup
   options.data = callSetup(setup as any, {}, {}) as any
-  options = exclude(options, ['setup', 'props'])
-  options[PAGE_ON_LOAD] = function (this: any, query: Record<string, string | undefined>) {
-    currentPage = this
-    callSetup(setup as any, query, currentPage)
-    const hooks = currentPage[toHiddenField(PAGE_ON_LOAD)]
+  const newOptions = exclude(options, ['setup', 'props']) as PageOptions
+  newOptions[ON_LOAD] = function (this: PageInstance, query: Record<string, string | undefined>) {
+    pageInstance = this
+    callSetup(setup as any, query, pageInstance)
+    const hooks = pageInstance[toHiddenField(ON_LOAD)]
     hooks?.forEach((hook: Function) => hook(query))
-    currentPage = null
+    triggerHook(pageInstance, ON_LOAD, query)
+    pageInstance = undefined
   }
 
-  options[PAGE_ON_UNLOAD] = function () {
-    const hooks = this[toHiddenField(PAGE_ON_UNLOAD)]
-    hooks?.forEach((hook: Function) => hook())
-  }
-  options[PAGE_ON_SHOW] = function () {
-    const hooks = this[toHiddenField(PAGE_ON_SHOW)]
-    hooks?.forEach((hook: Function) => hook())
-  }
-  options[PAGE_ON_HIDE] = function () {
-    const hooks = this[toHiddenField(PAGE_ON_HIDE)]
-    hooks?.forEach((hook: Function) => hook())
-  }
-  Page(options as any)
+  newOptions[ON_UNLOAD] = createLifecycle(ON_UNLOAD)
+  newOptions[ON_SHOW] = createLifecycle(ON_SHOW)
+  newOptions[ON_HIDE] = createLifecycle(ON_HIDE)
 
-  return null as any
+  return Page(newOptions) as any
+}
+
+export function onLoad(hook: Function) {
+  if (__MINIVUE__) {
+    injectHook(pageInstance, ON_LOAD, hook)
+  } else {
+    onBeforeMount(() => hook())
+  }
+}
+
+export function onShow(hook: HookOnShow) {
+  if (__MINIVUE__) {
+    injectHook(pageInstance, ON_SHOW, hook)
+  } else {
+    onMounted(() => hook())
+  }
+}
+
+export function onHide(hook: HookOnHide) {
+  if (__MINIVUE__) {
+    injectHook(pageInstance, ON_HIDE, hook)
+  } else {
+    onUnmounted(() => hook())
+  }
 }

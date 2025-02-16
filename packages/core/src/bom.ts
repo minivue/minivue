@@ -1,13 +1,31 @@
-const doc: Document = document
+const doc: Document | undefined = document
 
-function getDocVisibilityState() {
-  return doc.visibilityState === 'visible'
+const showListeners: (() => void)[] = []
+const hideListeners: (() => void)[] = []
+
+export const isClient: boolean = typeof doc !== 'undefined'
+
+export function initEvent() {
+  if (doc) {
+    doc.addEventListener('visibilitychange', () => {
+      const listeners = doc.visibilityState === 'visible' ? showListeners : hideListeners
+      listeners.forEach((listener) => listener())
+    })
+  }
 }
 
-export function onVisibilityChange(listener: (show: boolean) => void) {
-  listener(getDocVisibilityState())
-  doc.addEventListener('visibilitychange', () => {
-    listener(getDocVisibilityState())
-  })
+export function onDocShow(listener: () => void) {
+  showListeners.push(listener)
 }
 
+export function onDocHide(listener: () => void) {
+  hideListeners.push(listener)
+}
+
+export function offDocShow(listener: () => void) {
+  showListeners.splice(showListeners.indexOf(listener), 1)
+}
+
+export function offDocHide(listener: () => void) {
+  hideListeners.splice(hideListeners.indexOf(listener), 1)
+}
