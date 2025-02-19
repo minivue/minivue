@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <nuxt-link to="/about">test</nuxt-link>
-    <button :test="test" @click="onTap">{{ demo }}</button>
+    <button :test="test" @click="onTap(array)">{{ demo }}</button>
     <template v-if="test === 'test'">
       <div>test</div>
     </template>
@@ -37,9 +37,9 @@ export default definePage({
     const test = ref('什么鬼')
     const time = ref('')
     const demo = 'demo'
-    function onTap() {
+    function onTap(array: Record<string, string>[]) {
       test.value = 'fuck'
-      console.log('onTap')
+      console.log('onTap', array)
     }
 
     onLoad(() => {

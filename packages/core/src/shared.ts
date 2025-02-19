@@ -60,6 +60,10 @@ export function callSetup(setup: Function, query: Record<string, string | undefi
       if (isFunction(value)) {
         if (ctx) {
           ctx[key] = value
+          // ctx[key] = (e: any) => {
+          //   console.log('e', e.mark)
+          //   value(...Object.values(e.mark))
+          // }
         }
         return
       }
