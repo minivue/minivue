@@ -1,6 +1,5 @@
 <template>
   <div class="index">
-    <nuxt-link to="/about">test</nuxt-link>
     <button :test="test" @click="onTap(array)">{{ demo }}</button>
     <template v-if="test === 'test'">
       <div>test</div>
@@ -66,8 +65,8 @@ export default definePage({
 </script>
 
 <style>
-.index {
-  font-size: large;
+page {
+  font-size: 16px;
   color: red;
 }
 </style>

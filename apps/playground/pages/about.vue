@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import KButton from '@/components/KButton.vue'
+import { ref } from '@minivue/core'
 const msg = ref('about')
 function onTap() {
   msg.value = 'fuck'

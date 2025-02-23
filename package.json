@@ -14,24 +14,30 @@
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
-    "@eslint/js": "^9.20.0",
-    "eslint": "^9.20.1",
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-vue": "^9.32.0",
-    "globals": "^15.14.0",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "prettier": "^3.5.0",
+    "prettier": "^3.5.2",
     "stylelint": "^16.14.1",
     "stylelint-config-recess-order": "^6.0.0",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-config-standard-vue": "^1.0.0",
     "stylelint-prettier": "^5.0.3",
-    "turbo": "^2.4.1",
+    "turbo": "^2.4.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.0"
+    "typescript-eslint": "^8.24.1"
   },
   "packageManager": "pnpm@10.4.0",
   "engines": {
     "node": ">=20.15.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild"
+    ]
   }
 }

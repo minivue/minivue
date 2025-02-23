@@ -1,7 +1,3 @@
-<template>
-  <NuxtView />
-</template>
-
 <script lang="ts">
 import {
   defineApp,

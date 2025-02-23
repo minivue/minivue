@@ -191,7 +191,23 @@ export type PageInstance = WechatMiniprogram.Page.Instance<
   WechatMiniprogram.IAnyObject
 >
 
+export type ComponentInstance = WechatMiniprogram.Component.Instance<
+  WechatMiniprogram.Component.DataOption,
+  WechatMiniprogram.Component.PropertyOption,
+  Partial<WechatMiniprogram.Component.MethodOption>,
+  WechatMiniprogram.IAnyObject,
+  boolean
+>
+
 export type PageOptions = WechatMiniprogram.Page.Options<
   WechatMiniprogram.IAnyObject,
   WechatMiniprogram.IAnyObject
+>
+
+export type ComponentOptions = WechatMiniprogram.Component.Options<
+  WechatMiniprogram.Component.DataOption,
+  WechatMiniprogram.Component.PropertyOption,
+  WechatMiniprogram.Component.MethodOption,
+  WechatMiniprogram.IAnyObject,
+  boolean
 >

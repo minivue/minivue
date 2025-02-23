@@ -11,4 +11,7 @@ export default {
       files: ['*.vue', '*.css'],
     },
   ],
+  rules: {
+    'selector-type-no-unknown': null,
+  },
 }
