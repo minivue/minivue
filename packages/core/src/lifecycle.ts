@@ -65,12 +65,12 @@ export function setCurrentInstance(target?: Instance) {
   instance = target
 }
 
-export function injectHook(ctx: Context | undefined, name: Lifecycle, hook: Function) {
-  if (ctx) {
+export function injectHook(name: Lifecycle, hook: Function) {
+  if (instance) {
     const hiddenField = toHiddenField(name)
-    const hooks = ctx[hiddenField] || []
+    const hooks = instance[hiddenField] || []
     hooks.push(hook)
-    ctx[hiddenField] = hooks
+    instance[hiddenField] = hooks
   } else if (__DEV__) {
     console.warn('lifecycle injection APIs can only be used during execution of setup() ')
   }
@@ -82,11 +82,7 @@ export function triggerHook(ctx: Context, name: Lifecycle, e?: any) {
 }
 
 export function createHook<T extends Function>(name: Lifecycle) {
-  return (hook: T) => {
-    if (instance) {
-      injectHook(instance, name, hook)
-    }
-  }
+  return (hook: T) => injectHook(name, hook)
 }
 
 export function createLifecycle(name: Lifecycle) {
