@@ -83,7 +83,14 @@ function transformAttributes(attrs: (AttributeNode | DirectiveNode)[]): string {
             newAttrs[key.slice(1)] = `{{${value}}}`
           } else if (key.startsWith('@')) {
             const eventName = key.slice(1).replace('click', 'tap') // 移除 @
-            newAttrs[`bind:${eventName}`] = value
+            const funcMatch = value.match(/(\w+)\((.*)\)/)
+            const funcName = funcMatch ? funcMatch[1] : value
+            const funcArgsStr = funcMatch ? funcMatch[2] : ''
+            newAttrs[`bind:${eventName}`] = funcName
+            if (funcArgsStr) {
+              newAttrs[`mark:args`] = `{{[${funcArgsStr}]}}`
+            }
+            console.log('EVENT:', key, value, funcArgsStr)
           } else if (key === 'v-for') {
             const vForData = parseVFor(value)
             if (vForData) {
