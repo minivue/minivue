@@ -1,7 +1,11 @@
 <template>
   <div>
+    <Teleport to="body">
+      <div>test</div>
+    </Teleport>
     <h1 class="about">{{ msg }}</h1>
     <NuxtLink to="/">index</NuxtLink>
+    <view>test</view>
     <KButton @click="onTap">test</KButton>
   </div>
 </template>

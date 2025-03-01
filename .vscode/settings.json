@@ -27,5 +27,869 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "stylelint.validate": ["css", "scss", "vue"]
+  "stylelint.validate": ["css", "scss", "vue"],
+  "json.schemas": [
+    {
+      "fileMatch": ["**/*.vue"],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "小程序页面配置",
+        "description": "小程序页面的配置选项",
+        "type": "object",
+        "properties": {
+          "entryPagePath": {
+            "type": "string",
+            "description": "小程序默认启动首页"
+          },
+          "pages": {
+            "type": "array",
+            "description": "页面路径列表",
+            "items": {
+              "type": "string"
+            }
+          },
+          "window": {
+            "type": "object",
+            "description": "全局的默认窗口表现，用于设置小程序的状态栏、导航条、标题、窗口背景色",
+            "properties": {
+              "navigationBarBackgroundColor": {
+                "type": "string",
+                "description": "导航栏背景颜色，如 #000000",
+                "default": "#000000"
+              },
+              "navigationBarTextStyle": {
+                "type": "string",
+                "enum": ["black", "white"],
+                "description": "导航栏标题、状态栏颜色，仅支持 black / white",
+                "default": "white"
+              },
+              "navigationBarTitleText": {
+                "type": "string",
+                "description": "导航栏标题文字内容",
+                "default": ""
+              },
+              "navigationStyle": {
+                "type": "string",
+                "enum": ["default", "custom"],
+                "description": "导航栏样式，仅支持以下值：default 默认样式，custom 自定义导航栏，只保留右上角胶囊按钮。最低版本：iOS/Android 微信客户端 6.6.0，Windows/Mac 微信基础库 3.6.1",
+                "default": "default"
+              },
+              "homeButton": {
+                "type": "boolean",
+                "description": "在非首页、非页面栈最底层页面或非tabbar内页面中的导航栏展示home键，最低版本：微信客户端 8.0.24",
+                "default": false
+              },
+              "backgroundColor": {
+                "type": "string",
+                "description": "窗口的背景色",
+                "default": "#ffffff"
+              },
+              "backgroundTextStyle": {
+                "type": "string",
+                "enum": ["dark", "light"],
+                "description": "下拉 loading 的样式，仅支持 dark / light",
+                "default": "dark"
+              },
+              "backgroundColorTop": {
+                "type": "string",
+                "description": "顶部窗口的背景色，仅 iOS 支持，最低版本：微信客户端 6.5.16",
+                "default": "#ffffff"
+              },
+              "backgroundColorBottom": {
+                "type": "string",
+                "description": "底部窗口的背景色，仅 iOS 支持，最低版本：微信客户端 6.5.16",
+                "default": "#ffffff"
+              },
+              "enablePullDownRefresh": {
+                "type": "boolean",
+                "description": "是否开启全局的下拉刷新",
+                "default": false
+              },
+              "onReachBottomDistance": {
+                "type": "number",
+                "description": "页面上拉触底事件触发时距页面底部距离，单位为 px",
+                "default": 50
+              },
+              "pageOrientation": {
+                "type": "string",
+                "enum": ["auto", "portrait", "landscape"],
+                "description": "屏幕旋转设置，支持 auto / portrait / landscape",
+                "default": "auto"
+              },
+              "restartStrategy": {
+                "type": "string",
+                "enum": ["homePage", "homePageAndLatestPage"],
+                "description": "重新启动策略配置，支持 homePage -（默认值）如果从这个页面退出小程序，下次将从首页冷启动，homePageAndLatestPage - 如果从这个页面退出小程序，下次冷启动后立刻加载这个页面，页面的参数保持不变（不可用于 tab 页）",
+                "default": "homePage"
+              },
+              "initialRenderingCache": {
+                "type": "string",
+                "enum": ["static", "dynamic", "capture"],
+                "description": "页面初始渲染缓存配置，支持 static / dynamic https://developers.weixin.qq.com/miniprogram/dev/framework/view/initial-rendering-cache.html",
+                "default": false
+              },
+              "visualEffectInBackground": {
+                "type": "string",
+                "enum": ["hidden", "none"],
+                "description": "切入系统后台时，隐藏页面内容，保护用户隐私。支持 hidden / none，最低版本：2.15.0",
+                "default": "none"
+              },
+              "handleWebviewPreload": {
+                "type": "string",
+                "enum": ["static", "manual", "auto"],
+                "description": "控制预加载下个页面的时机。支持 static / manual / auto",
+                "default": "static"
+              }
+            },
+            "additionalProperties": false
+          },
+          "tabBar": {
+            "type": "object",
+            "description": "底部 tab 栏的表现",
+            "properties": {
+              "color": {
+                "type": "string",
+                "description": "tab 上的文字默认颜色，仅支持十六进制颜色"
+              },
+              "selectedColor": {
+                "type": "string",
+                "description": "tab 上的文字选中时的颜色，仅支持十六进制颜色"
+              },
+              "backgroundColor": {
+                "type": "string",
+                "description": "tab 的背景色，仅支持十六进制颜色",
+                "default": "#ffffff"
+              },
+              "borderStyle": {
+                "type": "string",
+                "enum": ["black", "white"],
+                "description": "tabbar上边框的颜色， 仅支持 black / white",
+                "default": "black"
+              },
+              "list": {
+                "type": "array",
+                "description": "tab 的列表，详见 list 属性说明，最少 2 个、最多 5 个 tab",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "pagePath": {
+                      "type": "string",
+                      "description": "页面路径，必须在 pages 中先定义"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "tab 上按钮文字"
+                    },
+                    "iconPath": {
+                      "type": "string",
+                      "description": "图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片。当 position 为 top 时，不显示 icon"
+                    },
+                    "selectedIconPath": {
+                      "type": "string",
+                      "description": "选中时的图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片。当 position 为 top 时，不显示 icon"
+                    }
+                  },
+                  "required": ["pagePath", "text"],
+                  "additionalProperties": false
+                }
+              },
+              "position": {
+                "type": "string",
+                "enum": ["bottom", "top"],
+                "description": "tabbar 的位置，仅支持 bottom / top",
+                "default": "bottom"
+              },
+              "custom": {
+                "type": "boolean",
+                "description": "自定义 tabBar https://developers.weixin.qq.com/miniprogram/dev/framework/ability/custom-tabbar.html",
+                "default": false
+              }
+            },
+            "required": ["color", "selectedColor", "backgroundColor", "list"],
+            "additionalProperties": false
+          },
+          "networkTimeout": {
+            "type": "object",
+            "description": "网络超时时间",
+            "properties": {
+              "request": {
+                "type": "number",
+                "description": "wx.request 的超时时间，单位毫秒",
+                "default": 60000
+              },
+              "connectSocket": {
+                "type": "number",
+                "description": "wx.connectSocket 的超时时间，单位毫秒",
+                "default": 60000
+              },
+              "uploadFile": {
+                "type": "number",
+                "description": "wx.uploadFile 的超时时间，单位毫秒",
+                "default": 60000
+              },
+              "downloadFile": {
+                "type": "number",
+                "description": "wx.downloadFile 的超时时间，单位毫秒",
+                "default": 60000
+              }
+            },
+            "additionalProperties": false
+          },
+          "debug": {
+            "type": "boolean",
+            "description": "是否开启 debug 模式，默认关闭",
+            "default": false
+          },
+          "functionalPages": {
+            "type": "object",
+            "properties": {
+              "independent": {
+                "type": "boolean",
+                "description": "激活功能页特性"
+              }
+            },
+            "required": ["independent"],
+            "additionalProperties": false
+          },
+          "subpackages": {
+            "type": "array",
+            "description": "分包结构配置",
+            "items": {
+              "type": "object",
+              "properties": {
+                "root": {
+                  "type": "string",
+                  "description": "分包根目录"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "分包别名，分包预下载时可以使用"
+                },
+                "pages": {
+                  "type": "array",
+                  "description": "分包页面路径，相对于分包根目录",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "independent": {
+                  "type": "boolean",
+                  "description": "分包是否是独立分包"
+                },
+                "entry": {
+                  "type": "string",
+                  "description": "分包入口文件"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "workers": {
+            "type": ["string", "object"],
+            "description": "Worker 相关配置",
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Worker 代码放置的目录"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Worker 代码放置的目录"
+                  },
+                  "isSubpackage": {
+                    "type": "boolean",
+                    "description": "true 表示把 worker 打包为分包",
+                    "default": false
+                  }
+                },
+                "required": ["path"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "requiredBackgroundModes": {
+            "type": "array",
+            "description": "申明需要后台运行的能力，类型为数组。目前支持以下项目：audio: 后台音乐播放,location: 后台定位",
+            "items": {
+              "type": "string",
+              "enum": ["audio", "location"]
+            }
+          },
+          "requiredPrivateInfos": {
+            "type": "array",
+            "description": "自 2022 年 7 月 14 日后发布的小程序，使用以下8个地理位置相关接口时，需要声明该字段，否则将无法正常使用。2022 年 7 月 14 日前发布的小程序不受影响",
+            "items": {
+              "type": "string",
+              "enum": [
+                "getFuzzyLocation",
+                "getLocation",
+                "onLocationChange",
+                "startLocationUpdate",
+                "startLocationUpdateBackground",
+                "chooseLocation",
+                "choosePoi",
+                "chooseAddress"
+              ]
+            }
+          },
+          "plugins": {
+            "type": "object",
+            "description": "使用到的插件",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "description": "插件版本号"
+                },
+                "provider": {
+                  "type": "string",
+                  "description": "插件提供者"
+                }
+              },
+              "required": ["version", "provider"]
+            }
+          },
+          "preloadRule": {
+            "type": "object",
+            "description": "预下载规则",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "network": {
+                  "type": "string",
+                  "enum": ["all", "wifi"],
+                  "description": "在指定网络下预下载，可选值为：all: 不限网络 wifi: 仅wifi下预下载"
+                },
+                "packages": {
+                  "type": "array",
+                  "description": "进入页面后预下载分包的 root 或 name。__APP__ 表示主包。",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": ["version", "provider"]
+            }
+          },
+          "resizable": {
+            "type": "boolean",
+            "description": "PC 小程序是否支持用户任意改变窗口大小（包括最大化窗口）；iPad 小程序是否支持屏幕旋转。默认关闭",
+            "default": false
+          },
+          "frameset": {
+            "type": "boolean",
+            "description": "在 app.json 中同时添加 resizable: true 和 frameset: true 两个配置项就可以启用分栏模式",
+            "default": false
+          },
+          "usingComponents": {
+            "type": "object",
+            "description": "全局自定义组件配置",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "permission": {
+            "type": "object",
+            "description": "小程序接口权限相关设置",
+            "properties": {
+              "scope.userLocation": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.userFuzzyLocation": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.userLocationBackground": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.record": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.camera": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.bluetooth": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.writePhotosAlbum": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.addPhoneContact": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.addPhoneCalendar": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.werun": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.address": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.invoiceTitle": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.invoice": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              },
+              "scope.userInfo": {
+                "type": "object",
+                "properties": {
+                  "desc": {
+                    "type": "string",
+                    "description": "小程序获取权限时展示的接口用途说明。最长 30 个字符"
+                  }
+                },
+                "required": ["desc"]
+              }
+            }
+          },
+          "sitemapLocation": {
+            "type": "string",
+            "description": "小程序的 sitemap 配置",
+            "default": "sitemap.json"
+          },
+          "style": {
+            "type": "string",
+            "enum": ["v2"],
+            "description": "指定使用升级后的weui样式"
+          },
+          "useExtendedLib": {
+            "type": "object",
+            "description": "指定需要引用的扩展库",
+            "properties": {
+              "kbone": {
+                "type": "boolean",
+                "description": "多端开发框架"
+              },
+              "weui": {
+                "type": "boolean",
+                "description": "WeUI 组件库"
+              }
+            }
+          },
+          "entranceDeclare": {
+            "type": "object",
+            "description": "微信消息用小程序打开",
+            "properties": {
+              "locationMessage": {
+                "type": "object",
+                "description": "聊天位置消息用打车类小程序打开",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "小程序路径"
+                  },
+                  "query": {
+                    "type": "string",
+                    "description": "小程序路径参数"
+                  }
+                }
+              }
+            }
+          },
+          "darkmode": {
+            "type": "boolean",
+            "description": "小程序支持 DarkMode",
+            "default": false
+          },
+          "themeLocation": {
+            "type": "string",
+            "description": "指明 theme.json 的位置，darkmode为true为必填"
+          },
+          "lazyCodeLoading": {
+            "type": "string",
+            "description": "配置自定义组件代码按需注入",
+            "enum": ["requiredComponents"]
+          },
+          "singlePage": {
+            "type": "object",
+            "description": "单页模式相关配置",
+            "properties": {
+              "navigationBarFit": {
+                "type": "string",
+                "description": "默认自动调整，若原页面是自定义导航栏，则为 float，否则为 squeezed"
+              }
+            }
+          },
+          "supportedMaterials": {
+            "type": "array",
+            "description": "聊天素材小程序打开相关配置",
+            "items": {
+              "type": "object",
+              "properties": {
+                "materialType": {
+                  "type": "string",
+                  "enum": [
+                    "video/*",
+                    "audio/*",
+                    "image/*",
+                    "text/html",
+                    "text/plain",
+                    "application/*",
+                    "application/pdf",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "application/vnd.ms-word.document.macroEnabled.12",
+                    "application/vnd.ms-excel",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "application/vnd.ms-excel.sheet.macroEnabled.12",
+                    "application/vnd.ms-powerpoint",
+                    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                    "application/zip",
+                    "application/vnd.rar",
+                    "application/x-7z-compressed",
+                    "application/x-photoshop",
+                    "application/acad",
+                    "application/x-cdr",
+                    "application/dxf",
+                    "application/step",
+                    "application/rtf",
+                    "application/postscript"
+                  ],
+                  "description": "支持文件类型的MimeType，音频，视频支持二级配置的通配模式，例如: video/*。通配模式配置和精确类型配置同时存在时，则优先使用精确类型的配置(例如video/*和video/mp4同时存在，会优先使用video/mp4的配置)。"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "开发者配置的标题，在素材页面会展示该标题，配置中必须包含${nickname}, 代码包编译后会自动替换为小程序名称，如果声明了简称则会优先使用简称。除去${nickname}其余字数不得超过6个"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "用途描述，会在推荐列表展示该描述，限定字数不超过22个"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "在该场景下打开小程序时跳转页面"
+                }
+              },
+              "required": ["materialType", "name", "desc", "path"]
+            }
+          },
+          "serviceProviderTicket": {
+            "type": "string",
+            "description": "定制化型服务商票据"
+          },
+          "embeddedAppIdList": {
+            "type": "array",
+            "description": "嵌入小程序列表",
+            "items": {
+              "type": "string"
+            }
+          },
+          "halfPage": {
+            "type": "object",
+            "description": "视频号直播半屏场景设置",
+            "properties": {
+              "firstPageNavigationStyle": {
+                "type": "string",
+                "enum": ["default", "custom"],
+                "description": "视频号直播打开的第一个页面的全屏状态使用自定义顶部，支持 default / custom"
+              }
+            }
+          },
+          "debugOptions": {
+            "type": "object",
+            "description": "小程序调试相关配置项",
+            "properties": {
+              "enableFPSPanel": {
+                "type": "boolean",
+                "description": "是否开启 FPS 面板"
+              }
+            }
+          },
+          "enablePassiveEvent": {
+            "type": ["boolean", "object"],
+            "description": "touch 事件监听是否为 passive",
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "touch 相关事件默认的 passive 为 false。如果小程序不使用 catchtouch* 事件时，可以通过这个选项将 passive 置为 true，以提高滚动性能"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "touchstart": {
+                    "type": "boolean",
+                    "description": "是否设置 touchstart 事件为 passive",
+                    "default": false
+                  },
+                  "touchmove": {
+                    "type": "boolean",
+                    "description": "是否设置 touchmove 事件为 passive",
+                    "default": false
+                  },
+                  "wheel": {
+                    "type": "boolean",
+                    "description": "是否设置 wheel 事件为 passive",
+                    "default": false
+                  }
+                }
+              }
+            ]
+          },
+          "resolveAlias": {
+            "type": "object",
+            "description": "自定义模块映射规则",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "renderer": {
+            "type": "string",
+            "enum": ["webview", "skyline"],
+            "description": "全局默认的渲染后端",
+            "default": "webview"
+          },
+          "rendererOptions": {
+            "type": "object",
+            "description": "渲染后端选项",
+            "properties": {
+              "skyline": {
+                "type": "object",
+                "description": "Skyline 渲染引擎的相关配置项",
+                "properties": {
+                  "defaultDisplayBlock": {
+                    "type": "boolean",
+                    "description": "开启默认 Block 布局",
+                    "default": false
+                  },
+                  "defaultContentBox": {
+                    "type": "boolean",
+                    "description": "开启默认 ContentBox 盒模型",
+                    "default": false
+                  },
+                  "tagNameStyleIsolation": {
+                    "type": "string",
+                    "enum": ["isolated", "legacy"],
+                    "description": "开启 tag 选择器全局匹配",
+                    "default": "isolated"
+                  },
+                  "enableScrollViewAutoSize": {
+                    "type": "boolean",
+                    "description": "开启scroll-view自动撑开",
+                    "default": false
+                  },
+                  "disableABTest": {
+                    "type": "boolean",
+                    "description": "关闭 Skyline AB 实验",
+                    "default": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "componentFramework": {
+            "type": "string",
+            "enum": ["glass-easel"],
+            "description": "组件框架，详见相关文档"
+          },
+          "convertRpxToVw": {
+            "type": "boolean",
+            "description": "配置是否将 rpx 单位转换为 vw 单位，开启后能修复某些 rpx 下的精度问题",
+            "default": false
+          },
+          "navigationBarBackgroundColor": {
+            "type": "string",
+            "description": "导航栏背景颜色，如 #000000",
+            "default": "#000000"
+          },
+          "navigationBarTextStyle": {
+            "type": "string",
+            "enum": ["black", "white"],
+            "description": "导航栏标题、状态栏颜色，仅支持 black / white",
+            "default": "white"
+          },
+          "navigationBarTitleText": {
+            "type": "string",
+            "description": "导航栏标题文字内容",
+            "default": ""
+          },
+          "navigationStyle": {
+            "type": "string",
+            "enum": ["default", "custom"],
+            "description": "导航栏样式，仅支持以下值：default 默认样式，custom 自定义导航栏，只保留右上角胶囊按钮。最低版本：iOS/Android 微信客户端 6.6.0，Windows/Mac 微信基础库 3.6.1",
+            "default": "default"
+          },
+          "homeButton": {
+            "type": "boolean",
+            "description": "在非首页、非页面栈最底层页面或非tabbar内页面中的导航栏展示home键，最低版本：微信客户端 8.0.24",
+            "default": false
+          },
+          "backgroundColor": {
+            "type": "string",
+            "description": "窗口的背景色",
+            "default": "#ffffff"
+          },
+          "backgroundColorContent": {
+            "type": "string",
+            "description": "页面容器背景色",
+            "default": "#RRGGBBAA"
+          },
+          "backgroundTextStyle": {
+            "type": "string",
+            "enum": ["dark", "light"],
+            "description": "下拉 loading 的样式，仅支持 dark / light",
+            "default": "dark"
+          },
+          "backgroundColorTop": {
+            "type": "string",
+            "description": "顶部窗口的背景色，仅 iOS 支持，最低版本：微信客户端 6.5.16",
+            "default": "#ffffff"
+          },
+          "backgroundColorBottom": {
+            "type": "string",
+            "description": "底部窗口的背景色，仅 iOS 支持，最低版本：微信客户端 6.5.16",
+            "default": "#ffffff"
+          },
+          "enablePullDownRefresh": {
+            "type": "boolean",
+            "description": "是否开启全局的下拉刷新",
+            "default": false
+          },
+          "onReachBottomDistance": {
+            "type": "number",
+            "description": "页面上拉触底事件触发时距页面底部距离，单位为 px",
+            "default": 50
+          },
+          "pageOrientation": {
+            "type": "string",
+            "enum": ["auto", "portrait", "landscape"],
+            "description": "屏幕旋转设置，支持 auto / portrait / landscape",
+            "default": "auto"
+          },
+          "disableScroll": {
+            "type": "boolean",
+            "description": "设置为 true 则页面整体不能上下滚动。只在页面配置中有效，无法在 app.json 中设置",
+            "default": false
+          },
+          "initialRenderingCache": {
+            "type": "string",
+            "enum": ["static", "dynamic", "capture"],
+            "description": "页面初始渲染缓存配置，支持 static / dynamic https://developers.weixin.qq.com/miniprogram/dev/framework/view/initial-rendering-cache.html",
+            "default": false
+          },
+          "restartStrategy": {
+            "type": "string",
+            "enum": ["homePage", "homePageAndLatestPage"],
+            "description": "重新启动策略配置，支持 homePage -（默认值）如果从这个页面退出小程序，下次将从首页冷启动，homePageAndLatestPage - 如果从这个页面退出小程序，下次冷启动后立刻加载这个页面，页面的参数保持不变（不可用于 tab 页）",
+            "default": "homePage"
+          },
+          "handleWebviewPreload": {
+            "type": "string",
+            "enum": ["static", "manual", "auto"],
+            "description": "控制预加载下个页面的时机。支持 static / manual / auto",
+            "default": "static"
+          },
+          "visualEffectInBackground": {
+            "type": "string",
+            "enum": ["hidden", "none"],
+            "description": "切入系统后台时，隐藏页面内容，保护用户隐私。支持 hidden / none，最低版本：2.15.0",
+            "default": "none"
+          },
+          "component": {
+            "type": "boolean",
+            "description": "是否是组件",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ]
 }
