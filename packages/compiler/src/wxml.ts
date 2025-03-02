@@ -8,6 +8,86 @@ import { SFCTemplateBlock } from '@vue/compiler-sfc'
 import { writeFile } from './utils'
 import { join } from 'path'
 
+const builtInComponents = [
+  'Block',
+  'CoverImage',
+  'CoverView',
+  'MatchMedia',
+  'MovableArea',
+  'MovableView',
+  'PageContainer',
+  'RootPortal',
+  'ScrollView',
+  'Swiper',
+  'SwiperItem',
+  'View',
+  'Icon',
+  'Progress',
+  'RichText',
+  'Selection',
+  'Button',
+  'Checkbox',
+  'CheckboxGroup',
+  'Editor',
+  'Form',
+  'Input',
+  'KeyboardAccessory',
+  'Label',
+  'Picker',
+  'PickerView',
+  'PickerViewColumn',
+  'Radio',
+  'RadioGroup',
+  'Slider',
+  'Switch',
+  'Textarea',
+  'DoubleTapGestureHandler',
+  'ForcePressGestureHandler',
+  'HorizontalDragGestureHandler',
+  'LongPressGestureHandler',
+  'PanGestureHandler',
+  'ScaleGestureHandler',
+  'TapGestureHandler',
+  'VerticalDragGestureHandler',
+  'DraggableSheet',
+  'GridBuilder',
+  'GridView',
+  'ListBuilder',
+  'ListView',
+  'NestedScrollBody',
+  'NestedScrollHeader',
+  'OpenContainer',
+  'OpenDataItem',
+  'OpenDataList',
+  'ShareElement',
+  'Snapshot',
+  'Span',
+  'StickyHeader',
+  'StickySection',
+  'FunctionalPageNavigator',
+  'Navigator',
+  'Audio',
+  'Camera',
+  'ChannelLive',
+  'ChannelVideo',
+  'Image',
+  'LivePlayer',
+  'LivePusher',
+  'Video',
+  'VoipRoom',
+  'Map',
+  'Canvas',
+  'Ad',
+  'AdCustom',
+  'OfficialAccount',
+  'OpenData',
+  'StoreHome',
+  'StoreProduct',
+  'WebView',
+  'NavigationBar',
+  'PageMeta',
+]
+
 // 标签映射
 const TAG_MAP: Record<string, string> = {
   div: 'view',
@@ -28,13 +108,24 @@ const TAG_MAP: Record<string, string> = {
 const cache = new Map<string, string>()
 
 /**
+ * 将字符串转换为 kebab-case。
+ *
+ * @param str - 要转换的字符串。
+ * @returns 转换后的 kebab-case 字符串。
+ */
+function toKebabCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+}
+
+/**
  * 使用预定义的标签映射转换给定的标签。
  *
  * @param tag - 要转换的标签。
  * @returns 如果标签映射中存在转换后的标签，则返回转换后的标签，否则返回原始标签。
  */
 function transformTag(tag: string): string {
-  return TAG_MAP[tag] || tag
+  tag = TAG_MAP[tag] || tag
+  return builtInComponents.includes(tag) ? toKebabCase(tag) : tag
 }
 
 /**

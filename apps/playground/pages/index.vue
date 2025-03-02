@@ -1,22 +1,22 @@
 <template>
-  <div class="index">
-    <button :test="test" @tap="onTap">{{ demo }}</button>
-    <template v-if="test === 'test'">
-      <div>test</div>
-    </template>
-    <template v-else-if="test === 'abc'">
-      <div>test</div>
-    </template>
-    <template v-else>
-      <div>test</div>
-    </template>
-    <div v-for="(obj, idx) in array" :key="obj.id" style="font-weight: bold; color: #000">
+  <View class="index">
+    <Button :test="test" @tap="onTap">{{ demo }}</Button>
+    <Block v-if="test === 'test'">
+      <View>test</View>
+    </Block>
+    <Block v-else-if="test === 'abc'">
+      <View>test</View>
+    </Block>
+    <Block v-else>
+      <View>test</View>
+    </Block>
+    <View v-for="(obj, idx) in array" :key="obj.id" style="font-weight: bold; color: #000">
       {{ idx }}:{{ obj.name }}
-    </div>
-    <div>{{ test + demo }}</div>
-    <div>{{ test + ' dd ' + demo }}</div>
-    <div>{{ time }}</div>
-  </div>
+    </View>
+    <View>{{ test + demo }}</View>
+    <View>{{ test + ' dd ' + demo }}</View>
+    <View>{{ time }}</View>
+  </View>
 </template>
 
 <script lang="ts">
