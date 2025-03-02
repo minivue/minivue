@@ -26,13 +26,14 @@ export default function plugin(options: PluginOptions = {}): Plugin {
         const { descriptor } = parse(source)
         const { template, styles, customBlocks } = descriptor
         const { components } = options
-
-        writeWxml(template, fileOutputDir, fileName)
+        const eventNames: string[] = []
+        writeWxml(template, fileOutputDir, fileName, eventNames)
         writeWxss(styles, fileOutputDir, fileName)
         const { contents, importedComponentMap } = await compile(
           descriptor,
           path,
           components,
+          eventNames,
           isApp,
         )
         writeJson(customBlocks, fileOutputDir, fileName, importedComponentMap)

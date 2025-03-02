@@ -8,30 +8,41 @@ const MINIVUE_PACKAGE_NAME = '@minivue/core'
  * 检查是否有组件引用
  * @param property ast属性
  * @param importedComponents 导入的组件map
+ * @param innerFunctions 内部函数名称列表
  * @returns 是否有组件引用
  */
-function checkHasComponentReferences(property: AstProp, importedComponents: Map<string, string>) {
+function checkHasComponentReferences(
+  property: AstProp,
+  importedComponents: Map<string, string>,
+  innerFunctions: string[] = [],
+) {
   if (
     property.type === 'KeyValueProperty' &&
     property.value.type === 'Identifier' &&
-    importedComponents.has(property.value.value)
+    (importedComponents.has(property.value.value) || innerFunctions.includes(property.value.value))
   ) {
     return false
-  } else if (property.type === 'Identifier' && importedComponents.has(property.value)) {
+  } else if (
+    property.type === 'Identifier' &&
+    (importedComponents.has(property.value) || innerFunctions.includes(property.value))
+  ) {
     return false
   }
   return true
 }
 
 /**
- * 删除组件的引用代码
+ * 删除组件的引用代码和非事件函数的导出（非事件函数不需要return）
  * @param properties ast属性列表
  * @param importedComponentMap 导入的组件map
+ * @param eventNames 事件名称数组
  */
 function removeComponentReferences(
   properties: AstProp[],
   importedComponentMap: Map<string, string>,
+  eventNames: string[] = [],
 ) {
+  const innerFunctions: string[] = [] // 内部函数名称列表，用于从return中删除
   properties.forEach((property) => {
     if (
       property.type === 'KeyValueProperty' &&
@@ -69,6 +80,27 @@ function removeComponentReferences(
         }
       })
       property.body.stmts = property.body.stmts.filter((stmt) => {
+        // 找出内部函数的定义
+        if (stmt.type === 'VariableDeclaration') {
+          stmt.declarations.forEach((declaration) => {
+            if (
+              declaration.type === 'VariableDeclarator' &&
+              declaration.id.type === 'Identifier' &&
+              (declaration.init?.type === 'ArrowFunctionExpression' ||
+                declaration.init?.type === 'FunctionExpression')
+            ) {
+              if (!eventNames.includes(declaration.id.value)) {
+                innerFunctions.push(declaration.id.value)
+              }
+            }
+          })
+        }
+        if (stmt.type === 'FunctionDeclaration') {
+          if (!eventNames.includes(stmt.identifier.value)) {
+            innerFunctions.push(stmt.identifier.value)
+          }
+        }
+
         // 删除 setup 函数中的 __expose() 调用（因为在编译setup时会自动注入，小程序不需要）
         if (
           stmt.type === 'ExpressionStatement' &&
@@ -99,7 +131,7 @@ function removeComponentReferences(
               declaration.init.type === 'ObjectExpression'
             ) {
               declaration.init.properties = declaration.init.properties.filter((property) =>
-                checkHasComponentReferences(property, importedComponentMap),
+                checkHasComponentReferences(property, importedComponentMap, innerFunctions),
               )
             }
           })
@@ -108,7 +140,7 @@ function removeComponentReferences(
             // 删除 setup 返回对象中的组件应用
             // 例如: return { Button }
             stmt.argument.properties = stmt.argument.properties.filter((property) =>
-              checkHasComponentReferences(property, importedComponentMap),
+              checkHasComponentReferences(property, importedComponentMap, innerFunctions),
             )
           }
         }
@@ -122,11 +154,13 @@ function removeComponentReferences(
  * 删除组件的导入和引用
  * @param source 源代码
  * @param componentLibs 组件库列表(例如: ['vant'])
+ * @param eventNames 事件名称列表
  * @returns
  */
 export async function removeComponentImportsAndReferences(
   source: string,
   componentLibs: string[] = [],
+  eventNames: string[] = [],
 ) {
   // 解析代码为 AST
   const ast = await parse(source, { syntax: 'typescript' })
@@ -170,7 +204,11 @@ export async function removeComponentImportsAndReferences(
       } else if (node.expression.type === 'CallExpression') {
         node.expression.arguments.forEach((argument) => {
           if (argument.expression.type === 'ObjectExpression') {
-            removeComponentReferences(argument.expression.properties, importedComponentMap)
+            removeComponentReferences(
+              argument.expression.properties,
+              importedComponentMap,
+              eventNames,
+            )
           }
         })
       }

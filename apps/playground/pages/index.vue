@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <button :test="test" @click="onTap(array)">{{ demo }}</button>
+    <button :test="test" @tap="onTap">{{ demo }}</button>
     <template v-if="test === 'test'">
       <div>test</div>
     </template>
@@ -36,9 +36,9 @@ export default definePage({
     const test = ref('什么鬼')
     const time = ref('')
     const demo = 'demo'
-    function onTap(array: Record<string, string>[]) {
+    function onTap(e: WechatMiniprogram.BaseEvent) {
       test.value = 'fuck'
-      console.log('onTap', array)
+      console.log('onTap:', e)
     }
 
     onLoad(() => {

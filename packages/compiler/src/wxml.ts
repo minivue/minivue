@@ -62,7 +62,10 @@ function parseVFor(expression: string) {
 }
 
 // 处理属性转换
-function transformAttributes(attrs: (AttributeNode | DirectiveNode)[]): string {
+function transformAttributes(
+  attrs: (AttributeNode | DirectiveNode)[],
+  eventNames: string[],
+): string {
   const newAttrs: Record<string, string> = {}
   attrs.forEach((attr) => {
     if (attr.type === NodeTypes.ATTRIBUTE) {
@@ -87,11 +90,12 @@ function transformAttributes(attrs: (AttributeNode | DirectiveNode)[]): string {
             const funcMatch = value.match(/(\w+)\((.*)\)/)
             const funcName = funcMatch ? funcMatch[1] : value
             const funcArgsStr = funcMatch ? funcMatch[2] : ''
+            eventNames.push(funcName)
             newAttrs[`bind:${eventName}`] = funcName
             if (funcArgsStr) {
               newAttrs[markKey] = `{{[${funcArgsStr}]}}`
             }
-            console.log('EVENT:', key, value, funcArgsStr)
+            // console.log('EVENT:', key, value, funcArgsStr)
           } else if (key === 'v-for') {
             const vForData = parseVFor(value)
             if (vForData) {
@@ -125,18 +129,19 @@ function transformAttributes(attrs: (AttributeNode | DirectiveNode)[]): string {
  * 将模板节点数组转换为 WXML 字符串。
  *
  * @param nodes - 模板节点数组。
+ * @param eventNames - 事件名称数组。
  * @returns 转换后的 WXML 字符串。
  */
-function templateToWxml(nodes: TemplateChildNode[]): string {
+function templateToWxml(nodes: TemplateChildNode[], eventNames: string[]): string {
   let result = ''
   nodes.forEach((node) => {
     const type = node.type
     if (type === NodeTypes.ELEMENT) {
       // 表示 HTML 元素节点
       const tag = transformTag(node.tag)
-      const attrs = transformAttributes(node.props)
+      const attrs = transformAttributes(node.props, eventNames)
       result += `<${tag} ${attrs}>`
-      result += templateToWxml(node.children)
+      result += templateToWxml(node.children, eventNames)
       result += `</${tag}>`
     } else if (type === NodeTypes.INTERPOLATION || type === NodeTypes.COMPOUND_EXPRESSION) {
       // 表示插值表达式（动态数据绑定）
@@ -161,16 +166,18 @@ function templateToWxml(nodes: TemplateChildNode[]): string {
  * @param template - 包含模板 AST 的 SFC 模板块。
  * @param fileOutputDir - 应写入 WXML 文件的目录。
  * @param fileName - 要写入的 WXML 文件的名称。
+ * @param eventNames - 事件名称数组。
  */
 export function writeWxml(
   template: SFCTemplateBlock | null,
   fileOutputDir: string,
   fileName: string,
+  eventNames: string[] = [],
 ) {
   const isApp = fileOutputDir === 'dist' && fileName === 'app'
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)
-    const templateContent = template.ast ? templateToWxml(template.ast.children) : '' // template.content
+    const templateContent = template.ast ? templateToWxml(template.ast.children, eventNames) : '' // template.content
     if (cacheContent !== templateContent) {
       writeFile(join(fileOutputDir, `${fileName}.wxml`), templateContent)
       cache.set(fileOutputDir, templateContent)

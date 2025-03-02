@@ -58,13 +58,16 @@ export function callSetup(setup: Function, query: Record<string, string | undefi
     Object.keys(bindings).forEach((key) => {
       const value = bindings[key]
       if (isFunction(value)) {
-        console.log('function:', value)
         if (ctx) {
-          ctx[key] = value
-          // ctx[key] = (e: any) => {
-          //   console.log('e', e.mark)
-          //   value(...Object.values(e.mark))
-          // }
+          ctx[key] = (e: any) => {
+            const eventType = e.type
+            const args = e.mark[eventType]
+            if (args) {
+              value(...args)
+            } else {
+              value(e)
+            }
+          }
         }
         return
       }
