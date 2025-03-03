@@ -62,8 +62,11 @@ export function callSetup(setup: Function, query: Record<string, string | undefi
           ctx[key] = (e: any) => {
             const eventType = e.type
             const args = e.mark[eventType]
+            const detail = e.detail
             if (args) {
               value(...args)
+            } else if (detail && isArray(detail)) {
+              value(...detail)
             } else {
               value(e)
             }

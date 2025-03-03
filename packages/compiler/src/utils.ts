@@ -25,3 +25,16 @@ export async function writeFile(fileOutputDir: string, content: string) {
   }
   await _writeFile(fileOutputDir, content)
 }
+
+/**
+ * 将驼峰命名转换为短横线命名。
+ * @param str 要转换的字符串。
+ * @returns 转换后的字符串。
+ */
+export function camelToDash(str: string) {
+  return str
+    .replace(/[A-Z]/g, function (match) {
+      return '-' + match.toLowerCase()
+    })
+    .replace(/^-/, '')
+}

@@ -16,10 +16,12 @@
     <View>{{ test + demo }}</View>
     <View>{{ test + ' dd ' + demo }}</View>
     <View>{{ time }}</View>
+    <KButton :likes="1" @fuck="onFuck">测试按钮</KButton>
   </View>
 </template>
 
 <script lang="ts">
+import KButton from '@/components/KButton.vue'
 import { definePage, ref, onShow, onHide, onLoad } from '@minivue/core'
 export default definePage({
   setup() {
@@ -41,6 +43,10 @@ export default definePage({
       console.log('onTap:', e)
     }
 
+    function onFuck(a: number) {
+      console.log(a)
+    }
+
     onLoad(() => {
       console.warn('onPageLoad')
     })
@@ -59,6 +65,8 @@ export default definePage({
       demo,
       time,
       onTap,
+      onFuck,
+      KButton,
     }
   },
 })

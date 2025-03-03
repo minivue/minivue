@@ -76,7 +76,7 @@ interface RichTextProps {}
 
 interface SelectionProps {}
 
-interface ButtonProps {}
+interface ButtonProps extends BaseProps {}
 
 interface CheckboxProps {}
 

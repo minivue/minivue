@@ -43,7 +43,15 @@ function removeComponentReferences(
   eventNames: string[] = [],
 ) {
   const innerFunctions: string[] = [] // 内部函数名称列表，用于从return中删除
-  properties.forEach((property) => {
+  properties = properties.filter((property) => {
+    // 删除emits
+    if (
+      property.type === 'KeyValueProperty' &&
+      property.key.type === 'Identifier' &&
+      property.key.value === 'emits'
+    ) {
+      return false
+    }
     if (
       property.type === 'KeyValueProperty' &&
       property.key.type === 'Identifier' &&
@@ -147,7 +155,9 @@ function removeComponentReferences(
         return true
       })
     }
+    return true
   })
+  return properties
 }
 
 /**
@@ -200,11 +210,14 @@ export async function removeComponentImportsAndReferences(
   ast.body.forEach((node) => {
     if (node.type === 'ExportDefaultExpression') {
       if (node.expression.type === 'ObjectExpression') {
-        removeComponentReferences(node.expression.properties, importedComponentMap)
+        node.expression.properties = removeComponentReferences(
+          node.expression.properties,
+          importedComponentMap,
+        )
       } else if (node.expression.type === 'CallExpression') {
         node.expression.arguments.forEach((argument) => {
           if (argument.expression.type === 'ObjectExpression') {
-            removeComponentReferences(
+            argument.expression.properties = removeComponentReferences(
               argument.expression.properties,
               importedComponentMap,
               eventNames,

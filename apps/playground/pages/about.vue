@@ -2,14 +2,13 @@
   <View>
     <View class="about">{{ msg }}</View>
     <View :hover-start-time="1">test</View>
-    <KButton @click="onTap">test</KButton>
   </View>
 </template>
 
 <script setup lang="ts">
-import KButton from '@/components/KButton.vue'
-import { ref } from '@minivue/core'
+import { getCurrentInstance, onReady, ref } from '@minivue/core'
 const msg = ref('about')
+const ctx = getCurrentInstance()
 
 const test1 = () => {
   return 1
@@ -26,9 +25,9 @@ test1()
 test2()
 test()
 
-function onTap() {
-  msg.value = 'fuck'
-}
+onReady(() => {
+  console.log(ctx)
+})
 </script>
 
 <style>

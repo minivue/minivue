@@ -8,85 +8,85 @@ import { SFCTemplateBlock } from '@vue/compiler-sfc'
 import { writeFile } from './utils'
 import { join } from 'path'
 
-const builtInComponents = [
-  'Block',
-  'CoverImage',
-  'CoverView',
-  'MatchMedia',
-  'MovableArea',
-  'MovableView',
-  'PageContainer',
-  'RootPortal',
-  'ScrollView',
-  'Swiper',
-  'SwiperItem',
-  'View',
-  'Icon',
-  'Progress',
-  'RichText',
-  'Selection',
-  'Button',
-  'Checkbox',
-  'CheckboxGroup',
-  'Editor',
-  'Form',
-  'Input',
-  'KeyboardAccessory',
-  'Label',
-  'Picker',
-  'PickerView',
-  'PickerViewColumn',
-  'Radio',
-  'RadioGroup',
-  'Slider',
-  'Switch',
-  'Textarea',
-  'DoubleTapGestureHandler',
-  'ForcePressGestureHandler',
-  'HorizontalDragGestureHandler',
-  'LongPressGestureHandler',
-  'PanGestureHandler',
-  'ScaleGestureHandler',
-  'TapGestureHandler',
-  'VerticalDragGestureHandler',
-  'DraggableSheet',
-  'GridBuilder',
-  'GridView',
-  'ListBuilder',
-  'ListView',
-  'NestedScrollBody',
-  'NestedScrollHeader',
-  'OpenContainer',
-  'OpenDataItem',
-  'OpenDataList',
-  'ShareElement',
-  'Snapshot',
-  'Span',
-  'StickyHeader',
-  'StickySection',
-  'FunctionalPageNavigator',
-  'Navigator',
-  'Audio',
-  'Camera',
-  'ChannelLive',
-  'ChannelVideo',
-  'Image',
-  'LivePlayer',
-  'LivePusher',
-  'Video',
-  'VoipRoom',
-  'Map',
-  'Canvas',
-  'Ad',
-  'AdCustom',
-  'OfficialAccount',
-  'OpenData',
-  'StoreHome',
-  'StoreProduct',
-  'WebView',
-  'NavigationBar',
-  'PageMeta',
-]
+// const builtInComponents = [
+//   'Block',
+//   'CoverImage',
+//   'CoverView',
+//   'MatchMedia',
+//   'MovableArea',
+//   'MovableView',
+//   'PageContainer',
+//   'RootPortal',
+//   'ScrollView',
+//   'Swiper',
+//   'SwiperItem',
+//   'View',
+//   'Icon',
+//   'Progress',
+//   'RichText',
+//   'Selection',
+//   'Button',
+//   'Checkbox',
+//   'CheckboxGroup',
+//   'Editor',
+//   'Form',
+//   'Input',
+//   'KeyboardAccessory',
+//   'Label',
+//   'Picker',
+//   'PickerView',
+//   'PickerViewColumn',
+//   'Radio',
+//   'RadioGroup',
+//   'Slider',
+//   'Switch',
+//   'Textarea',
+//   'DoubleTapGestureHandler',
+//   'ForcePressGestureHandler',
+//   'HorizontalDragGestureHandler',
+//   'LongPressGestureHandler',
+//   'PanGestureHandler',
+//   'ScaleGestureHandler',
+//   'TapGestureHandler',
+//   'VerticalDragGestureHandler',
+//   'DraggableSheet',
+//   'GridBuilder',
+//   'GridView',
+//   'ListBuilder',
+//   'ListView',
+//   'NestedScrollBody',
+//   'NestedScrollHeader',
+//   'OpenContainer',
+//   'OpenDataItem',
+//   'OpenDataList',
+//   'ShareElement',
+//   'Snapshot',
+//   'Span',
+//   'StickyHeader',
+//   'StickySection',
+//   'FunctionalPageNavigator',
+//   'Navigator',
+//   'Audio',
+//   'Camera',
+//   'ChannelLive',
+//   'ChannelVideo',
+//   'Image',
+//   'LivePlayer',
+//   'LivePusher',
+//   'Video',
+//   'VoipRoom',
+//   'Map',
+//   'Canvas',
+//   'Ad',
+//   'AdCustom',
+//   'OfficialAccount',
+//   'OpenData',
+//   'StoreHome',
+//   'StoreProduct',
+//   'WebView',
+//   'NavigationBar',
+//   'PageMeta',
+// ]
 
 // 标签映射
 const TAG_MAP: Record<string, string> = {
@@ -114,7 +114,11 @@ const cache = new Map<string, string>()
  * @returns 转换后的 kebab-case 字符串。
  */
 function toKebabCase(str: string): string {
-  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+  return str
+    .replace(/[A-Z]/g, function (match) {
+      return '-' + match.toLowerCase()
+    })
+    .replace(/^-/, '')
 }
 
 /**
@@ -125,7 +129,7 @@ function toKebabCase(str: string): string {
  */
 function transformTag(tag: string): string {
   tag = TAG_MAP[tag] || tag
-  return builtInComponents.includes(tag) ? toKebabCase(tag) : tag
+  return toKebabCase(tag)
 }
 
 /**
@@ -231,7 +235,7 @@ function templateToWxml(nodes: TemplateChildNode[], eventNames: string[]): strin
       // 表示 HTML 元素节点
       const tag = transformTag(node.tag)
       const attrs = transformAttributes(node.props, eventNames)
-      result += `<${tag} ${attrs}>`
+      result += attrs ? `<${tag} ${attrs}>` : `<${tag}>`
       result += templateToWxml(node.children, eventNames)
       result += `</${tag}>`
     } else if (type === NodeTypes.INTERPOLATION || type === NodeTypes.COMPOUND_EXPRESSION) {

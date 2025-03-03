@@ -26,15 +26,16 @@ type HookOnHide = () => void
 type HookOnResize = (size: WechatMiniprogram.Page.IResizeOption) => void
 
 export const defineComponent: DefineComponentFunction = (options) => {
-  const setup = options.setup
-  // options.data = callSetup(setup as any, {}, {}) as any
-  options = exclude(options, ['setup', 'props'])
-  const newOptions = exclude(options, ['setup', 'props']) as ComponentOptions
-
+  const setup = options.setup as any
+  const props = options.props
+  const newOptions = exclude(options, ['setup', 'props', 'emits']) as ComponentOptions
+  newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
-      setCurrentInstance(this)
-      callSetup(setup as any, {}, this)
+      const ctx = this
+      ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
+      setCurrentInstance(ctx)
+      callSetup(setup, ctx.properties, ctx)
       triggerHook(this, ON_CREATED)
       setCurrentInstance()
     },
@@ -70,7 +71,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
   return Component(newOptions) as any
 }
 
-export const onCreated = createHook<HookOnCreated>('onCreated')
+export const onCreated = createHook<HookOnCreated>(ON_CREATED)
 export const onAttached = createHook<HookOnAttached>(ON_ATTACHED)
 export const onMoved = createHook<HookOnMoved>(ON_MOVED)
 export const onDetached = createHook<HookOnDetached>(ON_DETACHED)

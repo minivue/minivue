@@ -65,6 +65,10 @@ export function setCurrentInstance(target?: Instance) {
   instance = target
 }
 
+export function getCurrentInstance() {
+  return instance
+}
+
 export function injectHook(name: Lifecycle, hook: Function) {
   if (instance) {
     const hiddenField = toHiddenField(name)

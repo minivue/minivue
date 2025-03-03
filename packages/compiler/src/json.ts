@@ -1,5 +1,5 @@
 import { SFCBlock } from '@vue/compiler-sfc'
-import { writeFile } from './utils'
+import { camelToDash, writeFile } from './utils'
 import { join } from 'path'
 
 // 缓存上一次生成的内容，以便在下一次写入文件时检查是否需要更新
@@ -29,7 +29,7 @@ export function writeJson(
     const json = JSON.parse(content)
     const usingComponents: Record<string, string> = {}
     for (const [key, value] of importedComponentMap) {
-      usingComponents[key] = value
+      usingComponents[camelToDash(key)] = value
     }
     json.usingComponents = usingComponents
     const newContent = JSON.stringify(json)
