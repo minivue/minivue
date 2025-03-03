@@ -51,39 +51,33 @@ export function deepWatch(
   )
 }
 
-export function callSetup(setup: Function, query: Record<string, string | undefined>, ctx: any) {
-  const bindings = setup?.(query as any, ctx) as Record<string, any>
-  if (bindings !== undefined) {
-    let data: Record<string, unknown> | undefined
-    Object.keys(bindings).forEach((key) => {
+export function callSetup(setup: Function, props: Record<string, string | undefined>, ctx: any) {
+  const bindings = (setup?.(props as any, ctx) as Record<string, any>) || {}
+  const data: Record<string, any> = {}
+  Object.keys(bindings).forEach((key) => {
+    if (ctx) {
       const value = bindings[key]
       if (isFunction(value)) {
-        if (ctx) {
-          ctx[key] = (e: any) => {
-            const eventType = e.type
-            const args = e.mark[eventType]
-            const detail = e.detail
-            if (args) {
-              value(...args)
-            } else if (detail && isArray(detail)) {
-              value(...detail)
-            } else {
-              value(e)
-            }
+        ctx[key] = (e: any) => {
+          const eventType = e.type
+          const args = e.mark[eventType]
+          const detail = e.detail
+          if (args) {
+            value(...args)
+          } else if (detail && isArray(detail)) {
+            value(...detail)
+          } else {
+            value(e)
           }
         }
         return
       }
-
-      data = data || {}
       data[key] = deepToRaw(value)
-      if (ctx) {
-        deepWatch.call(ctx, key, value)
-      }
-    })
-    if (data !== undefined && ctx && ctx.setData) {
-      ctx.setData(data, flushPostFlushCbs)
+      deepWatch.call(ctx, key, value)
     }
-    return data
+  })
+  if (ctx) {
+    ctx.setData(data, flushPostFlushCbs)
   }
+  return data
 }
