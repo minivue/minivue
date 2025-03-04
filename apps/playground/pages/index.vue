@@ -1,81 +1,23 @@
 <template>
-  <View class="index">
-    <Button :test="test" @tap="onTap">{{ demo }}</Button>
-    <Block v-if="test === 'test'">
-      <View>test</View>
-    </Block>
-    <Block v-else-if="test === 'abc'">
-      <View>test</View>
-    </Block>
-    <Block v-else>
-      <View>test</View>
-    </Block>
-    <View v-for="(obj, idx) in array" :key="obj.id" style="font-weight: bold; color: #000">
-      {{ idx }}:{{ obj.name }}
-    </View>
-    <View>{{ test + demo }}</View>
-    <View>{{ test + ' dd ' + demo }}</View>
-    <View>{{ time }}</View>
-    <KButton :likes="1" @fuck="onFuck">测试按钮</KButton>
+  <View class="p-index">
+    <Text user-select>{{ message + index }}</Text>
+    <KdButton :index="index">按钮</KdButton>
   </View>
 </template>
 
-<script lang="ts">
-import KButton from '@/components/KButton.vue'
-import { definePage, ref, onShow, onHide, onLoad } from '@minivue/core'
-export default definePage({
-  setup() {
-    const array: Record<string, string>[] = [
-      {
-        id: '1',
-        name: 'name1',
-      },
-      {
-        id: '2',
-        name: 'name2',
-      },
-    ]
-    const test = ref('什么鬼')
-    const time = ref('')
-    const demo = 'demo'
-    function onTap(e: WechatMiniprogram.BaseEvent) {
-      test.value = 'fuck'
-      console.log('onTap:', e)
-    }
-
-    function onFuck(a: number) {
-      console.log(a)
-    }
-
-    onLoad(() => {
-      console.warn('onPageLoad')
-    })
-
-    onShow(() => {
-      console.warn('onPageShow')
-    })
-
-    onHide(() => {
-      console.warn('onPageHide')
-    })
-
-    return {
-      array,
-      test,
-      demo,
-      time,
-      onTap,
-      onFuck,
-      KButton,
-    }
-  },
-})
+<script setup lang="ts">
+import KdButton from '@/components/button.vue'
+import { ref } from '@minivue/core'
+const index = ref(0)
+const message = 'Hello World'
+setInterval(() => {
+  index.value++
+}, 1000)
 </script>
 
 <style>
-page {
-  font-size: 16px;
-  color: red;
+.p-index {
+  padding-top: 60px;
 }
 </style>
 

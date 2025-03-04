@@ -1,11 +1,9 @@
 <template>
-  <Button @tap="onTap(obj)">
-    <slot />
-  </Button>
+  <Button @tap="onTap(obj)"> <slot />{{ tmp }} </Button>
 </template>
 
 <script setup lang="ts">
-import { onReady } from '@minivue/core'
+import { computed, onReady } from '@minivue/core'
 
 const emit = defineEmits<{
   /**
@@ -15,14 +13,18 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<{
-  likes?: number
+  index?: number
 }>()
 
 const obj: object = { hello: '你好' }
 
+const tmp = computed(() => {
+  return 'i' + props.index
+})
+
 onReady(() => {
   emit('fuck', 1, '', true)
-  console.log('onReady', props.likes)
+  console.log('onReady', props.index)
 })
 
 function onTap(o: object) {

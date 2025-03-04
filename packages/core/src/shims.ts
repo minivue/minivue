@@ -76,6 +76,34 @@ interface RichTextProps {}
 
 interface SelectionProps {}
 
+interface TextProps {
+  /**
+   * 文本是否可选，该属性会使文本节点显示为 inline-block
+   */
+  userSelect?: boolean
+  /**
+   * 文本溢出处理（skyline）
+   * - clip: 超出部分被裁剪
+   * - fade: 溢出部分渐隐
+   * - ellipsis: 超出部分被省略
+   * - visible: 超出部分可见
+   * @default visible
+   */
+  overflow?: 'clip' | 'fade' | 'ellipsis' | 'visible'
+  /**
+   * 限制文本最大行数（skyline）
+   */
+  maxLines?: number
+  /**
+   * 显示连续空格（webview）
+   */
+  space?: 'ensp' | 'emsp' | 'nbsp'
+  /**
+   * 是否解码（webview）
+   */
+  decode?: boolean
+}
+
 interface ButtonProps extends BaseProps {}
 
 interface CheckboxProps {}
@@ -223,6 +251,14 @@ declare module 'vue' {
     RichText: DefineComponent<RichTextProps>
     Selection: DefineComponent<SelectionProps>
     /**
+     * 文本
+     * - 内联文本只能用 text 组件，不能用 view，如 <text> foo <text>bar</text> </text>
+     * - 新增 span 组件用于内联文本和图片，如 <span> <image> </image> <text>bar</text> </span>
+     *
+     * [详情](https://developers.weixin.qq.com/miniprogram/dev/component/text.html)
+     */
+    Text: DefineComponent<TextProps>
+    /**
      * 按钮 [详情](https://developers.weixin.qq.com/miniprogram/dev/component/button.html)
      */
     Button: DefineComponent<ButtonProps>
@@ -261,6 +297,9 @@ declare module 'vue' {
     OpenDataList: DefineComponent<OpenDataListProps>
     ShareElement: DefineComponent<ShareElementProps>
     Snapshot: DefineComponent<SnapshotProps>
+    /**
+     * 用于支持内联文本和 image / navigator 的混排（skyline）
+     */
     Span: DefineComponent<SpanProps>
     StickyHeader: DefineComponent<StickyHeaderProps>
     StickySection: DefineComponent<StickySectionProps>

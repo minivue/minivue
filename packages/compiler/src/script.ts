@@ -19,7 +19,7 @@ export async function compile(
   eventNames: string[] = [],
   isApp = false,
 ) {
-  const { script, scriptSetup, customBlocks } = descriptor
+  const { customBlocks } = descriptor
   const isComponent = customBlocks.some(({ content, type }) => {
     if (type === 'config') {
       const json = JSON.parse(content)
@@ -27,16 +27,14 @@ export async function compile(
     }
     return false
   })
-  let scriptContent = (script || scriptSetup)?.content || ''
-  if (scriptContent) {
-    const result = compileScript(descriptor, {
-      id: hash(path),
-      isProd: true,
-      sourceMap: false,
-      hoistStatic: false,
-    })
-    scriptContent = result.content
-  }
+
+  const result = compileScript(descriptor, {
+    id: hash(path),
+    isProd: true,
+    sourceMap: false,
+    hoistStatic: false,
+  })
+  const scriptContent = result.content
 
   const { code, importedComponentMap } = await removeComponentImportsAndReferences(
     scriptContent,

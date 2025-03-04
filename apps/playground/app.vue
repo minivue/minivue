@@ -1,36 +1,7 @@
 <script lang="ts">
-import {
-  defineApp,
-  onAppShow,
-  onAppHide,
-  onAppError,
-  onAppLaunch,
-  onPageNotFound,
-  onUnhandledRejection,
-} from '@minivue/core'
+import { defineApp } from '@minivue/core'
 
-export default defineApp({
-  setup() {
-    onAppLaunch((options) => {
-      console.log('App launched', options)
-    })
-    onAppShow((options) => {
-      console.log('App showed', options)
-    })
-    onAppHide(() => {
-      console.log('App hided')
-    })
-    onAppError((error) => {
-      console.error('App error', error)
-    })
-    onPageNotFound((options) => {
-      console.log('Page not found', options)
-    })
-    onUnhandledRejection((error) => {
-      console.error('Unhandled rejection', error)
-    })
-  },
-})
+defineApp({})
 </script>
 
 <style>
@@ -41,7 +12,7 @@ body {
 
 <config lang="json">
 {
-  "pages": ["pages/index/index", "pages/about/about"],
+  "pages": ["pages/index/index"],
   "window": {
     "navigationBarTitleText": "WPS 灵犀",
     "navigationBarBackgroundColor": "#ffffff",
@@ -58,6 +29,7 @@ body {
       "defaultDisplayBlock": true
     }
   },
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
 }
 </config>

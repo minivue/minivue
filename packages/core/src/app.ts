@@ -50,7 +50,7 @@ export const defineApp: DefineComponentFunction = (options) => {
   newOptions[ON_LAUNCH] = function (this: AppInstance, e) {
     setCurrentInstance(this)
     // @ts-ignore
-    setup()
+    setup?.({}, {})
     triggerHook(this, ON_LAUNCH, e)
     setCurrentInstance()
   }
