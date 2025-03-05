@@ -20,20 +20,21 @@ export function writeJson(
   importedComponentMap: Map<string, string>,
 ) {
   const jsonBlock = customBlocks.find(({ type }) => type === 'config')
-  if (jsonBlock) {
-    const cacheConfig = cache.get(fileOutputDir)
-    const { content } = jsonBlock
-    if (cacheConfig === content) {
-      return
-    }
-    const json = JSON.parse(content)
-    const usingComponents: Record<string, string> = {}
-    for (const [key, value] of importedComponentMap) {
-      usingComponents[camelToDash(key)] = value
-    }
-    json.usingComponents = usingComponents
-    const newContent = JSON.stringify(json)
-    writeFile(join(fileOutputDir, `${fileName}.json`), newContent)
-    cache.set(fileOutputDir, newContent)
+  const cacheConfig = cache.get(fileOutputDir)
+  const { content = '{}' } = jsonBlock || {}
+  if (cacheConfig === content) {
+    return
   }
+  const json = JSON.parse(content)
+  const usingComponents: Record<string, string> = {}
+  for (const [key, value] of importedComponentMap) {
+    usingComponents[camelToDash(key)] = value
+  }
+  const hasKeys = Object.keys(usingComponents).length > 0
+  if (hasKeys) {
+    json.usingComponents = usingComponents
+  }
+  const newContent = JSON.stringify(json)
+  writeFile(join(fileOutputDir, `${fileName}.json`), newContent)
+  cache.set(fileOutputDir, newContent)
 }
