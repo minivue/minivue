@@ -161,13 +161,14 @@ function removeComponentReferences(
 }
 
 /**
- * 删除组件的导入和引用
+ * 删除组件的导入和引用,并且进行一些代码删除和替换
  * @param source 源代码
  * @param componentLibs 组件库列表(例如: ['vant'])
  * @param eventNames 事件名称列表
  * @returns
  */
-export async function removeComponentImportsAndReferences(
+export async function transformCode(
+  type: 'App' | 'Component' | 'Page',
   source: string,
   componentLibs: string[] = [],
   eventNames: string[] = [],
@@ -186,6 +187,15 @@ export async function removeComponentImportsAndReferences(
     // 处理导入的 Vue 组件
     if (node.type === 'ImportDeclaration') {
       const path = node.source.value
+      // 处理 defineComponent 为 '@minivue/core' 对应的方法
+      node.specifiers.forEach((specifier) => {
+        if (
+          specifier.type === 'ImportSpecifier' &&
+          specifier.imported?.value === 'defineComponent'
+        ) {
+          specifier.imported.value = `define${type}`
+        }
+      })
       // 如果是 Vue 组件或者在组件库中
       if (path.endsWith('.vue') || componentLibs.includes(path)) {
         const name = basename(path, '.vue')
@@ -227,6 +237,12 @@ export async function removeComponentImportsAndReferences(
       }
     }
   })
+
+  const exportDefaultExpression = ast.body.find((node) => node.type === 'ExportDefaultExpression')
+  if (exportDefaultExpression) {
+    // @ts-ignore
+    exportDefaultExpression.type = 'ExpressionStatement' // 删除 export default
+  }
 
   // 将修改后的 AST 转换回代码
   const { code } = await print(ast)

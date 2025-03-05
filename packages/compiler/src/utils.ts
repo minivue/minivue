@@ -44,8 +44,8 @@ export async function readFile(path: string) {
   if (!source.includes('<script')) {
     source += `
     <script lang="ts">
-    import { defineApp } from '@minivue/core'
-    defineApp({})
+    import { defineComponent as _defineComponent } from '@minivue/core'
+    _defineComponent({})
     </script>
     `
   }

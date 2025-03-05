@@ -1,6 +1,6 @@
 <config lang="json">
 {
-  "pages": ["pages/index/index"],
+  "pages": ["pages/index/index", "pages/about/about"],
   "window": {
     "navigationBarTitleText": "WPS 灵犀",
     "navigationBarBackgroundColor": "#ffffff",

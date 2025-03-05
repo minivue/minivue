@@ -1,7 +1,7 @@
 <template>
   <View class="p-index">
     <Text user-select>{{ message }}</Text>
-    <KdButton :obj="obj">按钮</KdButton>
+    <KdButton :obj="obj" @tap="onTap">按钮</KdButton>
   </View>
 </template>
 
@@ -13,6 +13,13 @@ const message = 'Hello World'
 setInterval(() => {
   obj.value.inner.msg++
 }, 1000)
+
+function onTap() {
+  console.log('onTap')
+  wx.navigateTo({
+    url: '/pages/about/about',
+  })
+}
 </script>
 
 <style>

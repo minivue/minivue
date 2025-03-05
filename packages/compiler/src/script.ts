@@ -1,5 +1,5 @@
 import { compileScript, type SFCDescriptor } from '@vue/compiler-sfc'
-import { removeComponentImportsAndReferences } from './component'
+import { transformCode } from './component'
 import { hash } from './utils'
 
 /**
@@ -36,23 +36,17 @@ export async function compile(
   })
   const scriptContent = result.content
 
-  const { code, importedComponentMap } = await removeComponentImportsAndReferences(
+  const type = isApp ? 'App' : isComponent ? 'Component' : 'Page'
+
+  const { code, importedComponentMap } = await transformCode(
+    type,
     scriptContent,
     components,
     eventNames,
   )
 
-  // 代码转换
-  let contents = code.replace('export default ', '')
-
-  if (isApp) {
-    contents = contents.replace('defineComponent', 'defineApp')
-  } else if (!isComponent) {
-    contents = contents.replace('defineComponent', 'definePage')
-  }
-
   return {
-    contents,
+    contents: code,
     importedComponentMap,
   }
 }
