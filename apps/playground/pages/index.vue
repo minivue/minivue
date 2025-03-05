@@ -8,6 +8,17 @@
 <script setup lang="ts">
 import KdButton from '@/components/button.vue'
 import { ref } from '@minivue/core'
+
+interface Props {
+  title: string
+  count: number
+  isActive: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), { isActive: false })
+
+console.log('props', props.isActive)
+
 const obj = ref({ inner: { msg: 1 } })
 const message = 'Hello World'
 setInterval(() => {
