@@ -1,3 +1,4 @@
+import { shallowReactive } from '@vue/reactivity'
 import { ComponentInstance, ComponentOptions, DefineComponentFunction } from './type'
 import { exclude } from './utils'
 import { callSetup } from './shared'
@@ -27,15 +28,28 @@ type HookOnResize = (size: WechatMiniprogram.Page.IResizeOption) => void
 
 export const defineComponent: DefineComponentFunction = (options) => {
   const setup = options.setup as any
-  const props = options.props
+  const props = options.props || {}
   const newOptions = exclude(options, ['setup', 'props', 'emits']) as ComponentOptions
+  const propKeys = Object.keys(props)
+  const observers: Record<string, any> = {}
+  propKeys.forEach((key) => {
+    observers[key] = function (value: any) {
+      this.__props__[key] = value
+    }
+  })
+  newOptions.observers = observers
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
       const ctx = this
+      const rawProps: Record<string, any> = {}
+      propKeys.forEach((property) => {
+        rawProps[property] = ctx.properties[property]
+      })
       ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
+      ctx.__props__ = shallowReactive(rawProps)
       setCurrentInstance(ctx)
-      callSetup(setup, ctx.properties, ctx)
+      callSetup(setup, ctx.__props__, ctx)
       triggerHook(this, ON_CREATED)
       setCurrentInstance()
     },

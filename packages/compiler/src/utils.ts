@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { existsSync } from 'fs'
 import { dirname } from 'path'
-import { writeFile as _writeFile, mkdir } from 'fs/promises'
+import { writeFile as _writeFile, mkdir, readFile as _readFile } from 'fs/promises'
 /**
  * 从给定的字符串生成一个8字符的MD5哈希值。
  *
@@ -37,4 +37,17 @@ export function camelToDash(str: string) {
       return '-' + match.toLowerCase()
     })
     .replace(/^-/, '')
+}
+
+export async function readFile(path: string) {
+  let source = await _readFile(path, 'utf8')
+  if (!source.includes('<script')) {
+    source += `
+    <script lang="ts">
+    import { defineApp } from '@minivue/core'
+    defineApp({})
+    </script>
+    `
+  }
+  return source
 }

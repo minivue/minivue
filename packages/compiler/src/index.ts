@@ -1,4 +1,3 @@
-import { readFile } from 'fs/promises'
 import { dirname, basename, relative, join } from 'path'
 import type { Plugin } from 'esbuild'
 import { parse } from '@vue/compiler-sfc'
@@ -6,6 +5,7 @@ import { compile } from './script'
 import { writeWxml } from './wxml'
 import { writeWxss } from './wxss'
 import { writeJson } from './json'
+import { readFile } from './utils'
 
 interface PluginOptions {
   // 组件库列表，用于自动导入组件
@@ -19,7 +19,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
     setup(build) {
       build.initialOptions.charset = 'utf8'
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
-        const source = await readFile(path, 'utf8')
+        const source = await readFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)

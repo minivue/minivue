@@ -1,5 +1,5 @@
 <template>
-  <Button @tap="onTap(obj)"> <slot />{{ tmp }} </Button>
+  <Button @tap="onTap(props)"> <slot />{{ tmp }} </Button>
 </template>
 
 <script setup lang="ts">
@@ -13,18 +13,19 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<{
-  index?: number
+  obj?: {
+    inner: {
+      msg: number
+    }
+  }
 }>()
 
-const obj: object = { hello: '你好' }
-
 const tmp = computed(() => {
-  return 'i' + props.index
+  return 'i' + props.obj?.inner.msg
 })
 
 onReady(() => {
   emit('fuck', 1, '', true)
-  console.log('onReady', props.index)
 })
 
 function onTap(o: object) {

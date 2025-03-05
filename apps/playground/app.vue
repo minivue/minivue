@@ -1,15 +1,3 @@
-<script lang="ts">
-import { defineApp } from '@minivue/core'
-
-defineApp({})
-</script>
-
-<style>
-body {
-  margin: 0;
-}
-</style>
-
 <config lang="json">
 {
   "pages": ["pages/index/index"],
