@@ -14,7 +14,7 @@
     "@minivue/cli": "workspace:*",
     "@types/wechat-miniprogram": "latest",
     "vue": "latest",
-    "typescript": "5.7.3"
+    "typescript": "5.8.2"
   },
   "packageManager": "pnpm@10.3.0",
   "engines": {
