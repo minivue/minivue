@@ -180,13 +180,20 @@ function transformAttributes(
             // 数据绑定 (:属性)
             newAttrs[key.slice(1)] = `{{${value}}}`
           } else if (key.startsWith('@')) {
-            const eventName = key.slice(1).replace('click', 'tap') // 移除 @
+            const [eventName, modifier = 'bind'] = key.slice(1).split('.') // 移除 @
             const markKey = `mark:${eventName}`
             const funcMatch = value.match(/(\w+)\((.*)\)/)
             const funcName = funcMatch ? funcMatch[1] : value
             const funcArgsStr = funcMatch ? funcMatch[2] : ''
+            const newModifier = modifier
+              .replace('stop', 'catch')
+              .replace('prevent', 'catch')
+              .replace('self', 'bind')
+              .replace('capture', 'capture-bind')
+              .replace('once', 'bind')
+              .replace('passive', 'bind')
             eventNames.push(funcName)
-            newAttrs[`bind:${eventName}`] = funcName
+            newAttrs[`${newModifier}:${eventName}`] = funcName
             if (funcArgsStr) {
               newAttrs[markKey] = `{{[${funcArgsStr}]}}`
             }
