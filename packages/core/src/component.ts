@@ -28,11 +28,12 @@ type HookOnResize = (size: WechatMiniprogram.Page.IResizeOption) => void
 
 export const defineComponent: DefineComponentFunction = (options) => {
   const setup = options.setup as any
-  const props = options.props || {}
+  const props: Record<string, any> = options.props || {}
   const newOptions = exclude(options, ['setup', 'props', 'emits']) as ComponentOptions
   const propKeys = Object.keys(props)
   const observers: Record<string, any> = {}
   propKeys.forEach((key) => {
+    props[key] = null
     observers[key] = function (value: any) {
       this.__props__[key] = value
     }

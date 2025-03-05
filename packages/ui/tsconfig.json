@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/tsconfig.tsbuildinfo",
+    "module": "ESNext",
+    "noEmit": true,
+    "strict": true,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "allowJs": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "target": "es2018",
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "moduleResolution": "Bundler"
+  },
+  "include": ["./**/*.vue", "./**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

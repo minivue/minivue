@@ -4,7 +4,6 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=minivue-playground",
-    "dev:web": "turbo run dev:web --filter=minivue-playground",
     "lint": "eslint --cache .",
     "check": "turbo run check",
     "stylelint": "stylelint \"**/*.{css,vue}\"",
@@ -17,7 +16,7 @@
     "@eslint/js": "^9.21.0",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-vue": "^9.33.0",
+    "eslint-plugin-vue": "^10.0.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
