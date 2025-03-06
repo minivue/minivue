@@ -1,7 +1,9 @@
 import crypto from 'crypto'
-import { existsSync } from 'fs'
+import { existsSync, createReadStream } from 'fs'
+import { createInterface } from 'readline'
 import { dirname } from 'path'
-import { writeFile as _writeFile, mkdir, readFile as _readFile } from 'fs/promises'
+import { writeFile as _writeFile, mkdir } from 'fs/promises'
+
 /**
  * 从给定的字符串生成一个8字符的MD5哈希值。
  *
@@ -39,15 +41,50 @@ export function camelToDash(str: string) {
     .replace(/^-/, '')
 }
 
-export async function readFile(path: string) {
-  let source = await _readFile(path, 'utf8')
-  if (!source.includes('<script')) {
-    source += `
-    <script lang="ts">
-    import { defineComponent as _defineComponent } from '@minivue/core'
-    _defineComponent({})
-    </script>
-    `
+function setDefaultScript(content: string) {
+  content += `<script lang="ts">\n`
+  content += `import { defineComponent as _defineComponent } from '@minivue/core'\n`
+  content += `_defineComponent({})\n`
+  content += `</script>\n`
+  return content
+}
+
+export async function readFile(filePath: string) {
+  const fileStream = createReadStream(filePath)
+  const rl = createInterface({
+    input: fileStream,
+    crlfDelay: Infinity,
+  })
+  let content = ''
+  let isWxs = false
+  let hasScript = false
+
+  for await (const line of rl) {
+    const isScriptStart = line.startsWith('<script')
+    const isScriptEnd = line.startsWith('</script>')
+    const isWxsStart = isScriptStart && line.includes('type="wxs"')
+    const isEmptySetupScript = line === '<script setup lang="ts"></script>'
+    if (isEmptySetupScript) {
+      content = setDefaultScript(content)
+      continue
+    }
+    if (isScriptEnd) {
+      isWxs = false
+      continue
+    }
+    if (isWxs || isWxsStart) {
+      isWxs = true
+      continue
+    }
+    hasScript = hasScript || isScriptStart
+    content += line + '\n'
   }
-  return source
+  if (!hasScript) {
+    content = setDefaultScript(content)
+  }
+
+  console.log(filePath)
+  console.log(content)
+  console.log('\n\n')
+  return content
 }

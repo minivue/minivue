@@ -19,7 +19,7 @@ export async function compile(
   eventNames: string[] = [],
   isApp = false,
 ) {
-  const { customBlocks } = descriptor
+  const { customBlocks, script } = descriptor
   const isComponent = customBlocks.some(({ content, type }) => {
     if (type === 'config') {
       const json = JSON.parse(content)
@@ -27,6 +27,10 @@ export async function compile(
     }
     return false
   })
+
+  if (script && script.attrs.module) {
+    descriptor.script = null
+  }
 
   const result = compileScript(descriptor, {
     id: hash(path),
