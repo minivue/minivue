@@ -1,3 +1,4 @@
+import os from 'os'
 import crypto from 'crypto'
 import { existsSync, createReadStream } from 'fs'
 import { createInterface } from 'readline'
@@ -42,15 +43,15 @@ export function camelToDash(str: string) {
 }
 
 function setDefaultScript(content: string) {
-  content += `<script lang="ts">\n`
-  content += `import { defineComponent as _defineComponent } from '@minivue/core'\n`
-  content += `_defineComponent({})\n`
-  content += `</script>\n`
+  content += `<script lang="ts">${os.EOL}`
+  content += `import { defineComponent as _defineComponent } from '@minivue/core'${os.EOL}`
+  content += `_defineComponent({})${os.EOL}`
+  content += `</script>${os.EOL}`
   return content
 }
 
 export async function readFile(filePath: string) {
-  const fileStream = createReadStream(filePath)
+  const fileStream = createReadStream(filePath, { encoding: 'utf-8' })
   const rl = createInterface({
     input: fileStream,
     crlfDelay: Infinity,
@@ -58,33 +59,41 @@ export async function readFile(filePath: string) {
   let content = ''
   let isWxs = false
   let hasScript = false
-
+  let wxs = ''
   for await (const line of rl) {
     const isScriptStart = line.startsWith('<script')
     const isScriptEnd = line.startsWith('</script>')
     const isWxsStart = isScriptStart && line.includes('type="wxs"')
     const isEmptySetupScript = line === '<script setup lang="ts"></script>'
     if (isEmptySetupScript) {
+      hasScript = true
       content = setDefaultScript(content)
       continue
     }
     if (isScriptEnd) {
       isWxs = false
-      continue
     }
     if (isWxs || isWxsStart) {
+      if (isWxs) {
+        wxs += `${line}${os.EOL}`
+      }
       isWxs = true
       continue
     }
     hasScript = hasScript || isScriptStart
-    content += line + '\n'
+    content += `${line}${os.EOL}`
   }
+
   if (!hasScript) {
     content = setDefaultScript(content)
   }
 
-  console.log(filePath)
-  console.log(content)
-  console.log('\n\n')
-  return content
+  rl.close()
+  fileStream.close()
+
+  writeFile(filePath.replace('playground', 'playground/temp'), content)
+  return {
+    content,
+    wxs,
+  }
 }
