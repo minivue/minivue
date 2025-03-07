@@ -1,22 +1,13 @@
-import { transform } from '@swc/core'
+import { transformSync } from 'esbuild'
 
-const wxs = `import { test } from './mod'
+const res = transformSync(
+  `import { test } from './mod'
 const message = 'Hello Vite + Vue 3 + TypeScript + WindiCSS!'
 
-export const tools = { test, message }`
-
-const rs = await transform(wxs, {
-  // module: {
-  //   type: 'systemjs',
-  // },
-  jsc: {
-    parser: {
-      syntax: 'typescript',
-      tsx: false,
-    },
-    target: 'es5',
-    loose: true,
+export const tools = { test, message }`,
+  {
+    format: 'cjs',
   },
-})
+)
 
-console.log(rs.code)
+console.log(res.code)

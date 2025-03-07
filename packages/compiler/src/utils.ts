@@ -90,8 +90,6 @@ export async function readFile(filePath: string) {
 
   rl.close()
   fileStream.close()
-
-  writeFile(filePath.replace('playground', 'playground/temp'), content)
   return {
     content,
     wxs,

@@ -1,5 +1,6 @@
 import { dirname, basename, relative, join } from 'path'
 import { type Plugin } from 'esbuild'
+import { transform } from '@swc/core'
 import { parse } from '@vue/compiler-sfc'
 import { compile } from './script'
 import { writeWxml } from './wxml'
@@ -24,30 +25,24 @@ export default function plugin(options: PluginOptions = {}): Plugin {
         const isApp = fileName === 'app'
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
         if (wxs) {
-          console.log(wxs)
-          // const result = ts.transpileModule(wxs, {
-          //   compilerOptions: {
-          //     module: ts.ModuleKind.CommonJS,
-          //     target: ts.ScriptTarget.ES5,
-          //     esModuleInterop: false,
-          //     removeComments: true,
-          //   },
-          // })
-          // console.log(result)
-          // const rs = await transform(wxs, {
-          //   module: {
-          //     type: 'commonjs',
-          //   },
-          //   jsc: {
-          //     parser: {
-          //       syntax: 'typescript',
-          //       tsx: false,
-          //     },
-          //     target: 'es5',
-          //     loose: true,
-          //   },
-          // })
-          // console.log(rs.code)
+          const res = await transform(wxs, {
+            module: {
+              type: 'commonjs',
+              noInterop: true,
+            },
+            jsc: {
+              parser: {
+                syntax: 'typescript',
+                tsx: false,
+              },
+              transform: {
+                useDefineForClassFields: false,
+              },
+              target: 'es5',
+              loose: true,
+            },
+          })
+          console.log(res.code)
         }
         const { descriptor } = parse(content)
         const { template, styles, customBlocks } = descriptor
