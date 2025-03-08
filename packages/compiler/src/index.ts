@@ -5,7 +5,7 @@ import { compile } from './script'
 import { writeWxml } from './wxml'
 import { writeWxss } from './wxss'
 import { writeJson } from './json'
-import { readFile } from './utils'
+import { parseFile, readCompilerOptions } from './utils'
 
 interface PluginOptions {
   // 组件库列表，用于自动导入组件
@@ -16,10 +16,11 @@ interface PluginOptions {
 export default function plugin(options: PluginOptions = {}): Plugin {
   return {
     name: 'vue',
-    setup(build) {
+    async setup(build) {
+      const compilerOptions = await readCompilerOptions()
       build.initialOptions.charset = 'utf8'
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
-        const { wxs, content } = await readFile(path)
+        const { wxs, content } = await parseFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
@@ -36,7 +37,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
           eventNames,
           isApp,
         )
-        writeJson(customBlocks, fileOutputDir, fileName, importedComponentMap)
+        writeJson(customBlocks, fileOutputDir, fileName, importedComponentMap, compilerOptions)
 
         return {
           contents,

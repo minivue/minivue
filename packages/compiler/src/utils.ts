@@ -10,9 +10,9 @@ import {
 } from '@swc/core'
 import { existsSync, createReadStream } from 'fs'
 import { createInterface } from 'readline'
-import { dirname } from 'path'
-import { writeFile as _writeFile, mkdir } from 'fs/promises'
-
+import { dirname, join, resolve, relative } from 'path'
+import { writeFile as _writeFile, mkdir, readFile } from 'fs/promises'
+import { CompilerOptions } from 'typescript'
 /**
  * 从给定的字符串生成一个8字符的MD5哈希值。
  *
@@ -291,7 +291,7 @@ async function transformToWxs(code: string) {
   return convertESMtoCommonJS(result.code)
 }
 
-export async function readFile(filePath: string) {
+export async function parseFile(filePath: string) {
   const fileStream = createReadStream(filePath, { encoding: 'utf-8' })
   const rl = createInterface({
     input: fileStream,
@@ -337,4 +337,53 @@ export async function readFile(filePath: string) {
     content,
     wxs,
   }
+}
+
+export async function readCompilerOptions(): Promise<CompilerOptions | undefined> {
+  const path = join(process.cwd(), 'tsconfig.json')
+  const content = await readFile(path, 'utf-8')
+  if (content) {
+    const tsConfig = JSON.parse(content)
+    return tsConfig.compilerOptions
+  }
+}
+
+/**
+ * 解析 TypeScript paths 配置的模块路径
+ * @param {string} importPath - 导入的模块路径（例如 "@utils/helpers"）
+ * @param {string} baseUrl - tsconfig.json 中的 baseUrl（例如 "./src"）
+ * @param {Record<string, string[]>} paths - tsconfig.json 中的 paths 配置（例如 {"@utils/*": ["utils/*"]})
+ * @returns {string[]} - 解析后的可能物理路径数组
+ */
+export function resolveTsConfigPaths(
+  importPath: string,
+  baseUrl = '',
+  paths: Record<string, string[]> = {},
+): string[] {
+  // 规范化 baseUrl，确保以 "/" 结尾
+  const normalizedBaseUrl = baseUrl.replace(/\/$/, '') + '/'
+  // 遍历 paths 配置，寻找匹配的模式
+  for (const [pattern, targetPaths] of Object.entries(paths)) {
+    // 将模式中的 "*" 替换为正则表达式中的匹配组
+    const regexPattern = new RegExp('^' + pattern.replace('*', '(.*)') + '$')
+    const match = importPath.match(regexPattern)
+
+    if (match) {
+      // 提取通配符部分（例如 "helpers"）
+      const wildcardPart = match[1]
+      // 对每个目标路径进行解析
+      const resolvedPaths = targetPaths.map((targetPath) => {
+        // 将目标路径中的 "*" 替换为通配符部分
+        const resolvedPath = targetPath.replace('*', wildcardPart)
+        const fullPath = resolve(normalizedBaseUrl, resolvedPath)
+        // 拼接 baseUrl 和目标路径
+        return '/' + relative(process.cwd(), fullPath)
+      })
+
+      return resolvedPaths
+    }
+  }
+
+  // 如果没有匹配的模式，返回原始路径（相对于 baseUrl）
+  return [normalizedBaseUrl + importPath]
 }

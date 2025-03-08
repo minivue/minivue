@@ -281,9 +281,10 @@ export function writeWxml(
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)
     const templateContent = template.ast ? templateToWxml(template.ast.children, eventNames) : '' // template.content
-    if (cacheContent !== templateContent) {
-      writeFile(join(fileOutputDir, `${fileName}.wxml`), wxs + templateContent)
-      cache.set(fileOutputDir, templateContent)
+    const wxmlContent = wxs + templateContent
+    if (cacheContent !== wxmlContent) {
+      writeFile(join(fileOutputDir, `${fileName}.wxml`), wxmlContent)
+      cache.set(fileOutputDir, wxmlContent)
     }
   }
 }

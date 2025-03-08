@@ -1,5 +1,5 @@
 import { parse, print, type SpreadElement, type Property } from '@swc/core'
-import { basename } from 'path'
+
 type AstProp = SpreadElement | Property
 
 const MINIVUE_PACKAGE_NAME = '@minivue/core'
@@ -198,12 +198,13 @@ export async function transformCode(
       })
       // 如果是 Vue 组件或者在组件库中
       if (path.endsWith('.vue') || componentLibs.includes(path)) {
-        const name = basename(path, '.vue')
-        const componentPath = `${path.replace('@', '').replace(/\.vue$/, '')}/${name}`
+        // const name = basename(path, '.vue')
+        // const componentPath = `${path.replace('@', '').replace(/\.vue$/, '')}/${name}`
+
         // 提取导入的组件名称
         node.specifiers.forEach((specifier) => {
           const key = specifier.local.value
-          importedComponentMap.set(key, componentPath)
+          importedComponentMap.set(key, path)
           importedComponents.add(key)
         })
         return false // 从源码中删除

@@ -1,6 +1,7 @@
 import { SFCBlock } from '@vue/compiler-sfc'
-import { camelToDash, writeFile } from './utils'
-import { join } from 'path'
+import { camelToDash, writeFile, resolveTsConfigPaths } from './utils'
+import { join, basename } from 'path'
+import { CompilerOptions } from 'typescript'
 
 // 缓存上一次生成的内容，以便在下一次写入文件时检查是否需要更新
 const cache = new Map<string, string>()
@@ -18,7 +19,9 @@ export function writeJson(
   fileOutputDir: string,
   fileName: string,
   importedComponentMap: Map<string, string>,
+  compilerOptions?: CompilerOptions,
 ) {
+  // console.log(compilerOptions)
   const jsonBlock = customBlocks.find(({ type }) => type === 'config')
   const cacheConfig = cache.get(fileOutputDir)
   const { content = '{}' } = jsonBlock || {}
@@ -28,7 +31,13 @@ export function writeJson(
   const json = JSON.parse(content)
   const usingComponents: Record<string, string> = {}
   for (const [key, value] of importedComponentMap) {
-    usingComponents[camelToDash(key)] = value
+    if (compilerOptions) {
+      const [path] = resolveTsConfigPaths(value, compilerOptions.baseUrl, compilerOptions.paths)
+      const name = basename(path, '.vue')
+      usingComponents[camelToDash(key)] = `${path.replace(/\.vue$/, '')}/${name}`
+    } else {
+      usingComponents[camelToDash(key)] = value
+    }
   }
   const hasKeys = Object.keys(usingComponents).length > 0
   if (hasKeys) {
