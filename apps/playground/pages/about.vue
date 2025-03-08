@@ -1,12 +1,13 @@
 <template>
-  <View>About {{ tools.test('1') }}</View>
+  <View>About {{ tools.showMessage('vue') }}</View>
 </template>
 
 <script type="wxs" lang="ts">
-import { test } from './mod'
-const message = 'Hello Vite + Vue 3 + TypeScript + WindiCSS!'
+const showMessage = (message: string) => {
+  return 'hello from ' + message
+}
 
-export const tools = { test, message }
+export const tools = { showMessage }
 </script>
 
 <script setup lang="ts"></script>
