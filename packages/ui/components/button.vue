@@ -1,7 +1,3 @@
 <template>
-  <button>test</button>
+  <Button>test</Button>
 </template>
-<script lang="ts">
-  import { defineComponent as _defineComponent } from '@minivue/core'
-  _defineComponent({})
-  </script>

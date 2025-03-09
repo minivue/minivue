@@ -6,7 +6,7 @@ import { BuildOptions, build, context } from 'esbuild'
 import fg from 'fast-glob'
 import { rimraf } from 'rimraf'
 
-const files = fg.sync(['pages/**/*.vue', 'components/**/*.vue', 'app.vue'])
+const files = fg.sync('**/*.vue')
 const entryPoints = Object.fromEntries(
   files.map((item) => {
     const fileName = basename(item, '.vue')

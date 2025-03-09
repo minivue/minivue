@@ -4,9 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "minivue dev --lib",
-    "build": "minivue build --lib",
-    "check": "tsc --incremental --noEmit"
+
   },
   "dependencies": {
     "@minivue/core": "workspace:*"
