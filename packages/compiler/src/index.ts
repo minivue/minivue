@@ -19,22 +19,12 @@ export default function plugin(options: PluginOptions = {}): Plugin {
     async setup(build) {
       const compilerOptions = await readCompilerOptions()
       build.initialOptions.charset = 'utf8'
-      // build.onResolve({ filter: /^@minivue\/ui$/ }, (args) => {
-      //   console.log('Resolving:', args)
-      //   // 返回自定义的解析结果
-      //   return {
-      //     path: '/Users/feiyue/minivue/apps/playground/test.vue', // 自定义路径
-      //     namespace: 'file', // 自定义命名空间
-      //   }
-      // })
-      build.onLoad({ filter: /[^/]\.vue$/ }, async (args) => {
-        console.log(args)
-
-        const { path } = args
+      build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
         const { wxs, content } = await parseFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
         const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
+        console.log('path', path)
         const { descriptor } = parse(content)
         const { template, styles, customBlocks } = descriptor
         const { components = ['@minivue/ui'] } = options

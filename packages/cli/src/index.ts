@@ -1,42 +1,8 @@
 import { cac } from 'cac'
 import { version } from '../package.json'
-import minivue from '@minivue/compiler'
-import { basename, join } from 'path'
-import { BuildOptions, build, context } from 'esbuild'
-import fg from 'fast-glob'
+import { build, context } from 'esbuild'
 import { rimraf } from 'rimraf'
-
-const files = fg.sync('**/*.vue')
-const entryPoints = Object.fromEntries(
-  files.map((item) => {
-    const fileName = basename(item, '.vue')
-    const key = join(item.replace('.vue', ''), fileName)
-    return [key.replace('app/app', 'app'), item]
-  }),
-)
-
-function getBuildOptions(isLib: boolean): BuildOptions {
-  return {
-    entryPoints,
-    bundle: true,
-    outdir: 'dist',
-    format: 'esm',
-    sourcemap: false,
-    target: 'es2018',
-    minify: true,
-    minifyIdentifiers: true,
-    minifySyntax: true,
-    minifyWhitespace: true,
-    splitting: true,
-    treeShaking: true,
-    define: {
-      __DEV__: 'false',
-      __MINIVUE__: 'true',
-    },
-    packages: isLib ? 'external' : 'bundle',
-    plugins: [minivue()],
-  }
-}
+import { getBuildOptions } from './utils'
 
 const cli = cac('minivue')
 

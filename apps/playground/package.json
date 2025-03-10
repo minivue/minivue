@@ -7,6 +7,9 @@
     "build": "minivue build",
     "check": "tsc --incremental --noEmit"
   },
+  "components": [{
+    "libraryName": "@minivue/ui"
+  }],
   "dependencies": {
     "@minivue/ui": "workspace:*",
     "@minivue/core": "workspace:*"
