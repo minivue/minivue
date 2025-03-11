@@ -27,6 +27,12 @@ function checkHasComponentReferences(
     (importedComponents.has(property.value) || innerFunctions.includes(property.value))
   ) {
     return false
+  } else if (
+    property.type === 'GetterProperty' &&
+    property.key.type === 'Identifier' &&
+    importedComponents.has(property.key.value)
+  ) {
+    return false
   }
   return true
 }
