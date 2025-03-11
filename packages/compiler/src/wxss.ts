@@ -2,10 +2,16 @@ import { SFCStyleBlock } from '@vue/compiler-sfc'
 import { writeFile } from './utils'
 import { join } from 'path'
 
+interface WriteWxssParams {
+  styles: SFCStyleBlock[]
+  fileOutputDir: string
+  fileName: string
+}
+
 // 缓存上一次生成的内容，以便在下一次写入文件时检查是否需要更新
 const cache = new Map<string, string>()
 
-export function writeWxss(styles: SFCStyleBlock[], fileOutputDir: string, fileName: string) {
+export function writeWxss({ styles, fileOutputDir, fileName }: WriteWxssParams) {
   const cacheContent = cache.get(fileOutputDir)
   if (styles.length > 0) {
     const cssCode = styles.reduce((str, { content }) => str + content, '')

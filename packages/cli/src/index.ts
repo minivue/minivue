@@ -12,8 +12,10 @@ cli
   .action(async (options) => {
     const buildOpitons = getBuildOptions(options.lib)
     await rimraf('dist')
-    const ctx = await context(buildOpitons)
-    await ctx.watch()
+    buildOpitons.forEach(async (item) => {
+      const ctx = await context(item)
+      await ctx.watch()
+    })
     console.log('watching...')
   })
 
@@ -24,7 +26,7 @@ cli
     const buildOpitons = getBuildOptions(options.lib)
     console.log('building...')
     await rimraf('dist')
-    await build(buildOpitons)
+    await Promise.all(buildOpitons.map((options) => build(options)))
   })
 
 cli.option('--lib', 'build a lib')

@@ -8,7 +8,8 @@
     "check": "tsc --incremental --noEmit"
   },
   "components": [{
-    "libraryName": "@minivue/ui"
+    "libraryName": "@minivue/ui",
+    "prefix": "kd"
   }],
   "dependencies": {
     "@minivue/ui": "workspace:*",

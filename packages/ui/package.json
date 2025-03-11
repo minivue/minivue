@@ -4,7 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-
+    "dev": "minivue dev --lib",
+    "build": "minivue build --lib",
+    "check": "tsc --incremental --noEmit"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts"
+    },
+    "./components": "./dist/components"
   },
   "dependencies": {
     "@minivue/core": "workspace:*"

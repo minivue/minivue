@@ -204,10 +204,8 @@ export async function transformCode(
       })
       // 如果是 Vue 组件或者在组件库中
       if (path.endsWith('.vue') || componentLibs.includes(path)) {
-        // console.log('path', path)
         // 提取导入的组件名称
         node.specifiers.forEach((specifier) => {
-          // console.log('specifier', specifier)
           const key = specifier.local.value
           importedComponentMap.set(key, path)
           importedComponents.add(key)

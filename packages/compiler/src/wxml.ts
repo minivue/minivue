@@ -197,7 +197,6 @@ function transformAttributes(
             if (funcArgsStr) {
               newAttrs[markKey] = `{{[${funcArgsStr}]}}`
             }
-            // console.log('EVENT:', key, value, funcArgsStr)
           } else if (key === 'v-for') {
             const vForData = parseVFor(value)
             if (vForData) {
@@ -261,22 +260,30 @@ function templateToWxml(nodes: TemplateChildNode[], eventNames: string[]): strin
   return result
 }
 
+interface WriteWxmlParams {
+  /**  包含模板 AST 的 SFC 模板块。 */
+  template: SFCTemplateBlock | null
+  /** 应写入 WXML 文件的目录。 */
+  fileOutputDir: string
+  /** 要写入的 WXML 文件的名称。 */
+  fileName: string
+  /** 事件名称数组。 */
+  eventNames: string[]
+  /** 需要注入的wxs */
+  wxs: string
+}
+
 /**
  * 如果模板不为空且文件不是主应用文件，则将 WXML 内容写入文件。
  * 它在写入之前检查内容是否已更改，以避免不必要的文件操作。
- *
- * @param template - 包含模板 AST 的 SFC 模板块。
- * @param fileOutputDir - 应写入 WXML 文件的目录。
- * @param fileName - 要写入的 WXML 文件的名称。
- * @param eventNames - 事件名称数组。
  */
-export function writeWxml(
-  template: SFCTemplateBlock | null,
-  fileOutputDir: string,
-  fileName: string,
-  eventNames: string[] = [],
-  wxs: string,
-) {
+export function writeWxml({
+  template,
+  fileOutputDir,
+  fileName,
+  eventNames = [],
+  wxs,
+}: WriteWxmlParams) {
   const isApp = fileOutputDir === 'dist' && fileName === 'app'
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)

@@ -13,6 +13,16 @@ import { createInterface } from 'readline'
 import { dirname, join, resolve, relative } from 'path'
 import { writeFile as _writeFile, mkdir, readFile } from 'fs/promises'
 import { CompilerOptions } from 'typescript'
+
+interface Component {
+  libraryName: string
+  prefix?: string
+}
+
+interface PackageJson {
+  components?: Component[]
+}
+
 /**
  * 从给定的字符串生成一个8字符的MD5哈希值。
  *
@@ -339,7 +349,18 @@ export async function parseFile(filePath: string) {
   }
 }
 
-export async function readCompilerOptions(): Promise<CompilerOptions | undefined> {
+async function getProjectPackageJson() {
+  const packageJsonPath = join(process.cwd(), 'package.json')
+  const content = await readFile(packageJsonPath, 'utf-8')
+  return JSON.parse(content) as PackageJson
+}
+
+export async function getComponents() {
+  const packageJson = await getProjectPackageJson()
+  return packageJson.components || []
+}
+
+export async function getCompilerOptions(): Promise<CompilerOptions | undefined> {
   const path = join(process.cwd(), 'tsconfig.json')
   const content = await readFile(path, 'utf-8')
   if (content) {
