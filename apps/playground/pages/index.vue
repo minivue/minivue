@@ -2,14 +2,12 @@
   <View class="p-index">
     <Text user-select>{{ message }}</Text>
     <KdButton :obj="obj" @tap="onTap">按钮</KdButton>
-    <KdCheckbox />
   </View>
 </template>
 
 <script setup lang="ts">
-// import KdButton from '@/components/button.vue'
+import KdButton from '@/components/button.vue'
 import { ref } from '@minivue/core'
-import { KdButton, KdCheckbox } from '@minivue/ui'
 interface Props {
   title: string
   count: number

@@ -1,3 +1,11 @@
+<style>
+.hello {
+  font-size: 20px;
+  color: #333;
+  background-color: var(--kd-color-text-primary);
+}
+</style>
+
 <config lang="json">
 {
   "pages": ["pages/index/index", "pages/about/about"],

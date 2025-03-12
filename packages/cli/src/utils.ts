@@ -1,11 +1,13 @@
 import { readFileSync } from 'fs'
 import { basename, join, relative } from 'path'
-import { BuildOptions } from 'esbuild'
+import { BuildOptions, type PluginBuild } from 'esbuild'
 import fg from 'fast-glob'
 import minivue from '@minivue/compiler'
 
 interface Component {
   libraryName: string
+  styleLibraryName?: string
+  themes?: string[]
   prefix?: string
 }
 
@@ -20,9 +22,16 @@ function getProjectPackageJson(projectPath?: string) {
   return JSON.parse(content) as PackageJson
 }
 
+function getCssEntrys() {
+  const files = fg.sync('**/*.{wxss,css}', {
+    ignore: ['node_modules', 'dist'],
+  })
+  return files
+}
+
 function getEntryPoints() {
   const files = fg.sync('**/*.vue', {
-    ignore: ['node_modules'],
+    ignore: ['node_modules', 'dist'],
   })
   const entryPoints = Object.fromEntries(
     files.map((item) => {
@@ -49,19 +58,36 @@ function getComponentsEntryPoints() {
   const components = packageJson.components || []
   const componentFiles: { libName: string; path: string; relativePath: string }[] = []
   const nodeModulesPath = join(process.cwd(), 'node_modules')
-  components.forEach((component) => {
-    const componentsPath = getComponentPath(nodeModulesPath, component.libraryName)
+  const themeFiles: { libName: string; path: string; relativePath: string }[] = []
+  components.forEach(({ libraryName, styleLibraryName, themes = ['default'] }) => {
+    const componentsPath = getComponentPath(nodeModulesPath, libraryName)
+    if (styleLibraryName) {
+      themes.forEach((item) => {
+        const themePath = join(nodeModulesPath, styleLibraryName, `${item}.css`)
+        themeFiles.push({
+          libName: styleLibraryName,
+          path: themePath,
+          relativePath: relative(nodeModulesPath, themePath),
+        })
+      })
+    }
     if (componentsPath) {
       const files = fg.sync(join(componentsPath, '**/*.{js,wxml,wxss,json}'))
       files.forEach((item) => {
         componentFiles.push({
-          libName: component.libraryName,
+          libName: libraryName,
           path: item,
           relativePath: relative(componentsPath, item),
         })
       })
     }
   })
+  const themePoints = Object.fromEntries(
+    themeFiles.map(({ path, relativePath }) => {
+      const key = join('miniprogram_npm', relativePath).replace('.css', '')
+      return [key, path]
+    }),
+  )
   const componentJsPoints = Object.fromEntries(
     componentFiles
       .filter((item) => item.path.endsWith('.js'))
@@ -95,6 +121,7 @@ function getComponentsEntryPoints() {
       }),
   )
   return {
+    themePoints,
     componentJsPoints,
     componentWxmlPoints,
     componentWxssPoints,
@@ -102,11 +129,52 @@ function getComponentsEntryPoints() {
   }
 }
 
+// 自定义 CSS 插件
+const customCssPlugin = {
+  name: 'custom-css',
+  setup(build: PluginBuild) {
+    build.onLoad({ filter: /\.css$/ }, async (args) => {
+      const css = readFileSync(args.path, 'utf8')
+      // console.log(css)
+      return {
+        contents: css,
+        loader: 'css',
+      }
+    })
+  },
+}
+
 export function getBuildOptions(isLib: boolean): BuildOptions[] {
+  const cssEntrys = getCssEntrys()
   const entryPoints = getEntryPoints()
-  const { componentJsPoints, componentJsonPoints, componentWxmlPoints, componentWxssPoints } =
-    getComponentsEntryPoints()
+  const {
+    themePoints,
+    componentJsPoints,
+    componentJsonPoints,
+    componentWxmlPoints,
+    componentWxssPoints,
+  } = getComponentsEntryPoints()
   return [
+    {
+      entryPoints: cssEntrys,
+      loader: {
+        '.css': 'copy',
+        '.wxss': 'copy',
+      },
+      outdir: 'dist',
+      outExtension: {
+        '.css': '.wxss',
+      },
+    },
+    {
+      entryPoints: themePoints,
+      outdir: 'dist',
+      minify: true,
+      outExtension: {
+        '.css': '.wxss',
+      },
+      plugins: [customCssPlugin],
+    },
     {
       entryPoints: componentJsonPoints,
       loader: {

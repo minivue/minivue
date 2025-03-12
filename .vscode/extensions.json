@@ -4,6 +4,7 @@
     "stylelint.vscode-stylelint",
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
+    "vunguyentuan.vscode-css-variables",
     "vue.volar"
   ]
 }

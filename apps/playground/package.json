@@ -9,11 +9,14 @@
   },
   "components": [{
     "libraryName": "@minivue/ui",
+    "styleLibraryName": "@kdocs/kdesign-theme",
+    "themes": ["default", "dark"],
     "prefix": "kd"
   }],
   "dependencies": {
     "@minivue/ui": "workspace:*",
-    "@minivue/core": "workspace:*"
+    "@minivue/core": "workspace:*",
+    "@kdocs/kdesign-theme": "latest"
   },
   "devDependencies": {
     "@minivue/cli": "workspace:*",

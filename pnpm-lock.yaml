@@ -62,6 +62,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@kdocs/kdesign-theme':
+        specifier: latest
+        version: 2.3.7
       '@minivue/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -498,6 +501,9 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
+
+  '@kdocs/kdesign-theme@2.3.7':
+    resolution: {integrity: sha1-KkHcoR0R97M5ofVxm3vDB7v1f4A=, tarball: https://registry.npm.wps.cn/@kdocs/kdesign-theme/download/@kdocs/kdesign-theme-2.3.7.tgz}
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
@@ -2035,6 +2041,8 @@ snapshots:
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
+
+  '@kdocs/kdesign-theme@2.3.7': {}
 
   '@keyv/serialize@1.0.3':
     dependencies:

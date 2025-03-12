@@ -891,5 +891,9 @@
         "additionalProperties": false
       }
     }
+  ],
+  "cssVariables.lookupFiles": [
+    "./node_modules/@kdocs/kdesign-theme/default.css",
+    "node_modules/.pnpm/@kdocs+kdesign-theme@*/node_modules/@kdocs/kdesign-theme/default.css"
   ]
 }

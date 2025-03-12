@@ -34,7 +34,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
         const { template, styles, customBlocks } = descriptor
         const eventNames: string[] = []
         writeWxml({ template, fileOutputDir, fileName, eventNames, wxs })
-        writeWxss({ styles, fileOutputDir, fileName })
+        writeWxss({ styles, fileOutputDir, fileName, components, isApp })
         const { contents, importedComponentMap } = await compile({
           descriptor,
           path,

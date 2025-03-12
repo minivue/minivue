@@ -13,5 +13,7 @@ export default {
   ],
   rules: {
     'selector-type-no-unknown': null,
+    'color-function-notation': null,
+    'import-notation': null,
   },
 }
