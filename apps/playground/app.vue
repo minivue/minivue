@@ -9,6 +9,18 @@
 <config lang="json">
 {
   "pages": ["pages/index/index", "pages/about/about"],
+  "subpackages": [
+    {
+      "root": "libs",
+      "pages": ["index/index"],
+      "plugins": {
+        "account": {
+          "version": "4.1.8",
+          "provider": "wxe5f87d6a233b5aab"
+        }
+      }
+    }
+  ],
   "window": {
     "navigationBarTitleText": "WPS 灵犀",
     "navigationBarBackgroundColor": "#ffffff",

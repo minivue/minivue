@@ -217,6 +217,7 @@ export function getBuildOptions(isLib: boolean): BuildOptions[] {
       },
       packages: isLib ? 'external' : 'bundle',
       plugins: [minivue()],
+      chunkNames: '[dir]/[name]-[hash]',
     },
   ]
 }

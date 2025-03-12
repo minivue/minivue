@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import KdButton from '@/components/button.vue'
-import { ref } from '@minivue/core'
+import { onLoad, ref } from '@minivue/core'
 interface Props {
   title: string
   count: number
@@ -27,9 +27,18 @@ setInterval(() => {
 function onTap() {
   console.log('onTap')
   wx.navigateTo({
-    url: '/pages/about/about',
+    url: '/libs/index/index',
   })
 }
+
+onLoad(() => {
+  import('../libs/utils/helper').then((res) => {
+    console.log(res.helper())
+  })
+  // requirePlugin('account', (account) => {
+  //   console.log(account.getAccountCookie())
+  // })
+})
 </script>
 
 <style>

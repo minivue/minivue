@@ -27,6 +27,7 @@ export default typescriptEslint.config(
       'vue/multi-word-component-names': 'off',
       'vue/prefer-import-from-vue': 'off',
       'vue/no-multiple-template-root': 'off',
+      'vue/v-on-event-hyphenation': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',

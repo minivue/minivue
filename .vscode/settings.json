@@ -279,6 +279,24 @@
                 "entry": {
                   "type": "string",
                   "description": "分包入口文件"
+                },
+                "plugins": {
+                  "type": "object",
+                  "description": "分包使用到的插件",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string",
+                        "description": "插件版本号"
+                      },
+                      "provider": {
+                        "type": "string",
+                        "description": "插件提供者"
+                      }
+                    },
+                    "required": ["version", "provider"]
+                  }
                 }
               },
               "additionalProperties": false
