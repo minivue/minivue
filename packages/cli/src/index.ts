@@ -10,7 +10,7 @@ cli
   .command('dev', 'dev your app')
   .option('--lib', 'dev a lib')
   .action(async (options) => {
-    const buildOpitons = getBuildOptions(options.lib)
+    const buildOpitons = getBuildOptions(options.lib, true)
     await rimraf('dist')
     await Promise.all([buildOpitons.map((item) => build(item))])
     console.log('watching...')

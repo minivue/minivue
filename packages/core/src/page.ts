@@ -76,7 +76,6 @@ export const definePage: DefineComponentFunction = (options) => {
   allLifecycles.forEach((name) => {
     newOptions[name] = createLifecycle(name)
   })
-
   return Page(newOptions) as any
 }
 

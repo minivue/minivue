@@ -1,13 +1,19 @@
 <template>
-  <Button>
-    <slot />
-  </Button>
+  <Button> <slot />{{ obj.inner.msg }} </Button>
 </template>
 
 <script setup lang="ts">
 defineOptions({
   name: 'KdButton',
 })
+
+defineProps<{
+  obj: {
+    inner: {
+      msg: number
+    }
+  }
+}>()
 </script>
 
 <style>

@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import KdButton from '@/components/button.vue'
+import { KdButton } from '@minivue/ui'
 import { onLoad, ref } from '@minivue/core'
 interface Props {
   title: string

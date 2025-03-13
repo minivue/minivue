@@ -144,7 +144,7 @@ function getComponentsEntryPoints() {
 //   },
 // }
 
-export function getBuildOptions(isLib: boolean): Options[] {
+export function getBuildOptions(isLib: boolean, watch = false): Options[] {
   const cssEntrys = getCssEntrys()
   const entryPoints = getEntryPoints()
   const {
@@ -158,6 +158,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
     {
       entry: cssEntrys,
       silent: true,
+      watch,
       loader: {
         '.css': 'copy',
         '.wxss': 'copy',
@@ -170,6 +171,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
     },
     {
       entry: themePoints,
+      watch,
       minify: true,
       silent: true,
       esbuildOptions(options) {
@@ -181,6 +183,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
     },
     {
       entry: componentJsonPoints,
+      watch,
       silent: true,
       loader: {
         '.json': 'copy',
@@ -188,6 +191,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
     },
     {
       entry: componentWxmlPoints,
+      watch,
       silent: true,
       loader: {
         '.wxml': 'copy',
@@ -195,6 +199,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
     },
     {
       entry: componentWxssPoints,
+      watch,
       silent: true,
       loader: {
         '.wxss': 'copy',
@@ -205,6 +210,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
         ...entryPoints,
         ...componentJsPoints,
       },
+      watch,
       bundle: true,
       silent: true,
       format: isLib ? 'esm' : 'cjs',
