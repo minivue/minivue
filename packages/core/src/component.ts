@@ -32,18 +32,22 @@ export const defineComponent: DefineComponentFunction = (options) => {
   const newOptions = exclude(options, ['setup', 'props', 'emits']) as ComponentOptions
   const propKeys = Object.keys(props)
   const observers: Record<string, any> = {}
+  console.warn(JSON.stringify(props))
   propKeys.forEach((key) => {
-    props[key] = null
+    props[key].type = props[key].type || null
+    props[key].value = props[key].default
     observers[key] = function (value: any) {
       this.__props__[key] = value
     }
   })
-  newOptions.data = callSetup(setup, props)
+  console.warn(props)
+  newOptions.data = callSetup(setup, {})
   newOptions.observers = observers
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
       const ctx = this
+      console.log('created', ctx.properties)
       const rawProps: Record<string, any> = {}
       propKeys.forEach((property) => {
         rawProps[property] = ctx.properties[property]

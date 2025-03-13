@@ -1,5 +1,5 @@
 <template>
-  <Button> <slot />{{ obj.inner.msg }} </Button>
+  <Button> <slot /></Button>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +8,7 @@ defineOptions({
 })
 
 defineProps<{
-  obj: {
+  obj?: {
     inner: {
       msg: number
     }

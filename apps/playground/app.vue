@@ -8,10 +8,10 @@
 
 <config lang="json">
 {
-  "pages": ["pages/index/index", "pages/about/about"],
+  "pages": ["pages/index/index"],
   "subpackages": [
     {
-      "root": "libs",
+      "root": "account",
       "pages": ["index/index"],
       "plugins": {
         "account": {
