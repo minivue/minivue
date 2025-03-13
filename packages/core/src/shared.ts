@@ -51,28 +51,28 @@ export function deepWatch(
   )
 }
 
-export function callSetup(setup: Function, props: Record<string, string | undefined>, ctx: any) {
-  const bindings = (setup?.(props as any, ctx) as Record<string, any>) || {}
+export function callSetup(setup: Function, props: Record<string, string | undefined>, ctx?: any) {
+  const bindings = (setup?.(props as any, ctx || {}) as Record<string, any>) || {}
   const data: Record<string, any> = {}
   Object.keys(bindings).forEach((key) => {
-    if (ctx) {
-      const value = bindings[key]
-      if (isFunction(value)) {
-        ctx[key] = (e: any) => {
-          const eventType = e.type
-          const args = e.mark[eventType]
-          const detail = e.detail
-          if (args) {
-            value(...args)
-          } else if (detail && isArray(detail)) {
-            value(...detail)
-          } else {
-            value(e)
-          }
+    const value = bindings[key]
+    if (isFunction(value) && ctx) {
+      ctx[key] = (e: any) => {
+        const eventType = e.type
+        const args = e.mark[eventType]
+        const detail = e.detail
+        if (args) {
+          value(...args)
+        } else if (detail && isArray(detail)) {
+          value(...detail)
+        } else {
+          value(e)
         }
-        return
       }
-      data[key] = deepToRaw(value)
+      return
+    }
+    data[key] = deepToRaw(value)
+    if (ctx) {
       deepWatch.call(ctx, key, value)
     }
   })

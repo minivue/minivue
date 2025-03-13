@@ -10,4 +10,7 @@ const showMessage = (message: string) => {
 export const _ = { showMessage }
 </script>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { fuck } from './common/util'
+fuck()
+</script>

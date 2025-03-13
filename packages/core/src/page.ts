@@ -48,8 +48,11 @@ type HookOnSaveExitState = () => void
  */
 export const definePage: DefineComponentFunction = (options) => {
   const setup = options.setup
-  // options.data = callSetup(setup as any, {}, {}) as any
+
   const newOptions = exclude(options, ['setup', 'props']) as PageOptions
+
+  newOptions.data = callSetup(setup as any, {})
+
   newOptions[ON_LOAD] = function (this: PageInstance, query: Record<string, string | undefined>) {
     setCurrentInstance(this)
     callSetup(setup as any, query, this)

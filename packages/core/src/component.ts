@@ -38,6 +38,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
       this.__props__[key] = value
     }
   })
+  newOptions.data = callSetup(setup, props)
   newOptions.observers = observers
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {

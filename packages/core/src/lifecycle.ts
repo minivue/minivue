@@ -65,8 +65,8 @@ export function setCurrentInstance(target?: Instance) {
   instance = target
 }
 
-export function getCurrentInstance() {
-  return instance
+export function getCurrentInstance<T extends Instance>() {
+  return instance as T
 }
 
 export function injectHook(name: Lifecycle, hook: Function) {

@@ -8,12 +8,13 @@
 <script setup lang="ts">
 import { KdButton } from '@minivue/ui'
 import { onLoad, ref } from '@minivue/core'
+import { fuck } from './common/util'
 interface Props {
   title: string
   count: number
   isActive: boolean
 }
-
+fuck()
 const props = withDefaults(defineProps<Props>(), { isActive: false })
 
 console.log('props', props.isActive)
