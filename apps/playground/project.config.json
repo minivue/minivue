@@ -9,8 +9,8 @@
   "projectname": "WPS 灵犀",
   "setting": {
     "urlCheck": true,
-    "es6": true,
-    "enhance": true,
+    "es6": false,
+    "enhance": false,
     "postcss": false,
     "skylineRenderEnable": true,
     "preloadBackgroundData": false,
