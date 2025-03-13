@@ -15,3 +15,9 @@ defineOptions({
   color: var(--kd-color-text-primary);
 }
 </style>
+
+<config lang="json">
+{
+  "component": true
+}
+</config>

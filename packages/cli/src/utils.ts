@@ -215,11 +215,7 @@ export function getBuildOptions(isLib: boolean): Options[] {
       minifySyntax: true,
       minifyWhitespace: true,
       splitting: true,
-      treeshake: true,
-
-      define: {
-        __DEV__: 'false',
-      },
+      treeshake: 'smallest',
       noExternal: isLib ? [] : [/./],
       replaceNodeEnv: true,
       legacyOutput: false,

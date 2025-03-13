@@ -50,7 +50,7 @@ export function watchPostEffect(effect: WatchEffect, options?: DebuggerOptions):
   return doWatch(
     effect,
     null,
-    __DEV__
+    process.env.NODE_ENV !== 'production'
       ? extend({}, options as any, { flush: 'post' })
       : /* istanbul ignore next -- @preserve */ { flush: 'post' },
   )
@@ -60,7 +60,7 @@ export function watchSyncEffect(effect: WatchEffect, options?: DebuggerOptions):
   return doWatch(
     effect,
     null,
-    __DEV__
+    process.env.NODE_ENV !== 'production'
       ? extend({}, options as any, { flush: 'sync' })
       : /* istanbul ignore next -- @preserve */ { flush: 'sync' },
   )
@@ -107,7 +107,7 @@ export function watch<T = any, Immediate extends Readonly<boolean> = false>(
   cb: any,
   options?: WatchOptions<Immediate>,
 ): WatchHandle {
-  if (__DEV__ && !isFunction(cb)) {
+  if (process.env.NODE_ENV !== 'production' && !isFunction(cb)) {
     console.warn(
       `\`watch(fn, options?)\` signature has been moved to a separate API. ` +
         `Use \`watchEffect(fn, options?)\` instead. \`watch\` now only ` +
@@ -125,7 +125,7 @@ function doWatch(
 ): WatchHandle {
   const { immediate, deep, flush, once } = options
 
-  if (__DEV__ && !cb) {
+  if (process.env.NODE_ENV !== 'production' && !cb) {
     if (immediate !== undefined) {
       console.warn(
         `watch() "immediate" option is only respected when using the ` +

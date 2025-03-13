@@ -1,6 +1,7 @@
-export const EMPTY_OBJ: Readonly<Record<string, any>> = __DEV__
-  ? Object.freeze({})
-  : /* istanbul ignore next -- @preserve */ {}
+export const EMPTY_OBJ: Readonly<Record<string, any>> =
+  process.env.NODE_ENV !== 'production'
+    ? Object.freeze({})
+    : /* istanbul ignore next -- @preserve */ {}
 
 /* istanbul ignore next -- @preserve */
 // eslint-disable-next-line @typescript-eslint/no-empty-function

@@ -74,7 +74,7 @@ export function flushPostFlushCbs(): void {
 
 function flushJobs(seen?: CountMap): void {
   /* istanbul ignore else -- @preserve  */
-  if (__DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     seen = seen || new Map()
   }
 
@@ -83,15 +83,16 @@ function flushJobs(seen?: CountMap): void {
   // inside try-catch. This can leave all warning code unshaked. Although
   // they would get eventually shaken by a minifier like terser, some minifiers
   // would fail to do that (e.g. https://github.com/evanw/esbuild/issues/1610)
-  const check = __DEV__
-    ? (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
-    : /* istanbul ignore next -- @preserve  */ NOOP
+  const check =
+    process.env.NODE_ENV !== 'production'
+      ? (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
+      : /* istanbul ignore next -- @preserve  */ NOOP
 
   try {
     for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
       const job = queue[flushIndex]
       /* istanbul ignore if -- @preserve  */
-      if (__DEV__ && check(job)) {
+      if (process.env.NODE_ENV !== 'production' && check(job)) {
         continue
       }
 

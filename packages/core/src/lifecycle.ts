@@ -75,7 +75,7 @@ export function injectHook(name: Lifecycle, hook: Function) {
     const hooks = instance[hiddenField] || []
     hooks.push(hook)
     instance[hiddenField] = hooks
-  } else if (__DEV__) {
+  } else if (process.env.NODE_ENV !== 'production') {
     console.warn('lifecycle injection APIs can only be used during execution of setup() ')
   }
 }
