@@ -14,7 +14,7 @@
     "cac": "^6.7.14",
     "rimraf": "^6.0.1",
     "fast-glob": "^3.3.3",
-    "esbuild": "0.25.0",
+    "tsup": "^8.4.0",
     "typescript": "5.8.2",
     "@minivue/compiler": "workspace:*"
   },

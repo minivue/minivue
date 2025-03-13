@@ -1,9 +1,9 @@
-import { build } from 'esbuild'
+import { build } from 'tsup'
 
 build({
-  entryPoints: ['src/index.ts'],
+  entry: ['src/index.ts'],
   bundle: true,
-  outdir: 'dist',
   format: 'esm',
-  packages: 'external',
+  silent: true,
+  skipNodeModulesBundle: true,
 })

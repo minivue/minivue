@@ -49,7 +49,7 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "condition": false,
-    "swc": true
+    "swc": false
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

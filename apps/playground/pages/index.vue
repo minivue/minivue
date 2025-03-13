@@ -33,7 +33,7 @@ function onTap() {
 
 onLoad(() => {
   import('../libs/utils/helper').then((res) => {
-    console.log(res.helper())
+    res.helper()
   })
   // requirePlugin('account', (account) => {
   //   console.log(account.getAccountCookie())

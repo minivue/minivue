@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { basename, join, relative } from 'path'
-import { BuildOptions, type PluginBuild } from 'esbuild'
+import { Options } from 'tsup'
 import fg from 'fast-glob'
 import minivue from '@minivue/compiler'
 
@@ -130,21 +130,21 @@ function getComponentsEntryPoints() {
 }
 
 // 自定义 CSS 插件
-const customCssPlugin = {
-  name: 'custom-css',
-  setup(build: PluginBuild) {
-    build.onLoad({ filter: /\.css$/ }, async (args) => {
-      const css = readFileSync(args.path, 'utf8')
-      // console.log(css)
-      return {
-        contents: css,
-        loader: 'css',
-      }
-    })
-  },
-}
+// const customCssPlugin = {
+//   name: 'custom-css',
+//   setup(build: PluginBuild) {
+//     build.onLoad({ filter: /\.css$/ }, async (args) => {
+//       const css = readFileSync(args.path, 'utf8')
+//       // console.log(css)
+//       return {
+//         contents: css,
+//         loader: 'css',
+//       }
+//     })
+//   },
+// }
 
-export function getBuildOptions(isLib: boolean): BuildOptions[] {
+export function getBuildOptions(isLib: boolean): Options[] {
   const cssEntrys = getCssEntrys()
   const entryPoints = getEntryPoints()
   const {
@@ -154,56 +154,60 @@ export function getBuildOptions(isLib: boolean): BuildOptions[] {
     componentWxmlPoints,
     componentWxssPoints,
   } = getComponentsEntryPoints()
-  return [
+  const options: Options[] = [
     {
-      entryPoints: cssEntrys,
+      entry: cssEntrys,
+      silent: true,
       loader: {
         '.css': 'copy',
         '.wxss': 'copy',
       },
-      outdir: 'dist',
-      outExtension: {
-        '.css': '.wxss',
+      esbuildOptions(options) {
+        options.outExtension = {
+          '.css': '.wxss',
+        }
       },
     },
     {
-      entryPoints: themePoints,
-      outdir: 'dist',
+      entry: themePoints,
       minify: true,
-      outExtension: {
-        '.css': '.wxss',
+      silent: true,
+      esbuildOptions(options) {
+        options.outExtension = {
+          '.css': '.wxss',
+        }
       },
-      plugins: [customCssPlugin],
+      // plugins: [customCssPlugin],
     },
     {
-      entryPoints: componentJsonPoints,
+      entry: componentJsonPoints,
+      silent: true,
       loader: {
         '.json': 'copy',
       },
-      outdir: 'dist',
     },
     {
-      entryPoints: componentWxmlPoints,
+      entry: componentWxmlPoints,
+      silent: true,
       loader: {
         '.wxml': 'copy',
       },
-      outdir: 'dist',
     },
     {
-      entryPoints: componentWxssPoints,
+      entry: componentWxssPoints,
+      silent: true,
       loader: {
         '.wxss': 'copy',
       },
-      outdir: 'dist',
     },
     {
-      entryPoints: {
+      entry: {
         ...entryPoints,
         ...componentJsPoints,
       },
       bundle: true,
-      outdir: 'dist',
-      format: 'esm',
+      silent: true,
+      format: isLib ? 'esm' : 'cjs',
       sourcemap: false,
       target: 'es2018',
       minify: true,
@@ -211,13 +215,39 @@ export function getBuildOptions(isLib: boolean): BuildOptions[] {
       minifySyntax: true,
       minifyWhitespace: true,
       splitting: true,
-      treeShaking: true,
+      treeshake: true,
+
       define: {
         __DEV__: 'false',
       },
-      packages: isLib ? 'external' : 'bundle',
-      plugins: [minivue()],
-      chunkNames: '[dir]/[name]-[hash]',
+      noExternal: isLib ? [] : [/./],
+      replaceNodeEnv: true,
+      legacyOutput: false,
+      outExtension() {
+        return {
+          js: '.js',
+        }
+      },
+      esbuildPlugins: [minivue()],
+      esbuildOptions(options) {
+        options.charset = 'utf8'
+        options.chunkNames = '[dir]/[name]-[hash]'
+      },
+      plugins: [
+        {
+          name: 'dynamic-import',
+          renderChunk(code, chunk) {
+            if (chunk.imports?.some((i) => i.kind === 'dynamic-import')) {
+              code = code.replace(/import\(/g, 'require.async(')
+            }
+            return {
+              code,
+              map: chunk.map,
+            }
+          },
+        },
+      ],
     },
   ]
+  return options.filter((item) => item.entry && Object.keys(item.entry).length > 0)
 }

@@ -1,6 +1,6 @@
 import { cac } from 'cac'
 import { version } from '../package.json'
-import { build, context } from 'esbuild'
+import { build } from 'tsup'
 import { rimraf } from 'rimraf'
 import { getBuildOptions } from './utils'
 
@@ -12,10 +12,7 @@ cli
   .action(async (options) => {
     const buildOpitons = getBuildOptions(options.lib)
     await rimraf('dist')
-    buildOpitons.forEach(async (item) => {
-      const ctx = await context(item)
-      await ctx.watch()
-    })
+    await Promise.all([buildOpitons.map((item) => build(item))])
     console.log('watching...')
   })
 
@@ -26,7 +23,7 @@ cli
     const buildOpitons = getBuildOptions(options.lib)
     console.log('building...')
     await rimraf('dist')
-    await Promise.all(buildOpitons.map((options) => build(options)))
+    await Promise.all([buildOpitons.map((item) => build(item))])
   })
 
 cli.option('--lib', 'build a lib')
