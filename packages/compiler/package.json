@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "latest",
-    "esbuild": "0.25.0",
+    "esbuild": "0.25.1",
     "typescript": "5.8.2"
   },
   "packageManager": "pnpm@10.3.0",
