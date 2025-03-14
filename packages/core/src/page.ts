@@ -51,7 +51,7 @@ export const definePage: DefineComponentFunction = (options) => {
 
   const newOptions = exclude(options, ['setup', 'props']) as PageOptions
 
-  newOptions.data = callSetup(setup as any, {})
+  newOptions.data = callSetup(setup?.bind(this) as any, {})
 
   newOptions[ON_LOAD] = function (this: PageInstance, query: Record<string, string | undefined>) {
     setCurrentInstance(this)

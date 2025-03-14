@@ -6,6 +6,9 @@
 
 <script setup lang="ts">
 import KdButton from '@/components/button.vue'
+wx.onThemeChange((res) => {
+  console.log('theme changed', res)
+})
 </script>
 
 <style>

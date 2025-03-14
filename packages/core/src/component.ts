@@ -32,7 +32,6 @@ export const defineComponent: DefineComponentFunction = (options) => {
   const newOptions = exclude(options, ['setup', 'props', 'emits']) as ComponentOptions
   const propKeys = Object.keys(props)
   const observers: Record<string, any> = {}
-  console.warn(JSON.stringify(props))
   propKeys.forEach((key) => {
     props[key].type = props[key].type || null
     props[key].value = props[key].default
@@ -40,17 +39,16 @@ export const defineComponent: DefineComponentFunction = (options) => {
       this.__props__[key] = value
     }
   })
-  console.warn(props)
   newOptions.data = callSetup(setup, {})
   newOptions.observers = observers
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
       const ctx = this
-      console.log('created', ctx.properties)
       const rawProps: Record<string, any> = {}
       propKeys.forEach((property) => {
-        rawProps[property] = ctx.properties[property]
+        const value = ctx.properties[property]
+        rawProps[property] = value === null ? undefined : value
       })
       ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
       ctx.__props__ = shallowReactive(rawProps)

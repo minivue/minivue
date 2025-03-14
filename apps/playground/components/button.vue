@@ -17,7 +17,6 @@ defineOptions({
 })
 
 const props = defineProps<Props>()
-console.log(props)
 const { type = 'secondary', size = 'l' } = props
 const buttonClass = computed(() => `kd-button kd-button-${type} kd-button-${size}`)
 </script>

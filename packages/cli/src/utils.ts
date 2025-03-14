@@ -129,21 +129,6 @@ function getComponentsEntryPoints() {
   }
 }
 
-// 自定义 CSS 插件
-// const customCssPlugin = {
-//   name: 'custom-css',
-//   setup(build: PluginBuild) {
-//     build.onLoad({ filter: /\.css$/ }, async (args) => {
-//       const css = readFileSync(args.path, 'utf8')
-//       // console.log(css)
-//       return {
-//         contents: css,
-//         loader: 'css',
-//       }
-//     })
-//   },
-// }
-
 export function getBuildOptions(isLib: boolean, watch = false): Options[] {
   const cssEntrys = getCssEntrys()
   const entryPoints = getEntryPoints()
@@ -174,12 +159,26 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
       watch,
       minify: true,
       silent: true,
+      esbuildPlugins: [
+        // {
+        //   name: 'css',
+        //   setup(build) {
+        //     build.onLoad({ filter: /\.css$/ }, async (args) => {
+        //       const css = readFileSync(args.path, 'utf8')
+        //       const contents = css.replace('html', 'page').replace()
+        //       return {
+        //         contents,
+        //         loader: 'css',
+        //       }
+        //     })
+        //   },
+        // },
+      ],
       esbuildOptions(options) {
         options.outExtension = {
           '.css': '.wxss',
         }
       },
-      // plugins: [customCssPlugin],
     },
     {
       entry: componentJsonPoints,
