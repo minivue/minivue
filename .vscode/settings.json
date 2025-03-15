@@ -59,7 +59,6 @@
               },
               "navigationBarTextStyle": {
                 "type": "string",
-                "enum": ["black", "white"],
                 "description": "导航栏标题、状态栏颜色，仅支持 black / white",
                 "default": "white"
               },

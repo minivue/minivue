@@ -6,7 +6,7 @@
       // 路径映射，esbuild 支持路径别名
       "@/*": ["src/*"]
     },
-
+    "types": ["miniprogram-api-typings", "@types/node"], // 加载的类型声明文件
     /* 输出选项 */
     "outDir": "./dist" // 指定输出目录
   },

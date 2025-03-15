@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { basename, join, relative } from 'path'
+import { basename, extname, join, relative } from 'path'
 import { Options } from 'tsup'
 import fg from 'fast-glob'
 import minivue from '@minivue/compiler'
@@ -30,14 +30,18 @@ function getCssEntrys() {
 }
 
 function getEntryPoints() {
-  const files = fg.sync('**/*.vue', {
-    ignore: ['node_modules', 'dist'],
+  const files = fg.sync('**/*.{vue,json}', {
+    ignore: ['node_modules', 'dist', 'package.json', 'project.config.json', 'tsconfig.json'],
   })
   const entryPoints = Object.fromEntries(
-    files.map((item) => {
-      const fileName = basename(item, '.vue')
-      const key = join(item.replace('.vue', ''), fileName)
-      return [key.replace('app/app', 'app'), item]
+    files.map((path) => {
+      const ext = extname(path)
+      const fileName = basename(path, ext)
+      if (path.includes('/')) {
+        const key = join(path.replace(ext, ''), fileName)
+        return [key, path]
+      }
+      return [fileName, path]
     }),
   )
   return entryPoints
@@ -157,28 +161,30 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     {
       entry: themePoints,
       watch,
-      minify: true,
+      minify: !watch,
       silent: true,
-      esbuildPlugins: [
-        // {
-        //   name: 'css',
-        //   setup(build) {
-        //     build.onLoad({ filter: /\.css$/ }, async (args) => {
-        //       const css = readFileSync(args.path, 'utf8')
-        //       const contents = css.replace('html', 'page').replace()
-        //       return {
-        //         contents,
-        //         loader: 'css',
-        //       }
-        //     })
-        //   },
-        // },
-      ],
-      esbuildOptions(options) {
-        options.outExtension = {
-          '.css': '.wxss',
-        }
+      loader: {
+        '.css': 'copy',
       },
+      plugins: [
+        {
+          name: 'css',
+          renderChunk(code, chunk) {
+            code = code
+              .replace(
+                /html\[theme-mode=['"]?(\w+)['"]?\]/g,
+                (match, theme) => `.kd-theme--${theme}`,
+              )
+              // 替换单独的 html
+              .replace(/\bhtml\b/g, '.kd-theme--light')
+            chunk.path = chunk.path.replace('.css', '.wxss')
+            return {
+              code,
+              map: chunk.map,
+            }
+          },
+        },
+      ],
     },
     {
       entry: componentJsonPoints,
@@ -248,6 +254,9 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
           },
         },
       ],
+      loader: {
+        '.json': 'copy',
+      },
     },
   ]
   return options.filter((item) => item.entry && Object.keys(item.entry).length > 0)

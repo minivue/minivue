@@ -23,10 +23,11 @@
   ],
   "window": {
     "navigationBarTitleText": "WPS 灵犀",
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "@navBgColor",
+    "navigationBarTextStyle": "@navTxtStyle",
     "navigationStyle": "custom"
   },
+  "themeLocation": "theme.json",
   "darkmode": true,
   "resizable": false,
   "frameset": false,

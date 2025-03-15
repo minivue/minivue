@@ -26,7 +26,7 @@ type HookOnHide = () => void
 type HookOnError = (error: string) => void
 type HookOnPageNotFound = (options: WechatMiniprogram.App.PageNotFoundOption) => void
 type HookOnUnhandledRejection = (
-  result: WechatMiniprogram.OnUnhandledRejectionCallbackResult,
+  result: WechatMiniprogram.OnUnhandledRejectionListenerResult,
 ) => void
 
 /**

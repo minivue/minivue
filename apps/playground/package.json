@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@minivue/cli": "workspace:*",
-    "@types/wechat-miniprogram": "latest",
     "vue": "latest",
-    "typescript": "5.8.2"
+    "typescript": "latest",
+    "miniprogram-api-typings": "latest"
   },
   "packageManager": "pnpm@10.3.0",
   "engines": {
