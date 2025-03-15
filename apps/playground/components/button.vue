@@ -24,10 +24,10 @@ const buttonClass = computed(() => `kd-button kd-button--${type} kd-button--${si
 <style>
 .kd-button {
   display: inline-flex;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   width: auto !important;
-  font-size: 16px;
   font-weight: 400;
   border-radius: 8px;
 }
@@ -40,6 +40,7 @@ const buttonClass = computed(() => `kd-button kd-button--${type} kd-button--${si
 .kd-button--m {
   min-width: 56px;
   padding: 5px 12px;
+  font-size: 14px;
   line-height: var(--kd-font-line-height-middle);
 }
 
