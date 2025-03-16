@@ -35,6 +35,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
   propKeys.forEach((key) => {
     props[key].type = props[key].type || null
     props[key].value = props[key].default
+    delete props[key].default
     observers[key] = function (value: any) {
       this.__props__[key] = value
     }
@@ -43,7 +44,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
     addGlobalClass: true,
     multipleSlots: true,
   }
-  newOptions.data = callSetup(setup, {})
+  // newOptions.data = callSetup(setup, {})
   newOptions.observers = observers
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
@@ -58,13 +59,14 @@ export const defineComponent: DefineComponentFunction = (options) => {
       ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
       // @ts-ignore
       ctx.__props__ = shallowReactive(rawProps)
+      triggerHook(this, ON_CREATED)
+    },
+    attached(this: ComponentInstance) {
+      const ctx = this
       setCurrentInstance(ctx)
       // @ts-ignore
       callSetup(setup, ctx.__props__, ctx)
-      triggerHook(this, ON_CREATED)
       setCurrentInstance()
-    },
-    attached(this: ComponentInstance) {
       triggerHook(this, ON_ATTACHED)
     },
     ready(this: ComponentInstance) {

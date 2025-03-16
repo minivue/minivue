@@ -1,5 +1,5 @@
 <template>
-  <Button :class="buttonClass"><slot /></Button>
+  <Button :class="buttonClass" hover-class="kd-button--pressed"><slot /></Button>
 </template>
 
 <script setup lang="ts">
@@ -16,15 +16,14 @@ defineOptions({
   name: 'KdButton',
 })
 
-const props = defineProps<Props>()
-const { type = 'secondary', size = 'm' } = props
+const { type = 'secondary', size = 'm' } = defineProps<Props>()
+
 const buttonClass = computed(() => `kd-button kd-button--${type} kd-button--${size}`)
 </script>
 
 <style>
 .kd-button {
   display: inline-flex;
-  gap: 6px;
   align-items: center;
   justify-content: center;
   width: auto !important;
@@ -42,6 +41,11 @@ const buttonClass = computed(() => `kd-button kd-button--${type} kd-button--${si
   padding: 5px 12px;
   font-size: 14px;
   line-height: var(--kd-font-line-height-middle);
+}
+
+.kd-button--secondary.kd-button--pressed {
+  color: var(--kd-color-text-primary);
+  background-color: var(--kd-color-state-pressed);
 }
 
 /* button {

@@ -29,7 +29,7 @@
   },
   "themeLocation": "theme.json",
   "darkmode": true,
-  "resizable": false,
+  "resizable": true,
   "frameset": false,
   "renderer": "skyline",
   "componentFramework": "glass-easel",
