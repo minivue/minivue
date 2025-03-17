@@ -158,7 +158,7 @@ function parseVFor(expression: string) {
 
 // 处理属性转换
 function transformAttributes(
-  isRoot: boolean,
+  isComponentRoot: boolean,
   tagName: string,
   attrs: (AttributeNode | DirectiveNode)[],
   eventNames: string[],
@@ -168,19 +168,22 @@ function transformAttributes(
   attrs.forEach((attr) => {
     if (attr.type === NodeTypes.ATTRIBUTE) {
       let key = attr.name
-      let value = attr.value?.content || ''
+      const value = attr.value?.content || ''
+      const isClass = key === 'class'
+      const isStyle = key === 'style'
       // 这里针对自定义组件的 class 和 style 转成其它属性名方式进行处理，这样可以在自定义组件中透传使用 class 和 style
-      if (isCustomComponent && (key === 'class' || key === 'style')) {
-        if (isRoot) {
-          if (key === 'class') {
-            value = `${value} {{externalClass}}`
-          } else {
-            value = `${value};{{externalStyle}}`
-          }
-        }
+      if (isCustomComponent && (isClass || isStyle)) {
         key = `external-${key}`
       }
-      newAttrs[key] = value
+      if (isComponentRoot && (isClass || isStyle)) {
+        if (isClass) {
+          newAttrs[key] = `${value} {{externalClass}}`
+        } else {
+          newAttrs[key] = `${value};{{externalStyle}}`
+        }
+      } else {
+        newAttrs[key] = value
+      }
     } else {
       const exp = attr.exp
       const key = attr.rawName || ''
@@ -199,7 +202,7 @@ function transformAttributes(
             if (isCustomComponent && (isClass || isStyle)) {
               newKey = `external-${newKey}`
             }
-            if (isRoot && (isClass || isStyle)) {
+            if (isComponentRoot && (isClass || isStyle)) {
               if (isClass) {
                 newAttrs[newKey] = `{{${value}}} {{externalClass}}`
               } else if (isStyle) {
@@ -251,9 +254,17 @@ function transformAttributes(
       }
     }
   })
-  if (isRoot) {
-    const hasClass = newAttrs['class']
-    const hasStyle = newAttrs['style']
+  if (isComponentRoot) {
+    const hasClass =
+      newAttrs['class'] ||
+      newAttrs[':class'] ||
+      newAttrs['external-class'] ||
+      newAttrs[':external-class']
+    const hasStyle =
+      newAttrs['style'] ||
+      newAttrs[':style'] ||
+      newAttrs['external-style'] ||
+      newAttrs[':external-style']
     if (!hasClass) {
       newAttrs['class'] = '{{externalClass}}'
     }
@@ -273,14 +284,18 @@ function transformAttributes(
  * @param eventNames - 事件名称数组。
  * @returns 转换后的 WXML 字符串。
  */
-function templateToWxml(nodes: TemplateChildNode[], eventNames: string[], isRoot = false): string {
+function templateToWxml(
+  nodes: TemplateChildNode[],
+  eventNames: string[],
+  isComponentRoot = false,
+): string {
   let result = ''
   nodes.forEach((node) => {
     const type = node.type
     if (type === NodeTypes.ELEMENT) {
       // 表示 HTML 元素节点
       const tag = transformTag(node.tag)
-      const attrs = transformAttributes(isRoot, node.tag, node.props, eventNames)
+      const attrs = transformAttributes(isComponentRoot, node.tag, node.props, eventNames)
       result += attrs ? `<${tag} ${attrs}>` : `<${tag}>`
       result += templateToWxml(node.children, eventNames)
       result += `</${tag}>`
@@ -311,6 +326,7 @@ interface WriteWxmlParams {
   eventNames: string[]
   /** 需要注入的wxs */
   wxs: string
+  isComponent: boolean
 }
 
 /**
@@ -323,12 +339,13 @@ export function writeWxml({
   fileName,
   eventNames = [],
   wxs,
+  isComponent,
 }: WriteWxmlParams) {
   const isApp = fileOutputDir === 'dist' && fileName === 'app'
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)
     const templateContent = template.ast
-      ? templateToWxml(template.ast.children, eventNames, true)
+      ? templateToWxml(template.ast.children, eventNames, isComponent)
       : '' // template.content
     const wxmlContent = wxs + templateContent
     if (cacheContent !== wxmlContent) {

@@ -33,7 +33,16 @@ export default function plugin(options: PluginOptions = {}): Plugin {
         const { descriptor } = parse(content)
         const { template, styles, customBlocks } = descriptor
         const eventNames: string[] = []
-        writeWxml({ template, fileOutputDir, fileName, eventNames, wxs })
+
+        const isComponent = customBlocks.some(({ content, type }) => {
+          if (type === 'config') {
+            const json = JSON.parse(content)
+            return !!json.component
+          }
+          return false
+        })
+
+        writeWxml({ template, fileOutputDir, fileName, eventNames, wxs, isComponent })
         writeWxss({ styles, fileOutputDir, fileName, components, isApp })
         const { contents, importedComponentMap } = await compile({
           descriptor,
@@ -41,6 +50,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
           componentLibs: components.map((component) => component.libraryName),
           eventNames,
           isApp,
+          isComponent,
         })
         writeJson({
           customBlocks,

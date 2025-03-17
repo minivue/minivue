@@ -8,6 +8,7 @@ interface CompileParams {
   componentLibs: string[]
   eventNames: string[]
   isApp: boolean
+  isComponent: boolean
 }
 
 /**
@@ -19,16 +20,8 @@ export async function compile({
   componentLibs = [],
   eventNames = [],
   isApp = false,
+  isComponent = false,
 }: CompileParams) {
-  const { customBlocks } = descriptor
-  const isComponent = customBlocks.some(({ content, type }) => {
-    if (type === 'config') {
-      const json = JSON.parse(content)
-      return !!json.component
-    }
-    return false
-  })
-
   const result = compileScript(descriptor, {
     id: hash(path),
     isProd: true,
