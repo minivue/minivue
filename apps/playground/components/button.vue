@@ -1,6 +1,6 @@
 <template>
   <Button :class="classes" hover-class="kd-button--pressed">
-    <KdIcon v-if="icon" :type="icon" :size="iconSize" /><slot />
+    <KdIcon v-if="icon" :type="icon" :size="iconSize" :style="iconStyle" /><slot />
   </Button>
 </template>
 
@@ -23,6 +23,8 @@ defineOptions({
   name: 'KdButton',
 })
 
+const iconStyle = 'color: red'
+
 const { type = 'secondary', size = 'm', disabled, icon = '' } = defineProps<Props>()
 const iconSize = size === 'm' ? 18 : 22
 const classes = computed(
@@ -31,6 +33,10 @@ const classes = computed(
 </script>
 
 <style>
+.test {
+  color: red;
+}
+
 .kd-button {
   display: inline-flex;
   align-items: center;

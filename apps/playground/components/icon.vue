@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" :style="style"></View>
+  <View :class="classes" :style="innerStyle"></View>
 </template>
 
 <script setup lang="ts">
@@ -8,6 +8,7 @@ import { computed } from '@minivue/core'
 interface Props {
   /** 图标类型 */
   type: string
+  /** 图标大小 */
   size?: number | string
 }
 
@@ -17,7 +18,7 @@ defineOptions({
 
 const { type, size = 18 } = defineProps<Props>()
 
-const style = computed(() => `width:${size}px;height:${size}px`)
+const innerStyle = computed(() => `width:${size}px;height:${size}px;`)
 const classes = computed(() => `kd-icon kd-icon--${type}`)
 </script>
 
@@ -30,7 +31,6 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   font-style: normal;
   line-height: 1;
   color: inherit;
-  -webkit-font-smoothing: antialiased;
 }
 </style>
 

@@ -40,9 +40,12 @@ export const defineComponent: DefineComponentFunction = (options) => {
       this.__props__[key] = value
     }
   })
+  props.externalClass = null
+  props.externalStyle = null
   newOptions.options = {
-    addGlobalClass: true,
     multipleSlots: true,
+    virtualHost: true,
+    styleIsolation: 'shared',
   }
   // newOptions.data = callSetup(setup, {})
   newOptions.observers = observers
@@ -63,6 +66,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
     },
     attached(this: ComponentInstance) {
       const ctx = this
+      console.warn(ctx.properties)
       setCurrentInstance(ctx)
       // @ts-ignore
       callSetup(setup, ctx.__props__, ctx)

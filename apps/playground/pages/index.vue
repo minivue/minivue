@@ -1,6 +1,6 @@
 <template>
-  <KdPage>
-    <View style="padding-top: 60px">
+  <KdPage class="p-index">
+    <View class="p-view" style="padding-top: 60px">
       <KdButton type="primary" icon="deepseek">主要按钮</KdButton>
       <KdButton type="primary" size="l">主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled>主要按钮</KdButton>

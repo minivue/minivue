@@ -8,85 +8,85 @@ import { SFCTemplateBlock } from '@vue/compiler-sfc'
 import { writeFile } from './utils'
 import { join } from 'path'
 
-// const builtInComponents = [
-//   'Block',
-//   'CoverImage',
-//   'CoverView',
-//   'MatchMedia',
-//   'MovableArea',
-//   'MovableView',
-//   'PageContainer',
-//   'RootPortal',
-//   'ScrollView',
-//   'Swiper',
-//   'SwiperItem',
-//   'View',
-//   'Icon',
-//   'Progress',
-//   'RichText',
-//   'Selection',
-//   'Button',
-//   'Checkbox',
-//   'CheckboxGroup',
-//   'Editor',
-//   'Form',
-//   'Input',
-//   'KeyboardAccessory',
-//   'Label',
-//   'Picker',
-//   'PickerView',
-//   'PickerViewColumn',
-//   'Radio',
-//   'RadioGroup',
-//   'Slider',
-//   'Switch',
-//   'Textarea',
-//   'DoubleTapGestureHandler',
-//   'ForcePressGestureHandler',
-//   'HorizontalDragGestureHandler',
-//   'LongPressGestureHandler',
-//   'PanGestureHandler',
-//   'ScaleGestureHandler',
-//   'TapGestureHandler',
-//   'VerticalDragGestureHandler',
-//   'DraggableSheet',
-//   'GridBuilder',
-//   'GridView',
-//   'ListBuilder',
-//   'ListView',
-//   'NestedScrollBody',
-//   'NestedScrollHeader',
-//   'OpenContainer',
-//   'OpenDataItem',
-//   'OpenDataList',
-//   'ShareElement',
-//   'Snapshot',
-//   'Span',
-//   'StickyHeader',
-//   'StickySection',
-//   'FunctionalPageNavigator',
-//   'Navigator',
-//   'Audio',
-//   'Camera',
-//   'ChannelLive',
-//   'ChannelVideo',
-//   'Image',
-//   'LivePlayer',
-//   'LivePusher',
-//   'Video',
-//   'VoipRoom',
-//   'Map',
-//   'Canvas',
-//   'Ad',
-//   'AdCustom',
-//   'OfficialAccount',
-//   'OpenData',
-//   'StoreHome',
-//   'StoreProduct',
-//   'WebView',
-//   'NavigationBar',
-//   'PageMeta',
-// ]
+const builtInComponents = [
+  'Block',
+  'CoverImage',
+  'CoverView',
+  'MatchMedia',
+  'MovableArea',
+  'MovableView',
+  'PageContainer',
+  'RootPortal',
+  'ScrollView',
+  'Swiper',
+  'SwiperItem',
+  'View',
+  'Icon',
+  'Progress',
+  'RichText',
+  'Selection',
+  'Button',
+  'Checkbox',
+  'CheckboxGroup',
+  'Editor',
+  'Form',
+  'Input',
+  'KeyboardAccessory',
+  'Label',
+  'Picker',
+  'PickerView',
+  'PickerViewColumn',
+  'Radio',
+  'RadioGroup',
+  'Slider',
+  'Switch',
+  'Textarea',
+  'DoubleTapGestureHandler',
+  'ForcePressGestureHandler',
+  'HorizontalDragGestureHandler',
+  'LongPressGestureHandler',
+  'PanGestureHandler',
+  'ScaleGestureHandler',
+  'TapGestureHandler',
+  'VerticalDragGestureHandler',
+  'DraggableSheet',
+  'GridBuilder',
+  'GridView',
+  'ListBuilder',
+  'ListView',
+  'NestedScrollBody',
+  'NestedScrollHeader',
+  'OpenContainer',
+  'OpenDataItem',
+  'OpenDataList',
+  'ShareElement',
+  'Snapshot',
+  'Span',
+  'StickyHeader',
+  'StickySection',
+  'FunctionalPageNavigator',
+  'Navigator',
+  'Audio',
+  'Camera',
+  'ChannelLive',
+  'ChannelVideo',
+  'Image',
+  'LivePlayer',
+  'LivePusher',
+  'Video',
+  'VoipRoom',
+  'Map',
+  'Canvas',
+  'Ad',
+  'AdCustom',
+  'OfficialAccount',
+  'OpenData',
+  'StoreHome',
+  'StoreProduct',
+  'WebView',
+  'NavigationBar',
+  'PageMeta',
+]
 
 // 标签映射
 const TAG_MAP: Record<string, string> = {
@@ -158,14 +158,28 @@ function parseVFor(expression: string) {
 
 // 处理属性转换
 function transformAttributes(
+  isRoot: boolean,
+  tagName: string,
   attrs: (AttributeNode | DirectiveNode)[],
   eventNames: string[],
 ): string {
   const newAttrs: Record<string, string> = {}
+  const isCustomComponent = !builtInComponents.includes(tagName)
   attrs.forEach((attr) => {
     if (attr.type === NodeTypes.ATTRIBUTE) {
-      const key = attr.name
-      const value = attr.value?.content || ''
+      let key = attr.name
+      let value = attr.value?.content || ''
+      // 这里针对自定义组件的 class 和 style 转成其它属性名方式进行处理，这样可以在自定义组件中透传使用 class 和 style
+      if (isCustomComponent && (key === 'class' || key === 'style')) {
+        if (isRoot) {
+          if (key === 'class') {
+            value = `${value} {{externalClass}}`
+          } else {
+            value = `${value};{{externalStyle}}`
+          }
+        }
+        key = `external-${key}`
+      }
       newAttrs[key] = value
     } else {
       const exp = attr.exp
@@ -177,8 +191,24 @@ function transformAttributes(
             // 处理 :key 转换为 wx:key
             newAttrs['wx:key'] = value.split('.').pop() || ''
           } else if (key.startsWith(':')) {
+            let newKey = key.slice(1)
+            const isClass = newKey === 'class'
+            const isStyle = newKey === 'style'
             // 数据绑定 (:属性)
-            newAttrs[key.slice(1)] = `{{${value}}}`
+            // newAttrs[newKey] = `{{${value}}}`
+            if (isCustomComponent && (isClass || isStyle)) {
+              newKey = `external-${newKey}`
+            }
+            if (isRoot && (isClass || isStyle)) {
+              if (isClass) {
+                newAttrs[newKey] = `{{${value}}} {{externalClass}}`
+              } else if (isStyle) {
+                newAttrs[newKey] = `{{${value}}};{{externalStyle}}`
+              }
+            } else {
+              // 数据绑定 (:属性)
+              newAttrs[newKey] = `{{${value}}}`
+            }
           } else if (key.startsWith('@')) {
             const [eventName, modifier = 'bind'] = key.slice(1).split('.') // 移除 @
             const markKey = `mark:${eventName}`
@@ -221,6 +251,16 @@ function transformAttributes(
       }
     }
   })
+  if (isRoot) {
+    const hasClass = newAttrs['class']
+    const hasStyle = newAttrs['style']
+    if (!hasClass) {
+      newAttrs['class'] = '{{externalClass}}'
+    }
+    if (!hasStyle) {
+      newAttrs['style'] = '{{externalStyle}}'
+    }
+  }
   return Object.entries(newAttrs)
     .map(([key, value]) => (value ? `${key}="${value}"` : key))
     .join(' ')
@@ -233,14 +273,14 @@ function transformAttributes(
  * @param eventNames - 事件名称数组。
  * @returns 转换后的 WXML 字符串。
  */
-function templateToWxml(nodes: TemplateChildNode[], eventNames: string[]): string {
+function templateToWxml(nodes: TemplateChildNode[], eventNames: string[], isRoot = false): string {
   let result = ''
   nodes.forEach((node) => {
     const type = node.type
     if (type === NodeTypes.ELEMENT) {
       // 表示 HTML 元素节点
       const tag = transformTag(node.tag)
-      const attrs = transformAttributes(node.props, eventNames)
+      const attrs = transformAttributes(isRoot, node.tag, node.props, eventNames)
       result += attrs ? `<${tag} ${attrs}>` : `<${tag}>`
       result += templateToWxml(node.children, eventNames)
       result += `</${tag}>`
@@ -287,7 +327,9 @@ export function writeWxml({
   const isApp = fileOutputDir === 'dist' && fileName === 'app'
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)
-    const templateContent = template.ast ? templateToWxml(template.ast.children, eventNames) : '' // template.content
+    const templateContent = template.ast
+      ? templateToWxml(template.ast.children, eventNames, true)
+      : '' // template.content
     const wxmlContent = wxs + templateContent
     if (cacheContent !== wxmlContent) {
       writeFile(join(fileOutputDir, `${fileName}.wxml`), wxmlContent)
