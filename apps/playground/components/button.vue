@@ -1,15 +1,20 @@
 <template>
-  <Button :class="buttonClass" hover-class="kd-button--pressed"><slot /></Button>
+  <Button :class="classes" hover-class="kd-button--pressed">
+    <KdIcon v-if="icon" :type="icon" :size="iconSize" /><slot />
+  </Button>
 </template>
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
+import KdIcon from './icon.vue'
 
 interface Props {
   /** 按钮类型 */
   type?: 'primary' | 'secondary' | 'light'
   /** 按钮尺寸 */
   size?: 'xl' | 'l' | 'm'
+  /** 图标 */
+  icon?: string
   /** 是否禁用 */
   disabled?: boolean
 }
@@ -18,9 +23,9 @@ defineOptions({
   name: 'KdButton',
 })
 
-const { type = 'secondary', size = 'm', disabled } = defineProps<Props>()
-
-const buttonClass = computed(
+const { type = 'secondary', size = 'm', disabled, icon = '' } = defineProps<Props>()
+const iconSize = size === 'm' ? 18 : 22
+const classes = computed(
   () => `kd-button kd-button--${type} kd-button--${size} ${disabled ? 'kd-button--disabled' : ''}`,
 )
 </script>
@@ -94,6 +99,18 @@ const buttonClass = computed(
 .kd-button--disabled {
   pointer-events: none;
   opacity: 0.4;
+}
+
+.kd-button--m .kd-icon {
+  margin-right: 6px;
+}
+
+.kd-button--l .kd-icon {
+  margin-right: 8px;
+}
+
+.kd-button--xl .kd-icon {
+  margin-right: 8px;
 }
 </style>
 

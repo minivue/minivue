@@ -1,8 +1,11 @@
 <style>
-.hello {
-  font-size: 20px;
-  color: #333;
-  background-color: var(--kd-color-text-primary);
+@font-face {
+  font-family: copilot-icon;
+  src: url('https://at.alicdn.com/t/c/font_4624048_0yk3r1fowps9.woff2') format('woff2');
+}
+
+.kd-icon--deepseek::before {
+  content: '\e6fa';
 }
 </style>
 

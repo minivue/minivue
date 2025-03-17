@@ -176,7 +176,7 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
                 (match, theme) => `.kd-theme--${theme}`,
               )
               // 替换单独的 html
-              .replace(/\bhtml\b/g, '.kd-theme--light')
+              .replace(/\bhtml\b/g, '.kd-theme--default')
             chunk.path = chunk.path.replace('.css', '.wxss')
             return {
               code,

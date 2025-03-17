@@ -9,12 +9,11 @@ defineOptions({
   name: 'KdPage',
 })
 
-// @ts-ignore
 const appBaseInfo = wx.getAppBaseInfo()
 
 const theme = ref(appBaseInfo.theme)
 
-const classes = computed(() => `kd-page kd-theme--${theme.value}`)
+const classes = computed(() => `kd-page kd-theme--default kd-theme--${theme.value}`)
 
 wx.onThemeChange((res) => {
   theme.value = res.theme

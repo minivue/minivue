@@ -50,17 +50,18 @@ export function writeJson({
   const json = JSON.parse(content)
   const usingComponents: Record<string, string> = {}
   for (const [key, value] of importedComponentMap) {
+    const name = basename(value, '.vue')
     const componentTagName = camelToDash(key)
     const componentLib = components.find((item) => item.libraryName === value)
     if (componentLib) {
       const componentName = componentTagName.replace(componentLib.prefix || '', '').replace(/-/, '')
       usingComponents[componentTagName] = `${value}/${componentName}/${componentName}`
-    } else if (compilerOptions) {
+    } else if (!value.startsWith('.') && compilerOptions) {
       const [path] = resolveTsConfigPaths(value, compilerOptions.baseUrl, compilerOptions.paths)
-      const name = basename(path, '.vue')
       usingComponents[componentTagName] = `${path.replace(/\.vue$/, '')}/${name}`
-    } else {
-      usingComponents[componentTagName] = value
+    } else if (value.startsWith('.')) {
+      const path = `${value.replace(/\.vue$/, '')}/${name}`.replace(/^\.\//, '')
+      usingComponents[componentTagName] = `../${path}`
     }
   }
   const hasKeys = Object.keys(usingComponents).length > 0
