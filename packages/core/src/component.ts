@@ -66,7 +66,6 @@ export const defineComponent: DefineComponentFunction = (options) => {
     },
     attached(this: ComponentInstance) {
       const ctx = this
-      console.warn(ctx.properties)
       setCurrentInstance(ctx)
       // @ts-ignore
       callSetup(setup, ctx.__props__, ctx)
