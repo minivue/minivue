@@ -1,8 +1,8 @@
 <template>
   <KdPage>
     <View class="p-view" style="padding-top: 60px">
-      <KdButton type="primary" loading>主要按钮</KdButton>
-      <KdButton type="primary" size="l">主要按钮</KdButton>
+      <KdButton type="primary">主要按钮</KdButton>
+      <KdButton type="primary" size="l" loading>主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled>主要按钮</KdButton>
     </View>
     <View>
@@ -22,12 +22,6 @@
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
 </script>
-
-<style>
-.p-index {
-  padding-top: 100px;
-}
-</style>
 
 <config lang="json">
 {

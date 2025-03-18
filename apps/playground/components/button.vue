@@ -1,13 +1,15 @@
 <template>
   <Button :class="classes" hover-class="kd-button--pressed">
-    <KdIcon v-if="icon || loading" :type="iconType" :size="iconSize" /><slot />
+    <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
+    <KdIcon v-else-if="icon" :type="icon" :size="iconSize" /><slot />
   </Button>
 </template>
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import KdIcon from './icon.vue'
 import { classnames } from './utils'
+import KdIcon from './icon.vue'
+import KdLoading from './loading.vue'
 
 interface Props {
   /** 按钮类型 */
@@ -32,31 +34,26 @@ const { type = 'secondary', size = 'm', disabled, icon = '', loading } = defineP
 
 const iconSize = computed(() => (size === 'm' ? 18 : 22))
 
-const iconType = computed(() => {
-  if (loading) {
-    return 'loading'
-  }
-  return icon
-})
+const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
+
+const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
   classnames(`kd-button kd-button--${type} kd-button--${size}`, {
+    'kd-button--loading': loading,
     'kd-button--disabled': disabled,
   }),
 )
 </script>
 
 <style>
-.test {
-  color: red;
-}
-
 .kd-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: auto !important;
   font-weight: 400;
+  vertical-align: middle;
 }
 
 .kd-button--primary {
@@ -116,6 +113,7 @@ const classes = computed(() =>
   background-color: var(--kd-color-state-pressed);
 }
 
+.kd-button--loading,
 .kd-button--disabled {
   pointer-events: none;
   opacity: 0.4;
@@ -131,21 +129,6 @@ const classes = computed(() =>
 
 .kd-button--xl .kd-icon {
   margin-right: 8px;
-}
-
-@keyframes k-anim-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.kd-button .kd-icon--loading {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none'%3E%3Cpath d='M9 14.75a1 1 0 1 0 0 2v-2zm0-11.5A5.75 5.75 0 0 1 14.75 9h2A7.75 7.75 0 0 0 9 1.25v2zm0 13.5A7.75 7.75 0 0 0 16.75 9h-2A5.75 5.75 0 0 1 9 14.75v2z' fill='url(%23A)'/%3E%3Cpath d='M9 2.25a6.75 6.75 0 0 0 0 13.5' stroke='url(%23B)' stroke-width='2' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='A' x1='9' y1='13.5' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='#fff'/%3E%3Cstop offset='1' stop-color='#fff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3ClinearGradient id='B' x1='8.438' y1='15.75' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='#fff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='#fff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
-  animation: k-anim-spin 1s linear 0s infinite;
 }
 </style>
 

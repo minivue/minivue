@@ -273,7 +273,14 @@ function transformAttributes(
     }
   }
   return Object.entries(newAttrs)
-    .map(([key, value]) => (value ? `${key}="${value}"` : key))
+    .map(([key, value]) =>
+      value
+        ? `${key}="${value
+            .split('\n')
+            .map((s) => s.trim())
+            .join('')}"`
+        : key,
+    )
     .join(' ')
 }
 
