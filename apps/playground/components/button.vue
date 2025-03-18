@@ -12,25 +12,38 @@ import KdIcon from './icon.vue'
 import KdLoading from './loading.vue'
 
 interface Props {
-  /** 按钮类型 */
-  type?: 'primary' | 'secondary' | 'light'
-  /** 按钮尺寸 */
-  size?: 'xl' | 'l' | 'm'
+  /** 是否ai按钮 */
+  ai?: boolean
   /** 图标 */
   icon?: string
-  /** 是否禁用 */
-  disabled?: boolean
   /** 是否危险 */
   danger?: boolean
   /** 是否加载中 */
   loading?: boolean
+  /** 是否禁用 */
+  disabled?: boolean
+  /** 是否强调 */
+  highlight?: boolean
+  /** 按钮尺寸 */
+  size?: 'xl' | 'l' | 'm'
+  /** 按钮类型 */
+  type?: 'primary' | 'secondary' | 'light'
 }
 
 defineOptions({
   name: 'KdButton',
 })
 
-const { type = 'secondary', size = 'm', disabled, icon = '', loading } = defineProps<Props>()
+const {
+  type = 'secondary',
+  size = 'm',
+  icon = '',
+  ai,
+  danger,
+  loading,
+  disabled,
+  highlight,
+} = defineProps<Props>()
 
 const iconSize = computed(() => (size === 'm' ? 18 : 22))
 
@@ -40,8 +53,11 @@ const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
   classnames(`kd-button kd-button--${type} kd-button--${size}`, {
+    'kd-button--ai': ai,
+    'kd-button--danger': danger,
     'kd-button--loading': loading,
     'kd-button--disabled': disabled,
+    'kd-button--highlight': highlight,
   }),
 )
 </script>
@@ -61,14 +77,59 @@ const classes = computed(() =>
   background-color: var(--kd-color-public-normal);
 }
 
+.kd-button--primary.kd-button--ai {
+  background-color: var(--kd-color-ai-normal);
+}
+
+.kd-button--primary.kd-button--danger {
+  background-color: var(--kd-color-error-normal);
+}
+
 .kd-button--secondary {
   color: var(--kd-color-text-primary);
   background-color: var(--kd-color-state-hover);
 }
 
+.kd-button--secondary.kd-button--highlight {
+  color: var(--kd-color-text-public);
+  background-color: var(--kd-color-state-pressed-public);
+}
+
 .kd-button--light {
   color: var(--kd-color-text-primary);
   background-color: transparent;
+}
+
+.kd-button--light.kd-button--highlight {
+  color: var(--kd-color-text-public);
+}
+
+.kd-button--light.kd-button--danger {
+  color: var(--kd-color-text-error);
+}
+
+.kd-button--primary.kd-button--pressed {
+  background-color: var(--kd-color-public-pressed);
+}
+
+.kd-button--primary.kd-button--ai.kd-button--pressed {
+  background-color: var(--kd-color-ai-pressed);
+}
+
+.kd-button--primary.kd-button--danger.kd-button--pressed {
+  background-color: var(--kd-color-error-pressed);
+}
+
+.kd-button--secondary.kd-button--pressed {
+  background-color: var(--kd-color-state-pressed);
+}
+
+.kd-button--secondary.kd-button--highlight.kd-button--pressed {
+  background-color: rgba(var(--kd-color-blue-2), 1);
+}
+
+.kd-button--light.kd-button--pressed {
+  background-color: var(--kd-color-state-pressed);
 }
 
 .kd-button--m {
@@ -98,27 +159,6 @@ const classes = computed(() =>
   border-radius: 12px;
 }
 
-.kd-button--primary.kd-button--pressed {
-  color: var(--kd-color-text-white);
-  background-color: var(--kd-color-public-pressed);
-}
-
-.kd-button--secondary.kd-button--pressed {
-  color: var(--kd-color-text-primary);
-  background-color: var(--kd-color-state-pressed);
-}
-
-.kd-button--light.kd-button--pressed {
-  color: var(--kd-color-text-primary);
-  background-color: var(--kd-color-state-pressed);
-}
-
-.kd-button--loading,
-.kd-button--disabled {
-  pointer-events: none;
-  opacity: 0.4;
-}
-
 .kd-button--m .kd-icon {
   margin-right: 6px;
 }
@@ -129,6 +169,12 @@ const classes = computed(() =>
 
 .kd-button--xl .kd-icon {
   margin-right: 8px;
+}
+
+.kd-button--loading,
+.kd-button--disabled {
+  pointer-events: none;
+  opacity: 0.4;
 }
 </style>
 
