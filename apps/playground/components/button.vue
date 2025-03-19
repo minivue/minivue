@@ -1,5 +1,5 @@
 <template>
-  <Button :class="classes" hover-class="kd-button--pressed">
+  <Button :class="classes" hover-class="kd-button--pressed" @tap="onTap">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <slot />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from '@minivue/core'
+import { computed, ref } from '@minivue/core'
 import { classnames } from './utils'
 import KdIcon from './icon.vue'
 import KdLoading from './loading.vue'
@@ -59,10 +59,12 @@ const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
 
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
+const _active = ref(active)
+
 const classes = computed(() =>
   classnames(`kd-button kd-button--${type} kd-button--${size}`, {
     'kd-button--ai': ai,
-    'kd-button--active': active,
+    'kd-button--active': active || _active.value,
     'kd-button--danger': danger,
     'kd-button--loading': loading,
     'kd-button--disabled': disabled,
@@ -70,6 +72,10 @@ const classes = computed(() =>
     'kd-button--highlight': highlight,
   }),
 )
+
+const onTap = () => {
+  _active.value = !_active.value
+}
 </script>
 
 <style>
@@ -184,9 +190,10 @@ const classes = computed(() =>
 .kd-button .kd-icon--dropdown {
   margin-right: 0;
   margin-left: 2px;
+  border-radius: 50%;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   mask-size: cover;
-  transition: transform 0.2s;
+  transition: transform 0.3s;
 }
 
 .kd-button--active .kd-icon--dropdown {

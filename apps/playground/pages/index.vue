@@ -41,7 +41,7 @@
       <KdButton type="light" size="xl" danger dropdown>轻浅按钮</KdButton>
     </View>
     <View>
-      <KdButton dropdown :active="active" @tap="onTap">次要按钮</KdButton>
+      <KdButton dropdown>次要按钮</KdButton>
       <KdButton size="l" dropdown>次要按钮</KdButton>
       <KdButton size="xl" dropdown>次要按钮</KdButton>
     </View>
@@ -51,11 +51,6 @@
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
-import { ref } from '@minivue/core'
-const active = ref(false)
-const onTap = () => {
-  active.value = !active.value
-}
 </script>
 
 <config lang="json">

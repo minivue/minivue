@@ -1,5 +1,5 @@
 <template>
-  <Image :class="classes" />
+  <View :class="classes" />
 </template>
 
 <script setup lang="ts">
@@ -23,10 +23,7 @@ const classes = computed(() => `kd-loading kd-loading--${size}  kd-loading--${mo
 <style>
 .kd-loading {
   display: inline-flex;
-  border-radius: 50%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3ClinearGradient x1='11.429%25' y1='79.032%25' x2='11.429%25' y2='13.71%25' id='a'%3E%3Cstop offset='0%25'/%3E%3Cstop stop-opacity='.5' offset='100%25'/%3E%3C/linearGradient%3E%3ClinearGradient x1='60.419%25' y1='100%25' x2='62.5%25' y2='8.333%25' id='b'%3E%3Cstop stop-opacity='0' offset='0%25'/%3E%3Cstop stop-opacity='.5' offset='100%25'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.75 13.5a1 1 0 1 0 0 2v-2zm0-11.5a5.75 5.75 0 0 1 5.75 5.75h2A7.75 7.75 0 0 0 7.75 0v2zm0 13.5a7.75 7.75 0 0 0 7.75-7.75h-2a5.75 5.75 0 0 1-5.75 5.75v2z' fill='url(%23a)' transform='translate(1.25 1.25)'/%3E%3Cpath d='M7.75 0v2a5.75 5.75 0 1 0 0 11.5v2a7.75 7.75 0 1 1 0-15.5z' fill='url(%23b)' transform='translate(1.25 1.25)'/%3E%3C/svg%3E");
-  mask-size: cover;
-  animation: kd-loading-spin 0.8s linear 0s infinite;
+  animation: kd-loading-spin 0.8s linear infinite;
 }
 
 .kd-loading--s {
@@ -44,11 +41,21 @@ const classes = computed(() => `kd-loading kd-loading--${size}  kd-loading--${mo
   height: 30px;
 }
 
-.kd-loading--light {
+.kd-loading::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: '';
+  border-radius: 50%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M9 14.75a1 1 0 1 0 0 2v-2zm0-11.5A5.75 5.75 0 0 1 14.75 9h2A7.75 7.75 0 0 0 9 1.25v2zm0 13.5A7.75 7.75 0 0 0 16.75 9h-2A5.75 5.75 0 0 1 9 14.75v2z' fill='url(%23A)'/%3E%3Cpath d='M9 2.25a6.75 6.75 0 0 0 0 13.5' stroke='url(%23B)' stroke-width='2' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='A' x1='9' y1='13.5' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3ClinearGradient id='B' x1='8.438' y1='15.75' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+  mask-size: cover;
+}
+
+.kd-loading--light::before {
   background-color: var(--kd-color-public-normal);
 }
 
-.kd-loading--dark {
+.kd-loading--dark::before {
   background-color: var(--kd-color-text-white);
 }
 
