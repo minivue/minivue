@@ -903,6 +903,19 @@
             "type": "boolean",
             "description": "是否是组件",
             "default": false
+          },
+          "styleIsolation": {
+            "type": "string",
+            "enum": [
+              "isolated",
+              "apply-shared",
+              "shared",
+              "page-isolated",
+              "page-apply-shared",
+              "page-shared"
+            ],
+            "description": "组件样式隔离",
+            "default": "shared"
           }
         },
         "additionalProperties": false

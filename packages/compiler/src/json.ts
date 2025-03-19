@@ -68,6 +68,9 @@ export function writeJson({
   if (hasKeys) {
     json.usingComponents = usingComponents
   }
+  if (json.component) {
+    json.styleIsolation = json.styleIsolation || 'shared'
+  }
   const newContent = JSON.stringify(json)
   writeFile(join(fileOutputDir, `${fileName}.json`), newContent)
   cache.set(fileOutputDir, newContent)

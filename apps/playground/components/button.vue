@@ -1,5 +1,5 @@
 <template>
-  <Button :class="classes" hover-class="kd-button--pressed" @tap="onTap">
+  <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200" @tap="onTap">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <slot />
@@ -86,6 +86,7 @@ const onTap = () => {
   width: auto !important;
   font-weight: 400;
   vertical-align: middle;
+  border: none;
 }
 
 .kd-button--primary {
@@ -190,8 +191,10 @@ const onTap = () => {
 .kd-button .kd-icon--dropdown {
   margin-right: 0;
   margin-left: 2px;
-  border-radius: 50%;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 97% 97%;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   mask-size: cover;
   transition: transform 0.3s;
 }
@@ -201,27 +204,27 @@ const onTap = () => {
 }
 
 .kd-button--primary .kd-icon--dropdown {
-  background-color: var(--kd-color-text-white);
+  background-image: linear-gradient(var(--kd-color-text-white), var(--kd-color-text-white));
 }
 
 .kd-button--secondary .kd-icon--dropdown {
-  background-color: var(--kd-color-text-primary);
+  background-image: linear-gradient(var(--kd-color-text-primary), var(--kd-color-text-primary));
 }
 
 .kd-button--light .kd-icon--dropdown {
-  background-color: var(--kd-color-text-primary);
+  background-image: linear-gradient(var(--kd-color-text-primary), var(--kd-color-text-primary));
 }
 
 .kd-button--light.kd-button--highlight .kd-icon--dropdown {
-  background-color: var(--kd-color-text-public);
+  background-image: linear-gradient(var(--kd-color-text-public), var(--kd-color-text-public));
 }
 
 .kd-button--light.kd-button--danger .kd-icon--dropdown {
-  background-color: var(--kd-color-text-error);
+  background-image: linear-gradient(var(--kd-color-text-error), var(--kd-color-text-error));
 }
 
 .kd-button--secondary.kd-button--highlight .kd-icon--dropdown {
-  background-color: var(--kd-color-text-public);
+  background-image: linear-gradient(var(--kd-color-text-public), var(--kd-color-text-public));
 }
 
 .kd-button--loading,
