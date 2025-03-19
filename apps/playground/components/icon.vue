@@ -18,7 +18,7 @@ defineOptions({
 
 const { type, size = 18 } = defineProps<Props>()
 
-const innerStyle = computed(() => `width:${size}px;height:${size}px`)
+const innerStyle = computed(() => `width:${size}px;height:${size}px;font-size:${size}px`)
 const classes = computed(() => `kd-icon kd-icon--${type}`)
 </script>
 
@@ -29,6 +29,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   justify-content: center;
   font-family: copilot-icon;
   font-style: normal;
+  font-weight: lighter;
   line-height: 1;
   color: inherit;
 }

@@ -2,7 +2,7 @@
   <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
-    <Text overflow="ellipsis" style="max-width: 300px"><slot /></Text>
+    <Text v-if="!onlyIcon" overflow="ellipsis" style="max-width: 300px"><slot /></Text>
     <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
   </Button>
 </template>
@@ -26,6 +26,8 @@ interface Props {
   loading?: boolean
   /** 是否禁用 */
   disabled?: boolean
+  /** 是否仅图标 */
+  onlyIcon?: boolean
   /** 是否下拉按钮 */
   dropdown?: boolean
   /** 是否强调 */
@@ -48,12 +50,13 @@ const {
   active,
   danger,
   loading,
+  onlyIcon,
   disabled,
   dropdown,
   highlight,
 } = defineProps<Props>()
 
-const iconSize = computed(() => (size === 'm' ? 18 : 22))
+const iconSize = computed(() => (onlyIcon ? 22 : size === 'm' ? 18 : 22))
 
 const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
 
@@ -65,6 +68,7 @@ const classes = computed(() =>
     'kd-button--active': active,
     'kd-button--danger': danger,
     'kd-button--loading': loading,
+    'kd-button--onlyicon': onlyIcon,
     'kd-button--disabled': disabled,
     'kd-button--dropdown': dropdown,
     'kd-button--highlight': highlight,
@@ -95,6 +99,12 @@ const classes = computed(() =>
   content: '';
   border: none;
   transform: translateY(-50%);
+}
+
+.kd-button.kd-button--onlyicon {
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
 }
 
 .kd-button--primary {
@@ -194,6 +204,10 @@ const classes = computed(() =>
 
 .kd-button--xl .kd-icon {
   margin-right: 8px;
+}
+
+.kd-button--onlyicon .kd-icon {
+  margin-right: 0;
 }
 
 .kd-button .kd-icon--dropdown {
