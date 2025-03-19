@@ -1,5 +1,5 @@
 <template>
-  <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200" @tap="onTap">
+  <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <slot />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from '@minivue/core'
+import { computed } from '@minivue/core'
 import { classnames } from './utils'
 import KdIcon from './icon.vue'
 import KdLoading from './loading.vue'
@@ -59,12 +59,10 @@ const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
 
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
-const _active = ref(active)
-
 const classes = computed(() =>
   classnames(`kd-button kd-button--${type} kd-button--${size}`, {
     'kd-button--ai': ai,
-    'kd-button--active': active || _active.value,
+    'kd-button--active': active,
     'kd-button--danger': danger,
     'kd-button--loading': loading,
     'kd-button--disabled': disabled,
@@ -72,10 +70,6 @@ const classes = computed(() =>
     'kd-button--highlight': highlight,
   }),
 )
-
-const onTap = () => {
-  _active.value = !_active.value
-}
 </script>
 
 <style>
