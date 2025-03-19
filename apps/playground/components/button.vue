@@ -56,7 +56,7 @@ const {
   highlight,
 } = defineProps<Props>()
 
-const iconSize = computed(() => (onlyIcon ? 22 : size === 'm' ? 18 : 22))
+const iconSize = computed(() => (size === 'm' && !onlyIcon ? 18 : 22))
 
 const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
 
@@ -99,12 +99,6 @@ const classes = computed(() =>
   content: '';
   border: none;
   transform: translateY(-50%);
-}
-
-.kd-button.kd-button--onlyicon {
-  min-width: 32px;
-  height: 32px;
-  padding: 0;
 }
 
 .kd-button--primary {
@@ -204,6 +198,22 @@ const classes = computed(() =>
 
 .kd-button--xl .kd-icon {
   margin-right: 8px;
+}
+
+.kd-button.kd-button--onlyicon {
+  padding: 0;
+}
+
+.kd-button--m.kd-button--onlyicon {
+  min-width: 32px;
+}
+
+.kd-button--l.kd-button--onlyicon {
+  min-width: 40px;
+}
+
+.kd-button--xl.kd-button--onlyicon {
+  min-width: 48px;
 }
 
 .kd-button--onlyicon .kd-icon {
