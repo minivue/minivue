@@ -45,6 +45,11 @@
       <KdButton size="l" dropdown>次要按钮</KdButton>
       <KdButton size="xl" dropdown>次要按钮</KdButton>
     </View>
+    <View class="group">
+      <KdButton type="primary" size="xl" style="margin: 0 6px">次要按钮</KdButton>
+      <KdButton type="primary" size="xl" style="margin: 0 6px">次要按钮</KdButton>
+      <KdButton type="primary" size="xl" style="margin: 0 6px">次要按钮</KdButton>
+    </View>
   </KdPage>
 </template>
 
@@ -52,6 +57,15 @@
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
 </script>
+
+<style>
+.group {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--kd-color-background-middle);
+}
+</style>
 
 <config lang="json">
 {

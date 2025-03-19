@@ -1,5 +1,5 @@
 <template>
-  <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200">
+  <Button :class="classes" hover-class="kd-button--pressed">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <Text v-if="!onlyIcon" overflow="ellipsis" style="max-width: 300px"><slot /></Text>
@@ -80,6 +80,7 @@ const classes = computed(() =>
 .kd-button {
   position: relative;
   display: inline-flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   width: auto !important;

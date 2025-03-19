@@ -103,7 +103,7 @@ importers:
         specifier: ^8.4.0
         version: 8.4.0(@swc/core@1.11.8)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.2)
       typescript:
-        specifier: 5.8.2
+        specifier: latest
         version: 5.8.2
 
   packages/compiler:
@@ -125,7 +125,7 @@ importers:
         specifier: 0.25.1
         version: 0.25.1
       typescript:
-        specifier: 5.8.2
+        specifier: latest
         version: 5.8.2
 
   packages/core:

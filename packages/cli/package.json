@@ -15,7 +15,7 @@
     "rimraf": "^6.0.1",
     "fast-glob": "^3.3.3",
     "tsup": "^8.4.0",
-    "typescript": "5.8.2",
+    "typescript": "latest",
     "@minivue/compiler": "workspace:*"
   },
   "packageManager": "pnpm@10.3.0",
