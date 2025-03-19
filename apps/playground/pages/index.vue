@@ -1,19 +1,19 @@
 <template>
   <KdPage>
     <View style="padding-top: 60px">
-      <KdButton type="primary">主要按钮</KdButton>
-      <KdButton type="primary" size="l" loading>主要按钮</KdButton>
-      <KdButton type="primary" size="xl" disabled>主要按钮</KdButton>
+      <KdButton type="primary" dropdown>主要按钮</KdButton>
+      <KdButton type="primary" size="l" dropdown loading>主要按钮</KdButton>
+      <KdButton type="primary" size="xl" dropdown disabled>主要按钮</KdButton>
     </View>
     <View>
-      <KdButton type="primary" ai>主要按钮</KdButton>
-      <KdButton type="primary" size="l" loading ai>主要按钮</KdButton>
-      <KdButton type="primary" size="xl" disabled ai>主要按钮</KdButton>
+      <KdButton type="primary" ai dropdown>主要按钮</KdButton>
+      <KdButton type="primary" size="l" loading dropdown ai>主要按钮</KdButton>
+      <KdButton type="primary" size="xl" disabled dropdown ai>主要按钮</KdButton>
     </View>
     <View>
-      <KdButton type="primary" danger>主要按钮</KdButton>
-      <KdButton type="primary" size="l" loading danger>主要按钮</KdButton>
-      <KdButton type="primary" size="xl" disabled danger>主要按钮</KdButton>
+      <KdButton type="primary" danger dropdown>主要按钮</KdButton>
+      <KdButton type="primary" size="l" loading danger dropdown>主要按钮</KdButton>
+      <KdButton type="primary" size="xl" disabled danger dropdown>主要按钮</KdButton>
     </View>
     <View>
       <KdButton>次要按钮</KdButton>
@@ -21,24 +21,29 @@
       <KdButton size="xl">次要按钮</KdButton>
     </View>
     <View>
-      <KdButton highlight>次要按钮</KdButton>
-      <KdButton size="l" highlight>次要按钮</KdButton>
-      <KdButton size="xl" highlight>次要按钮</KdButton>
+      <KdButton highlight dropdown>次要按钮</KdButton>
+      <KdButton size="l" highlight dropdown>次要按钮</KdButton>
+      <KdButton size="xl" highlight dropdown>次要按钮</KdButton>
     </View>
     <View>
-      <KdButton type="light">轻浅按钮</KdButton>
-      <KdButton type="light" size="l">轻浅按钮</KdButton>
-      <KdButton type="light" size="xl">轻浅按钮</KdButton>
+      <KdButton type="light" dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="l" dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="xl" dropdown>轻浅按钮</KdButton>
     </View>
     <View>
-      <KdButton type="light" highlight>轻浅按钮</KdButton>
-      <KdButton type="light" size="l" highlight>轻浅按钮</KdButton>
-      <KdButton type="light" size="xl" highlight>轻浅按钮</KdButton>
+      <KdButton type="light" highlight dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="l" highlight dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="xl" highlight dropdown>轻浅按钮</KdButton>
     </View>
     <View>
-      <KdButton type="light" danger>轻浅按钮</KdButton>
-      <KdButton type="light" size="l" danger>轻浅按钮</KdButton>
-      <KdButton type="light" size="xl" danger>轻浅按钮</KdButton>
+      <KdButton type="light" danger dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="l" danger dropdown>轻浅按钮</KdButton>
+      <KdButton type="light" size="xl" danger dropdown>轻浅按钮</KdButton>
+    </View>
+    <View>
+      <KdButton dropdown :active="active" @tap="onTap">次要按钮</KdButton>
+      <KdButton size="l" dropdown>次要按钮</KdButton>
+      <KdButton size="xl" dropdown>次要按钮</KdButton>
     </View>
   </KdPage>
 </template>
@@ -46,6 +51,11 @@
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
+import { ref } from '@minivue/core'
+const active = ref(false)
+const onTap = () => {
+  active.value = !active.value
+}
 </script>
 
 <config lang="json">

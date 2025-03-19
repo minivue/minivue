@@ -18,7 +18,7 @@ defineOptions({
 
 const { type, size = 18 } = defineProps<Props>()
 
-const innerStyle = computed(() => `width:${size}px;height:${size}px;`)
+const innerStyle = computed(() => `width:${size}px;height:${size}px`)
 const classes = computed(() => `kd-icon kd-icon--${type}`)
 </script>
 

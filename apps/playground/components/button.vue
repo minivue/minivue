@@ -1,7 +1,9 @@
 <template>
   <Button :class="classes" hover-class="kd-button--pressed">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
-    <KdIcon v-else-if="icon" :type="icon" :size="iconSize" /><slot />
+    <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
+    <slot />
+    <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
   </Button>
 </template>
 
@@ -18,10 +20,14 @@ interface Props {
   icon?: string
   /** 是否危险 */
   danger?: boolean
+  /** 是否激活 */
+  active?: boolean
   /** 是否加载中 */
   loading?: boolean
   /** 是否禁用 */
   disabled?: boolean
+  /** 是否下拉按钮 */
+  dropdown?: boolean
   /** 是否强调 */
   highlight?: boolean
   /** 按钮尺寸 */
@@ -39,9 +45,11 @@ const {
   size = 'm',
   icon = '',
   ai,
+  active,
   danger,
   loading,
   disabled,
+  dropdown,
   highlight,
 } = defineProps<Props>()
 
@@ -54,9 +62,11 @@ const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 const classes = computed(() =>
   classnames(`kd-button kd-button--${type} kd-button--${size}`, {
     'kd-button--ai': ai,
+    'kd-button--active': active,
     'kd-button--danger': danger,
     'kd-button--loading': loading,
     'kd-button--disabled': disabled,
+    'kd-button--dropdown': dropdown,
     'kd-button--highlight': highlight,
   }),
 )
@@ -169,6 +179,42 @@ const classes = computed(() =>
 
 .kd-button--xl .kd-icon {
   margin-right: 8px;
+}
+
+.kd-button .kd-icon--dropdown {
+  margin-right: 0;
+  margin-left: 2px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: cover;
+  transition: transform 0.2s;
+}
+
+.kd-button--active .kd-icon--dropdown {
+  transform: rotate(180deg);
+}
+
+.kd-button--primary .kd-icon--dropdown {
+  background-color: var(--kd-color-text-white);
+}
+
+.kd-button--secondary .kd-icon--dropdown {
+  background-color: var(--kd-color-text-primary);
+}
+
+.kd-button--light .kd-icon--dropdown {
+  background-color: var(--kd-color-text-primary);
+}
+
+.kd-button--light.kd-button--highlight .kd-icon--dropdown {
+  background-color: var(--kd-color-text-public);
+}
+
+.kd-button--light.kd-button--danger .kd-icon--dropdown {
+  background-color: var(--kd-color-text-error);
+}
+
+.kd-button--secondary.kd-button--highlight .kd-icon--dropdown {
+  background-color: var(--kd-color-text-public);
 }
 
 .kd-button--loading,
