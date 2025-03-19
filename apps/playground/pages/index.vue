@@ -1,24 +1,24 @@
 <template>
   <KdPage>
     <View style="padding-top: 60px">
-      <KdButton type="primary" dropdown>主要按钮</KdButton>
-      <KdButton type="primary" size="l" dropdown loading>主要按钮</KdButton>
-      <KdButton type="primary" size="xl" dropdown disabled>主要按钮</KdButton>
+      <KdButton type="primary" icon="deepseek">主要按钮</KdButton>
+      <KdButton type="primary" size="l">主要按钮</KdButton>
+      <KdButton type="primary" size="xl" disabled dropdown>主要按钮</KdButton>
     </View>
     <View>
       <KdButton type="primary" ai dropdown>主要按钮</KdButton>
-      <KdButton type="primary" size="l" loading dropdown ai>主要按钮</KdButton>
+      <KdButton type="primary" size="l" loading ai>主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled dropdown ai>主要按钮</KdButton>
     </View>
     <View>
       <KdButton type="primary" danger dropdown>主要按钮</KdButton>
-      <KdButton type="primary" size="l" loading danger dropdown>主要按钮</KdButton>
+      <KdButton type="primary" size="l" loading danger>主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled danger dropdown>主要按钮</KdButton>
     </View>
     <View>
       <KdButton>次要按钮</KdButton>
       <KdButton size="l">次要按钮</KdButton>
-      <KdButton size="xl">次要按钮</KdButton>
+      <KdButton size="xl" loading>次要按钮</KdButton>
     </View>
     <View>
       <KdButton highlight dropdown>次要按钮</KdButton>

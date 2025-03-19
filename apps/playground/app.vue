@@ -1,7 +1,11 @@
 <style>
 @font-face {
   font-family: copilot-icon;
-  src: url('https://at.alicdn.com/t/c/font_4009688_pry2cj4ftfs.woff2') format('woff2');
+  src: url('https://at.alicdn.com/t/c/font_4624048_z7fxpxnqvsp.woff2') format('woff2');
+}
+
+.kd-icon--deepseek::before {
+  content: '\e6fa';
 }
 </style>
 

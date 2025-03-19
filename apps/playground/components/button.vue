@@ -2,7 +2,7 @@
   <Button :class="classes" hover-class="kd-button--pressed" :hover-stay-time="200">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
-    <slot />
+    <Text overflow="ellipsis" style="max-width: 300px"><slot /></Text>
     <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
   </Button>
 </template>
@@ -74,13 +74,27 @@ const classes = computed(() =>
 
 <style>
 .kd-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: auto !important;
+  overflow: visible;
   font-weight: 400;
   vertical-align: middle;
   border: none;
+}
+
+/* 点击热区限制最小要44px */
+.kd-button::after {
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 100%;
+  height: 44px;
+  content: '';
+  border: none;
+  transform: translateY(-50%);
 }
 
 .kd-button--primary {
@@ -191,6 +205,11 @@ const classes = computed(() =>
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   mask-size: cover;
   transition: transform 0.3s;
+}
+
+/* 用于修复按钮水平并排没有对齐问题 */
+.kd-button .kd-icon--dropdown::before {
+  content: ' ';
 }
 
 .kd-button--active .kd-icon--dropdown {
