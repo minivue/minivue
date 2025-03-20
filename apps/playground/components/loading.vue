@@ -24,6 +24,7 @@ const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mod
 <style>
 .kd-loading {
   display: inline-flex;
+  flex-shrink: 0;
   animation: kd-loading-spin 0.8s linear infinite;
 }
 

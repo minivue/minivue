@@ -25,6 +25,7 @@ const builtInComponents = [
   'Progress',
   'RichText',
   'Selection',
+  'Text',
   'Button',
   'Checkbox',
   'CheckboxGroup',

@@ -2,8 +2,10 @@
   <Button :class="classes" hover-class="kd-button--pressed">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
-    <Text v-if="!onlyIcon" overflow="ellipsis" style="max-width: 300px"><slot /></Text>
-    <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
+    <View class="kd-button__content">
+      <Text v-if="!onlyIcon" overflow="ellipsis" style="max-width: 300px"><slot /></Text>
+      <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
+    </View>
   </Button>
 </template>
 
@@ -24,6 +26,8 @@ interface Props {
   active?: boolean
   /** 是否加载中 */
   loading?: boolean
+  /** 是否垂直 */
+  vertical?: boolean
   /** 是否禁用 */
   disabled?: boolean
   /** 是否仅图标 */
@@ -51,24 +55,28 @@ const {
   danger,
   loading,
   onlyIcon,
+  vertical,
   disabled,
   dropdown,
   highlight,
 } = defineProps<Props>()
 
-const iconSize = computed(() => (size === 'm' && !onlyIcon ? 18 : 22))
+const buttonSize = computed(() => (vertical ? 'l' : size))
 
-const loadingSize = computed(() => (size === 'm' ? 's' : 'm'))
+const iconSize = computed(() => (buttonSize.value === 'm' && !onlyIcon ? 18 : 22))
+
+const loadingSize = computed(() => (buttonSize.value === 'm' ? 's' : 'm'))
 
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
-  classnames(`kd-button kd-button--${type} kd-button--${size}`, {
+  classnames(`kd-button kd-button--${type} kd-button--${buttonSize.value}`, {
     'kd-button--ai': ai,
     'kd-button--active': active,
     'kd-button--danger': danger,
     'kd-button--loading': loading,
     'kd-button--onlyicon': onlyIcon,
+    'kd-button--vertical': vertical,
     'kd-button--disabled': disabled,
     'kd-button--dropdown': dropdown,
     'kd-button--highlight': highlight,
@@ -96,10 +104,16 @@ const classes = computed(() =>
   top: 50%;
   display: block;
   width: 100%;
-  height: 44px;
+  height: var(--kd-button-hotspot, 44px);
   content: '';
   border: none;
   transform: translateY(-50%);
+}
+
+.kd-button__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kd-button--primary {
@@ -230,6 +244,32 @@ const classes = computed(() =>
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   mask-size: cover;
   transition: transform 0.3s;
+}
+
+.kd-button--vertical {
+  flex-direction: column;
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 8px 4px 4px !important;
+  font-size: 11px;
+  line-height: 20px;
+}
+
+.kd-button--vertical .kd-icon {
+  margin-right: 0;
+  margin-bottom: 2px;
+}
+
+.kd-button--vertical.kd-button--dropdown {
+  padding: 8px 2px 4px 4px !important;
+}
+
+.kd-button--vertical .kd-icon--dropdown {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
 }
 
 /* 用于修复按钮水平并排没有对齐问题 */
