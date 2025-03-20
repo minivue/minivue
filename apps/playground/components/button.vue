@@ -3,7 +3,7 @@
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <View v-if="!onlyIcon" class="kd-button__content">
-      <Text overflow="ellipsis" style="max-width: 300px"><slot /></Text>
+      <Text overflow="ellipsis"><slot /></Text>
       <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
     </View>
   </Button>
@@ -88,7 +88,6 @@ const classes = computed(() =>
 .kd-button {
   position: relative;
   display: inline-flex;
-  flex: 1;
   align-items: center;
   justify-content: center;
   width: auto !important;

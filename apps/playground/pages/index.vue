@@ -58,29 +58,32 @@
       <KdButton type="secondary" icon="deepseek" vertical dropdown>主要按钮</KdButton>
       <KdButton type="light" icon="deepseek" vertical loading dropdown>主要按钮</KdButton>
     </View>
-    <View class="group">
+    <KdButtonGroup>
+      <KdButton size="xl">次要按钮</KdButton>
       <KdButton type="primary" size="xl">次要按钮</KdButton>
+    </KdButtonGroup>
+    <KdButtonGroup vertical>
       <KdButton type="primary" size="xl">次要按钮</KdButton>
-      <KdButton type="primary" size="xl">次要按钮</KdButton>
-    </View>
+      <KdButton size="xl">次要按钮</KdButton>
+    </KdButtonGroup>
+    <KdButtonGroup>
+      <KdButton size="l">次要按钮</KdButton>
+      <KdButton size="l">次要按钮</KdButton>
+      <KdButton type="primary" size="l">次要按钮</KdButton>
+    </KdButtonGroup>
+    <KdButtonGroup vertical>
+      <KdButton type="primary" size="l">次要按钮</KdButton>
+      <KdButton size="l">次要按钮</KdButton>
+    </KdButtonGroup>
   </KdPage>
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
+import KdButtonGroup from '@/components/button-group.vue'
 import KdDivider from '@/components/divider.vue'
 </script>
-
-<style>
-.group {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding: 12px 16px;
-  background: var(--kd-color-background-middle);
-}
-</style>
 
 <config lang="json">
 {
