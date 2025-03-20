@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      :root {
+        --progress: 75; /* 进度百分比 */
+      }
+
+      .progress-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 5px solid transparent; /* 透明边框 */
+        border-image: conic-gradient(#1f69e0 calc(var(--progress) * 3.6deg), #ddd 0deg) 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-circle"></div>
+  </body>
+</html>
