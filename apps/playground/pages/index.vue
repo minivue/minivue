@@ -1,6 +1,12 @@
 <template>
   <KdPage>
     <View style="height: 60px"></View>
+    <View style="background-color: #ccc">
+      <KdLoading text="加载中…" size="s" />
+      <KdLoading text="加载中…" size="m" />
+      <KdLoading text="加载中…" size="l" />
+      <KdLoading text="加载中…" mode="dark" />
+    </View>
     <KdDivider />
     <KdDivider vertical style="height: 50px; margin-left: 100px" />
     <View>
@@ -81,6 +87,7 @@
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
+import KdLoading from '@/components/loading.vue'
 import KdButtonGroup from '@/components/button-group.vue'
 import KdDivider from '@/components/divider.vue'
 </script>
