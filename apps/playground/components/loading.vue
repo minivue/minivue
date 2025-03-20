@@ -44,6 +44,8 @@ const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mod
 }
 
 .kd-loading::before {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M9 14.75a1 1 0 1 0 0 2v-2zm0-11.5A5.75 5.75 0 0 1 14.75 9h2A7.75 7.75 0 0 0 9 1.25v2zm0 13.5A7.75 7.75 0 0 0 16.75 9h-2A5.75 5.75 0 0 1 9 14.75v2z' fill='url(%23A)'/%3E%3Cpath d='M9 2.25a6.75 6.75 0 0 0 0 13.5' stroke='url(%23B)' stroke-width='2' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='A' x1='9' y1='13.5' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3ClinearGradient id='B' x1='8.438' y1='15.75' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+
   display: block;
   width: 100%;
   height: 100%;
@@ -51,7 +53,8 @@ const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mod
   background-repeat: no-repeat;
   background-position: center;
   background-size: 97% 97%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M9 14.75a1 1 0 1 0 0 2v-2zm0-11.5A5.75 5.75 0 0 1 14.75 9h2A7.75 7.75 0 0 0 9 1.25v2zm0 13.5A7.75 7.75 0 0 0 16.75 9h-2A5.75 5.75 0 0 1 9 14.75v2z' fill='url(%23A)'/%3E%3Cpath d='M9 2.25a6.75 6.75 0 0 0 0 13.5' stroke='url(%23B)' stroke-width='2' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='A' x1='9' y1='13.5' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3ClinearGradient id='B' x1='8.438' y1='15.75' x2='9' y2='3.375' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230a6cff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230a6cff' stop-opacity='.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
   mask-size: cover;
 }
 

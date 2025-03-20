@@ -235,12 +235,15 @@ const classes = computed(() =>
 }
 
 .kd-button .kd-icon--dropdown {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
   margin-right: 0;
   margin-left: 2px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 97% 97%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.781 7.313l4.211 3.93 4.226-3.93' stroke='%23333' stroke-width='1.13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
   mask-size: cover;
   transition: transform 0.3s;
 }

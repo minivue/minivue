@@ -42,7 +42,6 @@
       "defaultDisplayBlock": true
     }
   },
-  "disableScroll": true,
   "lazyCodeLoading": "requiredComponents",
   "style": "v2"
 }

@@ -40,8 +40,14 @@ export const defineComponent: DefineComponentFunction = (options) => {
       this.__props__[key] = value
     }
   })
-  props.externalClass = null
-  props.externalStyle = null
+  props.externalClass = {
+    type: String,
+    value: '',
+  }
+  props.externalStyle = {
+    type: String,
+    value: '',
+  }
   newOptions.options = {
     multipleSlots: true,
     virtualHost: true,
