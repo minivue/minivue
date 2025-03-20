@@ -2,8 +2,8 @@
   <Button :class="classes" hover-class="kd-button--pressed">
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
-    <View class="kd-button__content">
-      <Text v-if="!onlyIcon" overflow="ellipsis" style="max-width: 300px"><slot /></Text>
+    <View v-if="!onlyIcon" class="kd-button__content">
+      <Text overflow="ellipsis" style="max-width: 300px"><slot /></Text>
       <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
     </View>
   </Button>

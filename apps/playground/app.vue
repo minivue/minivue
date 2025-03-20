@@ -1,7 +1,8 @@
 <style>
 @font-face {
   font-family: copilot-icon;
-  src: url('https://at.alicdn.com/t/c/font_4009688_wrhh8pacmfq.woff2') format('woff2');
+  src: url('https://at.alicdn.com/t/c/font_4009688_jhgi4yke17.ttf?t=1742439776822')
+    format('truetype');
 }
 
 .kd-icon--deepseek::before {
