@@ -19,7 +19,7 @@
       "pages": ["index/index"],
       "plugins": {
         "account": {
-          "version": "4.1.8",
+          "version": "4.1.9",
           "provider": "wxe5f87d6a233b5aab"
         }
       }

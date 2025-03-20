@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes"><slot /></View>
+  <ScrollView :class="classes" scroll-y><slot /></ScrollView>
 </template>
 
 <script setup lang="ts">
@@ -22,7 +22,9 @@ wx.onThemeChange((res) => {
 
 <style>
 .kd-page {
-  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--kd-color-background-middle);
 }
 </style>
 

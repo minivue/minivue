@@ -15,6 +15,10 @@ import { classnames } from './utils'
 import KdIcon from './icon.vue'
 import KdLoading from './loading.vue'
 
+defineOptions({
+  name: 'KdButton',
+})
+
 interface Props {
   /** 是否ai按钮 */
   ai?: boolean
@@ -41,10 +45,6 @@ interface Props {
   /** 按钮类型 */
   type?: 'primary' | 'secondary' | 'light'
 }
-
-defineOptions({
-  name: 'KdButton',
-})
 
 const {
   type = 'secondary',
