@@ -1,8 +1,9 @@
 <template>
   <KdPage>
+    <View style="height: 60px"></View>
     <KdDivider />
     <KdDivider vertical style="height: 50px; margin-left: 100px" />
-    <View style="padding-top: 60px">
+    <View>
       <KdButton type="secondary" icon="deepseek" only-icon></KdButton>
       <KdButton type="primary" size="l">主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled dropdown>主要按钮</KdButton>
