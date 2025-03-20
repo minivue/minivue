@@ -6,6 +6,9 @@
       <KdLoading text="加载中…" size="m" />
       <KdLoading text="加载中…" size="l" />
       <KdLoading text="加载中…" mode="dark" />
+      <KdLoading text="加载中…" size="s" vertical />
+      <KdLoading text="加载中…" size="m" vertical />
+      <KdLoading text="加载中…" size="l" vertical />
     </View>
     <KdDivider />
     <KdDivider vertical style="height: 50px; margin-left: 100px" />

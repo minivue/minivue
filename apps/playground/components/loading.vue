@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
+import { classnames } from './utils'
 
 defineOptions({
   name: 'KdLoading',
@@ -19,11 +20,18 @@ interface Props {
   mode?: 'dark' | 'light'
   /** 加载状态文本提示 */
   text?: string
+  /** 是否垂直 */
+  vertical?: boolean
 }
 
-const { size = 'm', mode = 'light', text } = defineProps<Props>()
+const { size = 'm', mode = 'light', text, vertical } = defineProps<Props>()
 
-const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mode}`)
+const classes = computed(() =>
+  classnames(`kd-loading kd-loading--${size} kd-loading--${mode}`, {
+    'kd-loading--vertical': vertical,
+    'kd-loading--horizontal': !vertical,
+  }),
+)
 </script>
 
 <style>
@@ -32,6 +40,10 @@ const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mod
   flex-shrink: 0;
   align-items: center;
   vertical-align: middle;
+}
+
+.kd-loading--vertical {
+  flex-direction: column;
 }
 
 .kd-loading__icon {
@@ -63,21 +75,32 @@ const classes = computed(() => `kd-loading kd-loading--${size} kd-loading--${mod
 }
 
 .kd-loading--s .kd-loading__text {
-  margin-left: 6px;
   font-size: var(--kd-font-size-small);
   line-height: var(--kd-font-line-height-small);
 }
 
-.kd-loading--m .kd-loading__text {
-  margin-left: 8px;
+.kd-loading--m .kd-loading__text,
+.kd-loading--l .kd-loading__text {
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
 }
 
-.kd-loading--l .kd-loading__text {
+.kd-loading--horizontal.kd-loading--s .kd-loading__text {
+  margin-left: 6px;
+}
+
+.kd-loading--horizontal.kd-loading--m .kd-loading__text,
+.kd-loading--horizontal.kd-loading--l .kd-loading__text {
   margin-left: 8px;
-  font-size: var(--kd-font-size-base);
-  line-height: var(--kd-font-line-height-base);
+}
+
+.kd-loading--vertical.kd-loading--s .kd-loading__text {
+  margin-top: 6px;
+}
+
+.kd-loading--vertical.kd-loading--m .kd-loading__text,
+.kd-loading--vertical.kd-loading--l .kd-loading__text {
+  margin-top: 8px;
 }
 
 .kd-loading__icon::before {
