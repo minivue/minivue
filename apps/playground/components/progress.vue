@@ -1,8 +1,10 @@
 <template>
-  <View :class="classes">
-    <View class="box"> </View>
-    <View class="box">
-      <View class="inner" :style="styles"></View>
+  <View :class="classes" :style="styles">
+    <View class="kd-progress__inner">
+      <View class="kd-progress__ring"></View>
+    </View>
+    <View class="kd-progress__inner">
+      <View class="kd-progress__ring"></View>
     </View>
   </View>
 </template>
@@ -15,61 +17,95 @@ defineOptions({
   name: 'KdProgress',
 })
 
-const process = ref(0)
-
+const percentage = ref(0)
+const size = 40
+const stroke = size * 0.125
+const rotate = computed(() => `${(percentage.value / 100) * 360}`)
+const offset = stroke / -2
+const dotpos = size / -2 + stroke / 2
 const classes = computed(() => classnames('kd-progress'))
+const ringleft = computed(() => Math.max(180, Number(rotate.value)))
+const ringright = computed(() => Math.min(360, 180 + Number(rotate.value)))
 
-const styles = computed(() => `--process:${process.value}deg`)
+const styles = computed(
+  () =>
+    `--percentage:${percentage.value};--size:${size}px;--stroke:${stroke}px;--rotate:${rotate.value}deg;--offset:${offset}px;--dotpos:${dotpos}px;--ringleft:${ringleft.value}deg;--ringright:${ringright.value}deg`,
+)
 
-// setInterval(() => {
-//   process.value += 1
-// }, 100)
+setInterval(() => {
+  percentage.value += 1
+}, 100)
 </script>
 
 <style>
 .kd-progress {
   position: relative;
-  display: flex;
-  width: 100px;
-  height: 100px;
+  display: inline-flex;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 var(--stroke) var(--kd-color-line-regular);
 }
 
-.box {
-  position: relative;
-  width: 50%;
+.kd-progress::before,
+.kd-progress::after {
+  position: absolute;
+  width: var(--stroke);
+  height: var(--stroke);
+  content: '';
+  background-color: var(--kd-color-public-normal);
+  border-radius: 50%;
+}
+
+.kd-progress::before {
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  margin-left: var(--offset);
+}
+
+.kd-progress::after {
+  top: 50%;
+  left: 50%;
+  margin-top: var(--offset);
+  margin-left: var(--offset);
+  transform: rotate(var(--rotate)) translateY(var(--dotpos));
+  transform-origin: center;
+  transition: transform 0.1s linear;
+}
+
+.kd-progress__inner {
+  flex: 1;
   height: 100%;
   overflow: hidden;
 }
 
-.inner {
+.kd-progress__ring {
   position: relative;
+  display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  transform: rotate(-90deg);
-  transform-origin: 0 center;
+  transform: rotate(var(--ringleft));
+  transform-origin: right;
+  transition: transform 0.1s linear;
 }
 
-.inner::before {
-  position: absolute;
-  left: -100%;
+.kd-progress__inner + .kd-progress__inner .kd-progress__ring {
+  justify-content: flex-end;
+  transform: rotate(var(--ringright));
+  transform-origin: left;
+}
+
+.kd-progress__ring::before {
   box-sizing: border-box;
+  display: block;
+  flex-shrink: 0;
   width: 200%;
   height: 100%;
   content: '';
-  border: 5px solid #000;
+  border: var(--stroke) solid var(--kd-color-public-normal, #1f69e0);
   border-radius: 50%;
-}
-
-.inner::after {
-  position: absolute;
-  bottom: 0;
-  width: 5px;
-  height: 5px;
-  content: '';
-  background-color: red;
-  border-radius: 50%;
-  transform: translate(-2.5px, 0);
 }
 </style>
 
