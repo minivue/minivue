@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
+import { styleObjectToString } from './utils'
 
 interface Props {
   /** 图标类型 */
@@ -18,7 +19,14 @@ defineOptions({
 
 const { type, size = 18 } = defineProps<Props>()
 
-const innerStyle = computed(() => `width:${size}px;height:${size}px;font-size:${size}px`)
+const innerStyle = computed(() =>
+  styleObjectToString({
+    width: `${size}px`,
+    height: `${size}px`,
+    fontSize: `${size}px`,
+  }),
+)
+
 const classes = computed(() => `kd-icon kd-icon--${type}`)
 </script>
 

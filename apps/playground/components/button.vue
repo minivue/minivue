@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import { classnames } from './utils'
+import { classObjectToString } from './utils'
 import KdIcon from './icon.vue'
 import KdLoading from './loading.vue'
 
@@ -70,7 +70,7 @@ const loadingSize = computed(() => (buttonSize.value === 'm' ? 's' : 'm'))
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
-  classnames(`kd-button kd-button--${type} kd-button--${buttonSize.value}`, {
+  classObjectToString(`kd-button kd-button--${type} kd-button--${buttonSize.value}`, {
     'kd-button--ai': ai,
     'kd-button--active': active,
     'kd-button--danger': danger,

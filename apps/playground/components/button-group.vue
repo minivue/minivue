@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import { classnames } from './utils'
+import { classObjectToString } from './utils'
 
 defineOptions({
   name: 'KdButtonGroup',
@@ -18,7 +18,7 @@ interface Props {
 const { vertical } = defineProps<Props>()
 
 const classes = computed(() =>
-  classnames('kd-button-group', {
+  classObjectToString('kd-button-group', {
     'kd-button-group--vertical': vertical,
     'kd-button-group--horizontal': !vertical,
   }),

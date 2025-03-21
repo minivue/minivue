@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import { classnames } from './utils'
+import { classObjectToString } from './utils'
 
 defineOptions({
   name: 'KdDivider',
@@ -18,7 +18,7 @@ interface Props {
 const { vertical } = defineProps<Props>()
 
 const classes = computed(() =>
-  classnames('kd-divider', {
+  classObjectToString('kd-divider', {
     'kd-divider--vertical': vertical,
   }),
 )

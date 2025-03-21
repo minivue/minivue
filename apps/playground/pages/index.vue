@@ -1,6 +1,6 @@
 <template>
   <KdPage>
-    <View style="padding: 100px">
+    <View style="padding: 30px">
       <KdProgress />
     </View>
   </KdPage>
