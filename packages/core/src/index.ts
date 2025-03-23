@@ -22,6 +22,7 @@ export {
   toRaw,
   effect,
   stop,
+  watch,
   getCurrentWatcher,
   onWatcherCleanup,
   ReactiveEffect,

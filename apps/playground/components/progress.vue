@@ -1,59 +1,95 @@
 <template>
-  <View :class="classes" :style="styles">
-    <View class="kd-progress__bg"></View>
-    <View class="kd-progress__inner">
-      <View class="kd-progress__ring"></View>
+  <View :class="classes">
+    <View class="kd-progress__bar" :style="styles">
+      <View class="kd-progress__bg"></View>
+      <View class="kd-progress__inner">
+        <View class="kd-progress__ring"></View>
+      </View>
+      <View class="kd-progress__inner">
+        <View class="kd-progress__ring"></View>
+      </View>
+      <View class="kd-progress__dot"></View>
+      <View class="kd-progress__dot"></View>
     </View>
-    <View class="kd-progress__inner">
-      <View class="kd-progress__ring"></View>
-    </View>
-    <View class="kd-progress__dot"></View>
-    <View class="kd-progress__dot"></View>
+    <View v-if="text" class="kd-progress__text">{{ text }}</View>
   </View>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from '@minivue/core'
+import { computed, ref, watch } from '@minivue/core'
 import { classObjectToString, styleObjectToString } from './utils'
 
 defineOptions({
   name: 'KdProgress',
 })
 
-const percentage = ref(0)
-const size = 100
-const stroke = Math.round(size * 0.125)
-const classes = computed(() => classObjectToString('kd-progress'))
-const rotate = computed(() => (percentage.value / 100) * 360)
-const rotateLeft = computed(() => Math.max(180, rotate.value))
-const rotateRight = computed(() => Math.min(360, 180 + rotate.value))
+interface Props {
+  /** 主题 */
+  mode?: 'dark' | 'light'
+  /** 加载状态文本提示 */
+  text?: string
+  /** 类型 */
+  type?: 'ring' | 'track'
+  /** 进度百分比 */
+  percentage: number
+  /** 是否水平布局 */
+  horizontal?: boolean
+}
 
-const styles = computed(() =>
-  styleObjectToString({
-    '--percentage': percentage.value,
-    '--size': `${size}px`,
-    '--stroke': `${stroke}px`,
-    '--rotate': `${rotate.value}deg`,
-    '--rotate-left': `${rotateLeft.value}deg`,
-    '--rotate-right': `${rotateRight.value}deg`,
+const { percentage, horizontal, text, type = 'ring', mode = 'light' } = defineProps<Props>()
+
+const classes = computed(() =>
+  classObjectToString(`kd-progress kd-progress--${type} kd-progress--${mode}`, {
+    'kd-progress--horizontal': horizontal,
   }),
 )
 
-setInterval(() => {
-  if (percentage.value < 100) {
-    console.warn('rotateLeft:', rotateLeft.value)
-    console.log('rotateRight:', rotateRight.value)
-    percentage.value = Math.min(percentage.value + 1, 100)
+const current = ref(0)
+
+const styles = computed(() => {
+  const stroke = Math.round(40 * 0.125)
+  const rotate = (current.value / 100) * 360
+  const rotateLeft = Math.max(180, rotate)
+  const rotateRight = Math.min(360, 180 + rotate)
+  return styleObjectToString({
+    '--stroke': `${stroke}px`,
+    '--rotate': `${rotate}deg`,
+    '--rotate-left': `${rotateLeft}deg`,
+    '--rotate-right': `${rotateRight}deg`,
+    '--percentage': `${current.value}%`,
+  })
+})
+
+let timer: number
+
+const change = () => {
+  clearTimeout(timer)
+  const currentValue = current.value
+  if (currentValue < percentage) {
+    const step = (percentage - currentValue) / 100
+    current.value = parseFloat(Math.min(currentValue + step, 100).toFixed(2))
+    timer = setTimeout(change)
   }
-}, 10)
+}
+
+watch(() => percentage, change)
 </script>
 
 <style>
 .kd-progress {
   position: relative;
   display: inline-flex;
-  width: var(--size);
-  height: var(--size);
+  flex-direction: column;
+  align-items: center;
+}
+
+.kd-progress--ring {
+  display: inline-flex;
+}
+
+.kd-progress--track {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .kd-progress__dot {
@@ -64,7 +100,6 @@ setInterval(() => {
   justify-content: center;
   width: 100%;
   height: 100%;
-  transition: transform 200ms linear;
 }
 
 .kd-progress__dot::before {
@@ -90,20 +125,22 @@ setInterval(() => {
 }
 
 .kd-progress__inner {
+  position: relative;
   flex: 1;
   height: 100%;
   overflow: hidden;
 }
 
 .kd-progress__ring {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
   transform: rotate(var(--rotate-left));
   transform-origin: right;
-  transition: transform 200ms linear;
 }
 
 .kd-progress__inner + .kd-progress__inner .kd-progress__ring {
@@ -121,6 +158,94 @@ setInterval(() => {
   content: '';
   border: var(--stroke) solid var(--kd-color-public-normal);
   border-radius: 50%;
+}
+
+.kd-progress__text {
+  flex-shrink: 0;
+  font-size: var(--kd-font-size-base);
+  line-height: var(--kd-font-line-height-base);
+  color: var(--kd-color-text-primary);
+  text-align: center;
+}
+
+.kd-progress--ring .kd-progress__bar {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+}
+
+.kd-progress--ring .kd-progress__text {
+  margin-top: 6px;
+}
+
+.kd-progress--track .kd-progress__bar {
+  display: flex;
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.kd-progress--track .kd-progress__bg {
+  background-color: var(--kd-color-line-regular);
+  border: none;
+  border-radius: 0;
+}
+
+.kd-progress--track .kd-progress__text {
+  margin-bottom: 8px;
+}
+
+.kd-progress--track .kd-progress__bar::after {
+  display: block;
+  width: var(--percentage);
+  height: 100%;
+  content: '';
+  background-color: var(--kd-color-public-normal);
+  border-radius: 2px;
+}
+
+.kd-progress--track .kd-progress__inner,
+.kd-progress--track .kd-progress__dot {
+  display: none;
+}
+
+.kd-progress--horizontal {
+  flex-direction: row;
+}
+
+.kd-progress--horizontal .kd-progress__text {
+  margin-bottom: 0;
+  margin-left: 8px;
+}
+
+.kd-progress--dark .kd-progress__dot::before {
+  background-color: var(--kd-color-line-white);
+}
+
+.kd-progress--dark .kd-progress__ring::before {
+  border-color: var(--kd-color-line-white);
+}
+
+.kd-progress--dark .kd-progress__bg {
+  border-color: var(--kd-color-line-white);
+  opacity: 0.3;
+}
+
+.kd-progress--dark.kd-progress--track .kd-progress__bg {
+  background-color: var(--kd-color-line-white);
+}
+
+.kd-progress--dark .kd-progress__text {
+  border-color: var(--kd-color-text-white);
+}
+
+.kd-progress--dark .kd-progress--track {
+  background-color: var(--kd-color-line-white);
+}
+
+.kd-progress--dark.kd-progress--track .kd-progress__bar::after {
+  background-color: var(--kd-color-line-white);
 }
 </style>
 
