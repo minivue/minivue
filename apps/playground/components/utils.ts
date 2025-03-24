@@ -22,3 +22,15 @@ export function styleObjectToString(styleObj: CSSProperties) {
     })
     .join(';')
 }
+
+export function getAppBaseInfo() {
+  return wx.getAppBaseInfo()
+}
+
+export function getMenuButtonBoundingClientRect() {
+  return wx.getMenuButtonBoundingClientRect()
+}
+
+export function onThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback) {
+  wx.onThemeChange(listener)
+}

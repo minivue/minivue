@@ -31,15 +31,28 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 </script>
 
 <style>
+@font-face {
+  font-family: kdesign;
+  src: url('https://at.alicdn.com/t/c/font_4868388_s2rjerdb34p.ttf') format('truetype');
+}
+
 .kd-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: copilot-icon;
+  font-family: kdesign;
   font-style: normal;
   font-weight: lighter;
   line-height: 1;
   color: inherit;
+}
+
+.kd-icon--back::before {
+  content: '\e601';
+}
+
+.kd-icon--arrow::before {
+  content: '\e600';
 }
 </style>
 

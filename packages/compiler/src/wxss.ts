@@ -29,22 +29,20 @@ export function writeWxss({
   components = [],
 }: WriteWxssParams) {
   const cacheContent = cache.get(fileOutputDir)
-  if (styles.length > 0) {
-    const cssCode = styles.reduce((str, { content }) => str + content, '')
-    let importStyle = ''
-    if (isApp) {
-      components.forEach(({ styleLibraryName, themes = ['default'] }) => {
-        if (styleLibraryName) {
-          themes.forEach((theme) => {
-            importStyle += `@import 'miniprogram_npm/${styleLibraryName}/${theme}.wxss';\n`
-          })
-        }
-      })
-    }
-    const wxssCode = importStyle + cssCode
-    if (cacheContent !== wxssCode) {
-      writeFile(join(fileOutputDir, `${fileName}.wxss`), wxssCode)
-      cache.set(fileOutputDir, wxssCode)
-    }
+  const cssCode = styles.reduce((str, { content }) => str + content, '')
+  let importStyle = ''
+  if (isApp) {
+    components.forEach(({ styleLibraryName, themes = ['default'] }) => {
+      if (styleLibraryName) {
+        themes.forEach((theme) => {
+          importStyle += `@import 'miniprogram_npm/${styleLibraryName}/${theme}.wxss';\n`
+        })
+      }
+    })
+  }
+  const wxssCode = importStyle + cssCode
+  if (cacheContent !== wxssCode) {
+    writeFile(join(fileOutputDir, `${fileName}.wxss`), wxssCode)
+    cache.set(fileOutputDir, wxssCode)
   }
 }
