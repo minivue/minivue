@@ -1,3 +1,18 @@
+<style>
+@font-face {
+  font-family: copilot;
+  src: url('https://at.alicdn.com/t/c/font_4624048_n6619bp65ik.ttf') format('truetype');
+}
+
+.kd-icon {
+  font-family: kdesign, copilot !important;
+}
+
+.kd-icon--menu::before {
+  content: '\e7a8';
+}
+</style>
+
 <config lang="json">
 {
   "pages": ["pages/index/index"],

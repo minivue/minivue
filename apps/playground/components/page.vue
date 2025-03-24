@@ -1,8 +1,9 @@
 <template>
   <View :class="classes">
-    <KdNavbar :title="title">
+    <KdNavbar v-if="!hideNavbar" :title="title" :actions="actions" @action="onActionTap">
       <slot slot="left" name="navbar_left" />
-      <KdButton slot="left" icon="back" type="light" only-icon />
+      <slot name="navbar_center" />
+      <slot slot="right" name="navbar_right" />
     </KdNavbar>
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
   </View>
@@ -12,24 +13,41 @@
 import { computed, ref } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange } from './utils'
 import KdNavbar from './navbar.vue'
-import KdButton from './button.vue'
 
 defineOptions({
   name: 'KdPage',
 })
 
+interface Action {
+  /** 图标 */
+  icon: string
+  /** 行为 */
+  action: string
+}
+
 interface Props {
   /** 页面标题 */
   title?: string
+  /** 左上角按钮 */
+  actions?: Action[]
+  /** 是否隐藏导航栏 */
+  hideNavbar?: boolean
 }
 
 const appBaseInfo = getAppBaseInfo()
 
-const { title } = defineProps<Props>()
+const emit = defineEmits<{
+  /** 按钮点击 */
+  action: [action: string]
+}>()
+
+const { title, actions = [], hideNavbar } = defineProps<Props>()
 
 const theme = ref(appBaseInfo.theme)
 
 const classes = computed(() => `kd-page kd-theme--default kd-theme--${theme.value}`)
+
+const onActionTap = (action: string) => emit('action', action)
 
 onThemeChange((res) => {
   theme.value = res.theme
@@ -40,8 +58,8 @@ onThemeChange((res) => {
 .kd-page {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--kd-color-background-middle);
 }
 

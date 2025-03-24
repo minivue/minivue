@@ -101,12 +101,14 @@ const classes = computed(() =>
 .kd-button::after {
   position: absolute;
   top: 50%;
+  left: 50%;
   display: block;
   width: 100%;
+  min-width: 44px;
   height: var(--kd-button-hotspot, 44px);
   content: '';
   border: none;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 
 .kd-button__content {

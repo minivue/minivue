@@ -3,6 +3,11 @@
     <View style="height: var(--padding-top)"></View>
     <View class="kd-navbar__content">
       <View class="kd-navbar__left">
+        <View v-if="buttons.length" class="kd-navbar__actions">
+          <View class="kd-navbar__action" v-for="item in buttons" :key="item.action">
+            <KdButton type="light" :icon="item.icon" only-icon @tap="onActionTap(item.action)" />
+          </View>
+        </View>
         <slot name="left" />
       </View>
       <View class="kd-navbar__center">
@@ -18,20 +23,42 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import { classObjectToString, getMenuButtonBoundingClientRect, styleObjectToString } from './utils'
+import {
+  classObjectToString,
+  getMenuButtonBoundingClientRect,
+  getPages,
+  navigateBack,
+  styleObjectToString,
+} from './utils'
+
+import KdButton from './button.vue'
 
 defineOptions({
   name: 'KdNavbar',
 })
 
-interface Props {
-  title?: string
+interface Action {
+  /** 图标 */
+  icon: string
+  /** 行为 */
+  action: string
 }
 
-const { title } = defineProps<Props>()
+interface Props {
+  /** 标题 */
+  title?: string
+  /** 左侧按钮 */
+  actions?: Action[]
+}
 
-const { top, bottom, left, right, width, height } = getMenuButtonBoundingClientRect()
-console.log(top, bottom, left, right, width, height)
+const emit = defineEmits<{
+  /** 按钮点击 */
+  action: [action: string]
+}>()
+
+const { title, actions = [] } = defineProps<Props>()
+
+const { top, left, height } = getMenuButtonBoundingClientRect()
 
 const classes = computed(() => classObjectToString('kd-navbar'))
 
@@ -43,6 +70,29 @@ const styles = computed(() => {
     '--padding-width': `calc(100% - ${left}px)`,
   })
 })
+
+const buttons = computed(() => {
+  if (actions.length) {
+    return actions
+  }
+  const pages = getPages()
+  if (pages.length > 1) {
+    return [
+      {
+        icon: 'back',
+        action: 'back',
+      },
+    ]
+  }
+  return []
+})
+
+const onActionTap = (action: string) => {
+  if (action === 'back') {
+    navigateBack()
+  }
+  emit('action', action)
+}
 </script>
 
 <style>
@@ -54,8 +104,23 @@ const styles = computed(() => {
 
 .kd-navbar__left,
 .kd-navbar__right {
+  display: flex;
   flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
   min-width: var(--padding-width);
+}
+
+.kd-navbar__actions {
+  padding: 0 5px;
+}
+
+.kd-navbar__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
 }
 
 .kd-navbar__center {

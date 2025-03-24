@@ -1,6 +1,6 @@
 import { shallowReactive } from '@vue/reactivity'
 import { ComponentInstance, ComponentOptions, DefineComponentFunction } from './type'
-import { exclude } from './utils'
+import { exclude, isFunction } from './utils'
 import { callSetup } from './shared'
 import {
   createHook,
@@ -34,7 +34,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
   const observers: Record<string, any> = {}
   propKeys.forEach((key) => {
     props[key].type = props[key].type || null
-    props[key].value = props[key].default
+    props[key].value = isFunction(props[key].default) ? props[key].default() : props[key].default
     delete props[key].default
     observers[key] = function (value: any) {
       this.__props__[key] = value

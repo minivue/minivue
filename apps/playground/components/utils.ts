@@ -34,3 +34,11 @@ export function getMenuButtonBoundingClientRect() {
 export function onThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback) {
   wx.onThemeChange(listener)
 }
+
+export function navigateBack(options?: WechatMiniprogram.NavigateBackOption) {
+  wx.navigateBack(options)
+}
+
+export function getPages() {
+  return getCurrentPages()
+}
