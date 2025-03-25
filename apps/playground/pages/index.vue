@@ -1,10 +1,19 @@
 <template>
   <KdPage title="WPS灵犀" :actions="[{ icon: 'menu', action: 'menu' }]" @action="onActionTap">
-    <KdSwitch @change="onChange" />
-    <KdSwitch @change="onChange" disabled />
-    <KdSwitch @change="onChange" checked />
-    <KdSwitch @change="onChange" checked disabled />
-    <KdCheckbox @change="onChange" />
+    <View style="padding: 16px">
+      <KdSwitch @change="onChange" />
+      <KdSwitch @change="onChange" disabled />
+      <KdSwitch @change="onChange" checked />
+      <KdSwitch @change="onChange" checked disabled />
+    </View>
+    <View style="padding: 16px">
+      <KdCheckbox @change="onChange" />
+      <KdCheckbox @change="onChange" disabled />
+      <KdCheckbox @change="onChange" checked />
+      <KdCheckbox @change="onChange" indeterminate />
+      <KdCheckbox @change="onChange" checked disabled />
+      <KdCheckbox @change="onChange" indeterminate disabled />
+    </View>
   </KdPage>
 </template>
 
