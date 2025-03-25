@@ -7,12 +7,12 @@
       <KdSwitch @change="onChange" checked disabled />
     </View>
     <View style="padding: 16px">
-      <KdCheckbox @change="onChange" />
-      <KdCheckbox @change="onChange" disabled />
-      <KdCheckbox @change="onChange" checked />
-      <KdCheckbox @change="onChange" indeterminate />
-      <KdCheckbox @change="onChange" checked disabled />
-      <KdCheckbox @change="onChange" indeterminate disabled />
+      <KdCheckboxGroup @change="onCheckChange">
+        <KdCheckbox value="1" />
+        <KdCheckbox value="2" checked />
+        <KdCheckbox value="3" disabled />
+        <KdCheckbox value="4" checked disabled />
+      </KdCheckboxGroup>
     </View>
   </KdPage>
 </template>
@@ -21,6 +21,7 @@
 import KdPage from '@/components/page.vue'
 import KdSwitch from '@/components/switch.vue'
 import KdCheckbox from '@/components/checkbox.vue'
+import KdCheckboxGroup from '@/components/checkbox-group.vue'
 
 const onActionTap = (action: string) => {
   console.log('onActionTap:', action)
@@ -31,6 +32,10 @@ const onActionTap = (action: string) => {
 
 const onChange = (value: boolean) => {
   console.log('onChange:', value)
+}
+
+const onCheckChange = (value: string[]) => {
+  console.log('onCheckChange:', value)
 }
 </script>
 
