@@ -14,14 +14,19 @@
         <KdCheckbox value="4" checked disabled />
       </KdCheckboxGroup>
     </View>
+    <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
+import KdInput from '@/components/input.vue'
 import KdSwitch from '@/components/switch.vue'
 import KdCheckbox from '@/components/checkbox.vue'
 import KdCheckboxGroup from '@/components/checkbox-group.vue'
+import { ref } from '@minivue/core'
+
+const value = ref('哈哈')
 
 const onActionTap = (action: string) => {
   console.log('onActionTap:', action)

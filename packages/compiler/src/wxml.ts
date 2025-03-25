@@ -194,6 +194,12 @@ function transformAttributes(
           if (key === ':key') {
             // 处理 :key 转换为 wx:key
             newAttrs['wx:key'] = value.split('.').pop() || ''
+          } else if (key.startsWith('v-model')) {
+            let [start, end] = key.split(':')
+            start = start.replace('v-model', 'model')
+            end = end || 'value'
+            const newKey = `${start}:${end}`
+            newAttrs[newKey] = `{{${value}}}`
           } else if (key.startsWith(':')) {
             let newKey = key.slice(1)
             const isClass = newKey === 'class'

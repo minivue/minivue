@@ -19,6 +19,7 @@
     "@kdocs/kdesign-theme": "latest"
   },
   "devDependencies": {
+    "@types/node": "latest",
     "@minivue/cli": "workspace:*",
     "vue": "latest",
     "typescript": "latest",

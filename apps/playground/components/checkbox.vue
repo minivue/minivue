@@ -11,11 +11,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from '@minivue/core'
-import { classObjectToString } from './utils'
+import { computed, ref, getCurrentInstance, ComponentInstance } from '@minivue/core'
+import { classObjectToString, setCheckboxValues } from './utils'
 
 defineOptions({
   name: 'KdCheckbox',
+  relations: {
+    '../checkbox-group/checkbox-group': {
+      type: 'parent',
+      linked(target: any) {
+        // @ts-ignore
+        this.parent = target
+      },
+    },
+  },
 })
 
 interface Props {
@@ -40,6 +49,8 @@ const { value, checked, disabled, indeterminate } = defineProps<Props>()
 
 const innerChecked = ref(checked)
 
+const currentContext = getCurrentInstance<ComponentInstance & { parent: ComponentInstance }>()
+
 const classes = computed(() =>
   classObjectToString('kd-checkbox', {
     'kd-checkbox--checked': innerChecked.value,
@@ -51,12 +62,21 @@ const classes = computed(() =>
 const onChange = () => {
   innerChecked.value = !innerChecked.value
   emit('change', innerChecked.value)
+  const parent = currentContext?.parent
+  if (parent) {
+    // 延时执行，等innerChecked更新
+    setTimeout(() => {
+      setCheckboxValues.call(parent)
+      parent.emit?.('change', parent.values)
+    })
+  }
 }
 </script>
 
 <style>
 .kd-checkbox {
   position: relative;
+  box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
   width: 22px;
@@ -64,14 +84,14 @@ const onChange = () => {
   overflow: hidden;
   background-repeat: no-repeat;
   background-size: cover;
+  border: solid 1.5px var(--kd-color-line-medium);
   border-radius: var(--kd-border-radius-circle);
-  box-shadow: inset 0 0 0 1.5px var(--kd-color-line-medium);
 }
 
 .kd-checkbox--checked,
 .kd-checkbox--indeterminate {
   background-color: var(--kd-color-public-normal) !important;
-  box-shadow: none;
+  border-color: var(--kd-color-public-normal) !important;
 }
 
 .kd-checkbox--checked {

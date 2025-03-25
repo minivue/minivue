@@ -1,3 +1,4 @@
+import { ComponentInstance } from '@minivue/core'
 import { CSSProperties } from 'vue'
 
 type ClassValue = string | number | boolean | undefined | null | Record<string, unknown>
@@ -41,4 +42,10 @@ export function navigateBack(options?: WechatMiniprogram.NavigateBackOption) {
 
 export function getPages() {
   return getCurrentPages()
+}
+
+export function setCheckboxValues(this: ComponentInstance) {
+  const nodes = this.getRelationNodes('../checkbox/checkbox')
+  // @ts-ignore
+  this.values = nodes.filter((node) => node.data.innerChecked).map((node) => node.data.value)
 }
