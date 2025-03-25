@@ -209,7 +209,24 @@ interface RadioGroupProps {}
 
 interface SliderProps {}
 
-interface SwitchProps {}
+interface SwitchProps {
+  /**
+   * 是否选中
+   */
+  checked?: boolean
+  /**
+   * 是否禁用
+   */
+  disabled?: boolean
+  /**
+   * 颜色
+   */
+  color?: string
+  /**
+   * 改变时触发 change 事件
+   */
+  onChange?: Hook<(e: WechatMiniprogram.SwitchChange) => void>
+}
 
 interface TextareaProps {}
 

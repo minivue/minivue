@@ -46,6 +46,7 @@ const classes = computed(() => `kd-link kd-link--${size}`)
 }
 
 .kd-link__text {
+  position: relative;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

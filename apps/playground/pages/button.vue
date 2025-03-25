@@ -1,5 +1,5 @@
 <template>
-  <KdPage>
+  <KdPage title="示例代码">
     <View style="height: 60px"></View>
     <View style="background-color: #ccc">
       <KdLoading text="加载中…" size="s" />
@@ -13,7 +13,7 @@
     <KdDivider />
     <KdDivider vertical style="height: 50px; margin-left: 100px" />
     <View>
-      <KdButton type="secondary" icon="deepseek" only-icon></KdButton>
+      <KdButton type="secondary" icon="menu" only-icon></KdButton>
       <KdButton type="primary" size="l">主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled dropdown>主要按钮</KdButton>
     </View>
@@ -58,14 +58,14 @@
       <KdButton size="xl" dropdown>次要按钮</KdButton>
     </View>
     <View>
-      <KdButton type="light" icon="deepseek" vertical>主要按钮</KdButton>
-      <KdButton type="secondary" icon="deepseek" size="l" vertical>主要按钮</KdButton>
-      <KdButton type="light" icon="deepseek" size="xl" vertical loading>主要按钮</KdButton>
+      <KdButton type="light" icon="menu" vertical>主要按钮</KdButton>
+      <KdButton type="secondary" icon="menu" size="l" vertical>主要按钮</KdButton>
+      <KdButton type="light" icon="menu" size="xl" vertical loading>主要按钮</KdButton>
     </View>
     <View>
-      <KdButton type="light" icon="deepseek" vertical dropdown>主要按钮</KdButton>
-      <KdButton type="secondary" icon="deepseek" vertical dropdown>主要按钮</KdButton>
-      <KdButton type="light" icon="deepseek" vertical loading dropdown>主要按钮</KdButton>
+      <KdButton type="light" icon="menu" vertical dropdown>主要按钮</KdButton>
+      <KdButton type="secondary" icon="menu" vertical dropdown>主要按钮</KdButton>
+      <KdButton type="light" icon="menu" vertical loading dropdown>主要按钮</KdButton>
     </View>
     <KdButtonGroup>
       <KdButton size="xl">次要按钮</KdButton>
@@ -84,6 +84,15 @@
       <KdButton type="primary" size="l">次要按钮</KdButton>
       <KdButton size="l">次要按钮</KdButton>
     </KdButtonGroup>
+    <KdLink size="s">链接</KdLink>
+    <KdLink size="m">链接</KdLink>
+    <KdLink size="l">Link text</KdLink>
+    <KdProgress :percentage="50" />
+    <KdProgress :percentage="50" mode="dark" text="加载中..." />
+    <KdProgress :percentage="50" horizontal />
+    <KdProgress :percentage="50" mode="dark" horizontal />
+    <KdProgress :percentage="50" horizontal type="track" />
+    <KdProgress :percentage="50" mode="dark" horizontal type="track" text="加载中..." />
   </KdPage>
 </template>
 
@@ -93,6 +102,8 @@ import KdButton from '@/components/button.vue'
 import KdLoading from '@/components/loading.vue'
 import KdButtonGroup from '@/components/button-group.vue'
 import KdDivider from '@/components/divider.vue'
+import KdLink from '@/components/link.vue'
+import KdProgress from '@/components/progress.vue'
 </script>
 
 <config lang="json">

@@ -34,12 +34,14 @@ interface Props {
   hideNavbar?: boolean
 }
 
-const appBaseInfo = getAppBaseInfo()
-
-const emit = defineEmits<{
+interface Events {
   /** 按钮点击 */
   action: [action: string]
-}>()
+}
+
+const appBaseInfo = getAppBaseInfo()
+
+const emit = defineEmits<Events>()
 
 const { title, actions = [], hideNavbar } = defineProps<Props>()
 

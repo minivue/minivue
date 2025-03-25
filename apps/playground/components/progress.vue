@@ -44,7 +44,7 @@ const classes = computed(() =>
   }),
 )
 
-const current = ref(0)
+const current = ref(percentage)
 
 const styles = computed(() => {
   const stroke = Math.round(40 * 0.125)

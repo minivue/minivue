@@ -51,10 +51,12 @@ interface Props {
   actions?: Action[]
 }
 
-const emit = defineEmits<{
+interface Events {
   /** 按钮点击 */
   action: [action: string]
-}>()
+}
+
+const emit = defineEmits<Events>()
 
 const { title, actions = [] } = defineProps<Props>()
 
