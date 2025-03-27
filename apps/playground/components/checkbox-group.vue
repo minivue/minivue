@@ -3,16 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { setCheckboxValues } from './utils'
-
 defineOptions({
   name: 'KdCheckboxGroup',
   relations: {
     '../checkbox/checkbox': {
       type: 'child',
-      linked: setCheckboxValues,
-      linkChanged: setCheckboxValues,
-      unlinked: setCheckboxValues,
     },
   },
 })
@@ -23,6 +18,10 @@ interface Events {
 }
 
 defineEmits<Events>()
+
+const value = defineModel('value')
+
+console.log(value)
 </script>
 
 <config lang="json">

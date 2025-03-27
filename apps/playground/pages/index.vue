@@ -7,7 +7,7 @@
       <KdSwitch @change="onChange" checked disabled />
     </View>
     <View style="padding: 16px">
-      <KdCheckboxGroup @change="onCheckChange">
+      <KdCheckboxGroup v-model="checkList" @change="onCheckChange">
         <KdCheckbox value="1" />
         <KdCheckbox value="2" checked />
         <KdCheckbox value="3" disabled />
@@ -27,6 +27,7 @@ import KdCheckboxGroup from '@/components/checkbox-group.vue'
 import { ref } from '@minivue/core'
 
 const value = ref('哈哈')
+const checkList = ref<string[]>(['1', '2'])
 
 const onActionTap = (action: string) => {
   console.log('onActionTap:', action)
