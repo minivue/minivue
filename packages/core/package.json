@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "latest",
-    "esbuild": "0.25.1",
+    "esbuild": "0.25.2",
     "typescript": "latest",
     "miniprogram-api-typings": "latest"
   },
