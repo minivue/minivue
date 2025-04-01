@@ -7,7 +7,7 @@
       <KdSwitch @change="onChange" checked disabled />
     </View>
     <View style="padding: 16px">
-      <KdCheckboxGroup v-model="checkList" @change="onCheckChange">
+      <KdCheckboxGroup :value="checkList" @change="onCheckChange">
         <KdCheckbox value="1" />
         <KdCheckbox value="2" checked />
         <KdCheckbox value="3" disabled />
@@ -27,7 +27,7 @@ import KdCheckboxGroup from '@/components/checkbox-group.vue'
 import { ref } from '@minivue/core'
 
 const value = ref('哈哈')
-const checkList = ref<string[]>(['1', '2'])
+const checkList = ref<number[]>([])
 
 const onActionTap = (action: string) => {
   console.log('onActionTap:', action)
@@ -40,9 +40,21 @@ const onChange = (value: boolean) => {
   console.log('onChange:', value)
 }
 
-const onCheckChange = (value: string[]) => {
+const onCheckChange = (value: number[]) => {
   console.log('onCheckChange:', value)
+  checkList.value = value
 }
+
+setTimeout(() => {
+  checkList.value = [1, 2, 3, 4]
+}, 1000)
+
+// watch(
+//   () => checkList.value,
+//   (newValue) => {
+//     console.log('checkList.value:', newValue)
+//   },
+// )
 </script>
 
 <config lang="json">

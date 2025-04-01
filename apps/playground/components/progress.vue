@@ -60,7 +60,7 @@ const styles = computed(() => {
   })
 })
 
-let timer: number
+let timer: NodeJS.Timeout
 
 const change = () => {
   clearTimeout(timer)

@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, getCurrentInstance, ComponentInstance } from '@minivue/core'
-import { classObjectToString, setCheckboxValues } from './utils'
+import { computed, ref, watch, getCurrentInstance, ComponentInstance } from '@minivue/core'
+import { classObjectToString } from './utils'
 
 defineOptions({
   name: 'KdCheckbox',
@@ -62,15 +62,24 @@ const classes = computed(() =>
 const onChange = () => {
   innerChecked.value = !innerChecked.value
   emit('change', innerChecked.value)
-  const parent = currentContext?.parent
-  if (parent) {
-    // 延时执行，等innerChecked更新
-    setTimeout(() => {
-      setCheckboxValues.call(parent)
-      parent.emit?.('change', parent.values)
-    })
-  }
+  // const parent = currentContext?.parent
+  // if (parent) {
+  //   // 延时执行，等innerChecked更新
+  //   setTimeout(() => {
+  //     setCheckboxValues.call(parent)
+  //     parent.emit?.('change', parent.values)
+  //   })
+  // }
 }
+
+watch(
+  () => {
+    return currentContext?.parent?.value
+  },
+  (newValue) => {
+    console.log('value:', newValue)
+  },
+)
 </script>
 
 <style>

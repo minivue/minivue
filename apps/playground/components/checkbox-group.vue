@@ -2,7 +2,14 @@
   <slot />
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends any[]">
+/** 状态改变 */
+interface Events<T> {
+  change: [value: T]
+}
+
+defineEmits<Events<T>>()
+
 defineOptions({
   name: 'KdCheckboxGroup',
   relations: {
@@ -12,16 +19,7 @@ defineOptions({
   },
 })
 
-interface Events {
-  /** 状态改变 */
-  change: [value: string[]]
-}
-
-defineEmits<Events>()
-
-const value = defineModel('value')
-
-console.log(value)
+defineProps<{ value: T }>()
 </script>
 
 <config lang="json">
