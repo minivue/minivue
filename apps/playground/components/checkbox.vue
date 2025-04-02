@@ -19,9 +19,10 @@ defineOptions({
   relations: {
     '../checkbox-group/checkbox-group': {
       type: 'parent',
-      linked(target: any) {
+      linked: function (target: any) {
         // @ts-ignore
         this.parent = target
+        console.log('parent:', target)
       },
     },
   },
@@ -71,6 +72,13 @@ const onChange = () => {
   //   })
   // }
 }
+
+watch(
+  () => checked,
+  (newValue) => {
+    innerChecked.value = newValue
+  },
+)
 
 watch(
   () => {

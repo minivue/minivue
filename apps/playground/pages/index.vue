@@ -13,6 +13,7 @@
         <KdCheckbox value="3" disabled />
         <KdCheckbox value="4" checked disabled />
       </KdCheckboxGroup>
+      <KdCheckbox value="2" :checked="checked" />
     </View>
     <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
@@ -44,6 +45,10 @@ const onCheckChange = (value: number[]) => {
   console.log('onCheckChange:', value)
   checkList.value = value
 }
+const checked = ref(false)
+setTimeout(() => {
+  checked.value = true
+}, 1000)
 
 setTimeout(() => {
   checkList.value = [1, 2, 3, 4]
