@@ -10,7 +10,7 @@
   </View>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends any">
 import { computed, ref, watch, getCurrentInstance, ComponentInstance } from '@minivue/core'
 import { classObjectToString } from './utils'
 
@@ -22,7 +22,6 @@ defineOptions({
       linked: function (target: any) {
         // @ts-ignore
         this.parent = target
-        console.log('parent:', target)
       },
     },
   },
@@ -35,8 +34,10 @@ interface Props {
   disabled?: boolean
   /** 是否为半选状态 */
   indeterminate?: boolean
+  /** 是否为全选checkbox */
+  master?: boolean
   /** checkbox标识，选中时触发checkbox-group的 change 事件，并携带 checkbox 的 value */
-  value?: string
+  value?: T
 }
 
 interface Events {
@@ -46,7 +47,7 @@ interface Events {
 
 const emit = defineEmits<Events>()
 
-const { value, checked, disabled, indeterminate } = defineProps<Props>()
+const { value, checked, disabled, master, indeterminate } = defineProps<Props>()
 
 const innerChecked = ref(checked)
 
@@ -63,29 +64,31 @@ const classes = computed(() =>
 const onChange = () => {
   innerChecked.value = !innerChecked.value
   emit('change', innerChecked.value)
-  // const parent = currentContext?.parent
-  // if (parent) {
-  //   // 延时执行，等innerChecked更新
-  //   setTimeout(() => {
-  //     setCheckboxValues.call(parent)
-  //     parent.emit?.('change', parent.values)
-  //   })
-  // }
+  const parent = currentContext?.parent
+  if (parent) {
+    if (master) {
+      const checkboxes = parent.getRelationNodes('../checkbox/checkbox')
+      checkboxes.forEach((checkbox) => {
+        const props = checkbox.__props__
+        props.checked = innerChecked.value
+      })
+    }
+    setTimeout(() => {
+      const nodes = parent.getRelationNodes('../checkbox/checkbox')
+      const value = nodes
+        // @ts-ignore
+        .filter((node) => !node.data.master && node.data.innerChecked)
+        // @ts-ignore
+        .map((node) => node.data.value)
+      parent.emit('change', value)
+    })
+  }
 }
 
 watch(
   () => checked,
   (newValue) => {
     innerChecked.value = newValue
-  },
-)
-
-watch(
-  () => {
-    return currentContext?.parent?.value
-  },
-  (newValue) => {
-    console.log('value:', newValue)
   },
 )
 </script>

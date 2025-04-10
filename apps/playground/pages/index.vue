@@ -8,10 +8,11 @@
     </View>
     <View style="padding: 16px">
       <KdCheckboxGroup :value="checkList" @change="onCheckChange">
-        <KdCheckbox value="1" />
-        <KdCheckbox value="2" checked />
-        <KdCheckbox value="3" disabled />
-        <KdCheckbox value="4" checked disabled />
+        <KdCheckbox master />
+        <KdCheckbox :value="1" />
+        <KdCheckbox :value="2" checked />
+        <KdCheckbox :value="3" disabled />
+        <KdCheckbox :value="4" checked disabled />
       </KdCheckboxGroup>
       <KdCheckbox value="2" :checked="checked" />
     </View>
@@ -28,7 +29,7 @@ import KdCheckboxGroup from '@/components/checkbox-group.vue'
 import { ref } from '@minivue/core'
 
 const value = ref('哈哈')
-const checkList = ref<number[]>([])
+const checkList = ref<number[]>([1, 2])
 
 const onActionTap = (action: string) => {
   console.log('onActionTap:', action)
@@ -48,18 +49,11 @@ const onCheckChange = (value: number[]) => {
 const checked = ref(false)
 setTimeout(() => {
   checked.value = true
-}, 1000)
+}, 2000)
 
 setTimeout(() => {
   checkList.value = [1, 2, 3, 4]
 }, 1000)
-
-// watch(
-//   () => checkList.value,
-//   (newValue) => {
-//     console.log('checkList.value:', newValue)
-//   },
-// )
 </script>
 
 <config lang="json">

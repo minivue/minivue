@@ -186,19 +186,9 @@ export type AppLaunchOption = WechatMiniprogram.App.LaunchShowOption
 export type AppOptions = WechatMiniprogram.App.Options<WechatMiniprogram.IAnyObject>
 export type AppInstance = WechatMiniprogram.App.Instance<WechatMiniprogram.IAnyObject>
 
-export type PageInstance = WechatMiniprogram.Page.Instance<
-  WechatMiniprogram.Page.DataOption,
-  WechatMiniprogram.Page.CustomOption
->
+export type PageInstance = WechatMiniprogram.Page.TrivialInstance
 
-export type ComponentInstance = WechatMiniprogram.Component.Instance<
-  WechatMiniprogram.Component.DataOption,
-  WechatMiniprogram.Component.PropertyOption,
-  Partial<WechatMiniprogram.Component.MethodOption>,
-  WechatMiniprogram.Component.BehaviorOption,
-  {},
-  false
->
+export type ComponentInstance = WechatMiniprogram.Component.TrivialInstance
 
 export type PageOptions = WechatMiniprogram.Page.Options<
   WechatMiniprogram.Page.DataOption,
