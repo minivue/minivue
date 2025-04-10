@@ -14,6 +14,7 @@ export default {
   rules: {
     'selector-type-no-unknown': null,
     'color-function-notation': null,
+    'color-function-alias-notation': null,
     'import-notation': null,
     'property-no-vendor-prefix': null,
     'font-family-no-missing-generic-family-keyword': null,
