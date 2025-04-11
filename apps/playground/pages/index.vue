@@ -8,13 +8,16 @@
     </View>
     <View style="padding: 16px">
       <KdCheckboxGroup :value="checkList" @change="onCheckChange">
-        <KdCheckbox master />
-        <KdCheckbox :value="1" />
-        <KdCheckbox :value="2" checked />
-        <KdCheckbox :value="3" disabled />
-        <KdCheckbox :value="4" checked disabled />
+        <KdLabel style="display: flex"> <KdCheckbox master /> 全选 </KdLabel>
+        <KdLabel style="display: flex"> <KdCheckbox :value="1" /> 选项1 </KdLabel>
+        <KdLabel style="display: flex"> <KdCheckbox :value="2" /> 选项2 </KdLabel>
+        <KdLabel style="display: flex"> <KdCheckbox :value="3" /> 选项3 </KdLabel>
+        <KdLabel style="display: flex"> <KdCheckbox :value="4" /> 选项4 </KdLabel>
       </KdCheckboxGroup>
-      <KdCheckbox value="2" :checked="checked" />
+      <KdLabel>
+        <KdCheckbox value="2" :checked="checked" />
+        同意协议
+      </KdLabel>
     </View>
     <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
@@ -22,6 +25,7 @@
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
+import KdLabel from '@/components/label.vue'
 import KdInput from '@/components/input.vue'
 import KdSwitch from '@/components/switch.vue'
 import KdCheckbox from '@/components/checkbox.vue'

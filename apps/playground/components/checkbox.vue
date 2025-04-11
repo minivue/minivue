@@ -17,8 +17,11 @@ import { classObjectToString, getRelationNodes } from './utils'
 defineOptions({
   name: 'KdCheckbox',
   relations: {
-    '../checkbox-group/checkbox-group': {
+    '../label/label': {
       type: 'parent',
+    },
+    '../checkbox-group/checkbox-group': {
+      type: 'ancestor',
       linked: function (target: any) {
         // @ts-ignore
         this.parent = target

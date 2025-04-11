@@ -19,7 +19,7 @@ defineOptions({
   name: 'KdCheckboxGroup',
   relations: {
     '../checkbox/checkbox': {
-      type: 'child',
+      type: 'descendant',
     },
   },
 })
