@@ -12,7 +12,7 @@
 
 <script setup lang="ts" generic="T extends any">
 import { computed, ref, watch, getCurrentInstance, ComponentInstance } from '@minivue/core'
-import { classObjectToString } from './utils'
+import { classObjectToString, getRelationNodes } from './utils'
 
 defineOptions({
   name: 'KdCheckbox',
@@ -66,16 +66,15 @@ const onChange = () => {
   emit('change', innerChecked.value)
   const parent = currentContext?.parent
   if (parent) {
+    const checkboxs = getRelationNodes(parent, '../checkbox/checkbox')
     if (master) {
-      const checkboxes = parent.getRelationNodes('../checkbox/checkbox')
-      checkboxes.forEach((checkbox) => {
+      checkboxs.forEach((checkbox) => {
         const props = checkbox.__props__
         props.checked = innerChecked.value
       })
     }
     setTimeout(() => {
-      const nodes = parent.getRelationNodes('../checkbox/checkbox')
-      const value = nodes
+      const value = checkboxs
         // @ts-ignore
         .filter((node) => !node.data.master && node.data.innerChecked)
         // @ts-ignore

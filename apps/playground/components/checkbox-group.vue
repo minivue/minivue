@@ -4,6 +4,7 @@
 
 <script setup lang="ts" generic="T extends any[]">
 import { watch, getCurrentInstance, ComponentInstance } from '@minivue/core'
+import { getRelationNodes } from './utils'
 
 /** 状态改变 */
 interface Events<T> {
@@ -32,7 +33,7 @@ const ctx = getCurrentInstance<ComponentInstance>()
 watch(
   () => value,
   (val) => {
-    const checkboxes = ctx.getRelationNodes('../checkbox/checkbox')
+    const checkboxes = getRelationNodes(ctx, '../checkbox/checkbox')
     checkboxes.forEach((checkbox) => {
       const props = checkbox.__props__
       if (props.master) {

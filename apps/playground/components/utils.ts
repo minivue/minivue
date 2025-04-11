@@ -44,8 +44,6 @@ export function getPages() {
   return getCurrentPages()
 }
 
-export function setCheckboxValues(this: ComponentInstance) {
-  const nodes = this.getRelationNodes('../checkbox/checkbox')
-  // @ts-ignore
-  this.values = nodes.filter((node) => node.data.innerChecked).map((node) => node.data.value)
+export function getRelationNodes(ctx: ComponentInstance, path: string) {
+  return ctx.getRelationNodes(path)
 }
