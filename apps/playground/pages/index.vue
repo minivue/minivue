@@ -27,7 +27,16 @@
         <KdLabel style="display: flex"> <KdRadio :value="4" /> 选项4 </KdLabel>
       </KdRadioGroup>
     </View>
-
+    <View style="padding: 16px">
+      <KdRadio mark checked />
+      <KdRadio mark checked disabled />
+      <KdRadioGroup @change="onRadioChange">
+        <KdLabel style="display: flex"> <KdRadio :value="1" mark /> 选项1 </KdLabel>
+        <KdLabel style="display: flex"> <KdRadio :value="2" mark /> 选项2 </KdLabel>
+        <KdLabel style="display: flex"> <KdRadio :value="3" mark disabled /> 选项3 </KdLabel>
+        <KdLabel style="display: flex"> <KdRadio :value="4" mark /> 选项4 </KdLabel>
+      </KdRadioGroup>
+    </View>
     <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
 </template>

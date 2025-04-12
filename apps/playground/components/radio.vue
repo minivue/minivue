@@ -27,6 +27,8 @@ interface Props {
   checked?: boolean
   /** 是否禁用 */
   disabled?: boolean
+  /** 单选勾 */
+  mark?: boolean
   /** radio标识，选中时触发radio-group的 change 事件，并携带 radio 的 value */
   value?: T
 }
@@ -38,7 +40,7 @@ interface Events {
 
 const emit = defineEmits<Events>()
 
-const { value, checked, disabled } = defineProps<Props>()
+const { value, mark, checked, disabled } = defineProps<Props>()
 
 const innerChecked = ref(checked)
 
@@ -46,6 +48,7 @@ const ctx = getCurrentInstance<ComponentInstance & { parent: ComponentInstance }
 
 const classes = computed(() =>
   classObjectToString('kd-radio', {
+    'kd-radio--mark': mark,
     'kd-radio--checked': innerChecked.value,
     'kd-radio--disabled': disabled,
   }),
@@ -113,6 +116,19 @@ watch(
 .kd-radio--disabled {
   background-color: var(--kd-color-fill-extra-heavy);
   opacity: 0.4;
+}
+
+.kd-radio--mark {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.kd-radio--mark::after {
+  display: none;
+}
+
+.kd-radio--mark.kd-radio--checked {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 10.368l5.167 5.495L18 6.69' stroke='%231F69E0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 </style>
 
