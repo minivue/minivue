@@ -47,3 +47,7 @@ export function getPages() {
 export function getRelationNodes(ctx: ComponentInstance, path: string) {
   return ctx.getRelationNodes(path)
 }
+
+export function vibrateShort() {
+  wx.vibrateShort({ type: 'light' })
+}

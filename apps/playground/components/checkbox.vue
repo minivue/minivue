@@ -1,13 +1,5 @@
 <template>
-  <View :class="classes">
-    <Checkbox
-      style="opacity: 0"
-      :value="value"
-      :checked="innerChecked"
-      :disabled="disabled"
-      @tap.stop="onChange"
-    />
-  </View>
+  <View :class="classes" @tap.stop="onChange"></View>
 </template>
 
 <script setup lang="ts" generic="T extends any">
@@ -18,7 +10,7 @@ defineOptions({
   name: 'KdCheckbox',
   relations: {
     '../label/label': {
-      type: 'parent',
+      type: 'ancestor',
     },
     '../checkbox-group/checkbox-group': {
       type: 'ancestor',
@@ -50,11 +42,11 @@ interface Events {
 
 const emit = defineEmits<Events>()
 
-const { value, checked, disabled, master, indeterminate } = defineProps<Props>()
+const { checked, disabled, master, indeterminate } = defineProps<Props>()
 
 const innerChecked = ref(checked)
 
-const currentContext = getCurrentInstance<ComponentInstance & { parent: ComponentInstance }>()
+const ctx = getCurrentInstance<ComponentInstance & { parent: ComponentInstance }>()
 
 const classes = computed(() =>
   classObjectToString('kd-checkbox', {
@@ -68,7 +60,7 @@ const onChange = () => {
   if (disabled) {
     return
   }
-  const parent = currentContext?.parent
+  const parent = ctx?.parent
   innerChecked.value = !innerChecked.value
   emit('change', innerChecked.value)
   if (parent) {

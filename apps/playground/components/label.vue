@@ -9,7 +9,14 @@ defineOptions({
   name: 'KdLabel',
   relations: {
     '../checkbox/checkbox': {
-      type: 'child',
+      type: 'descendant',
+      linked: function (target: any) {
+        // @ts-ignore
+        this.onTap = target.onChange.bind(target)
+      },
+    },
+    '../radio/radio': {
+      type: 'descendant',
       linked: function (target: any) {
         // @ts-ignore
         this.onTap = target.onChange.bind(target)

@@ -1,12 +1,10 @@
 <template>
-  <View :class="classes">
-    <Switch style="opacity: 0" :checked="value" :disabled="disabled" @change="onChange" />
-  </View>
+  <View :class="classes" @tap.stop="onChange"></View>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from '@minivue/core'
-import { classObjectToString } from './utils'
+import { computed, ref, watch } from '@minivue/core'
+import { classObjectToString, vibrateShort } from './utils'
 
 defineOptions({
   name: 'KdSwitch',
@@ -28,19 +26,29 @@ const emit = defineEmits<Events>()
 
 const { checked, disabled } = defineProps<Props>()
 
-const value = ref(checked)
+const innerChecked = ref(checked)
 
 const classes = computed(() =>
   classObjectToString('kd-switch', {
-    'kd-switch--checked': value.value,
+    'kd-switch--checked': innerChecked.value,
     'kd-switch--disabled': disabled,
   }),
 )
 
-const onChange = (e: WechatMiniprogram.SwitchChange) => {
-  value.value = e.detail.value
-  emit('change', e.detail.value)
+const onChange = () => {
+  if (!disabled) {
+    vibrateShort()
+    innerChecked.value = !innerChecked.value
+    emit('change', innerChecked.value)
+  }
 }
+
+watch(
+  () => checked,
+  (newValue) => {
+    innerChecked.value = newValue
+  },
+)
 </script>
 
 <style>
