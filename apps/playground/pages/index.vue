@@ -11,13 +11,9 @@
         <KdLabel style="display: flex"> <KdCheckbox master /> 全选 </KdLabel>
         <KdLabel style="display: flex"> <KdCheckbox :value="1" /> 选项1 </KdLabel>
         <KdLabel style="display: flex"> <KdCheckbox :value="2" /> 选项2 </KdLabel>
-        <KdLabel style="display: flex"> <KdCheckbox :value="3" /> 选项3 </KdLabel>
+        <KdLabel style="display: flex"> <KdCheckbox :value="3" disabled /> 选项3 </KdLabel>
         <KdLabel style="display: flex"> <KdCheckbox :value="4" /> 选项4 </KdLabel>
       </KdCheckboxGroup>
-      <KdLabel>
-        <KdCheckbox value="2" :checked="checked" />
-        同意协议
-      </KdLabel>
     </View>
     <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
@@ -56,7 +52,7 @@ setTimeout(() => {
 }, 2000)
 
 setTimeout(() => {
-  checkList.value = [1, 2, 3, 4]
+  checkList.value = [1, 2, 4]
 }, 1000)
 </script>
 

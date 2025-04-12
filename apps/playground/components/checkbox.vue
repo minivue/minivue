@@ -5,7 +5,7 @@
       :value="value"
       :checked="innerChecked"
       :disabled="disabled"
-      @tap="onChange"
+      @tap.stop="onChange"
     />
   </View>
 </template>
@@ -60,20 +60,25 @@ const classes = computed(() =>
   classObjectToString('kd-checkbox', {
     'kd-checkbox--checked': innerChecked.value,
     'kd-checkbox--disabled': disabled,
-    'kd-checkbox--indeterminate': !innerChecked.value && indeterminate,
+    'kd-checkbox--indeterminate': indeterminate,
   }),
 )
 
 const onChange = () => {
+  if (disabled) {
+    return
+  }
+  const parent = currentContext?.parent
   innerChecked.value = !innerChecked.value
   emit('change', innerChecked.value)
-  const parent = currentContext?.parent
   if (parent) {
     const checkboxs = getRelationNodes(parent, '../checkbox/checkbox')
     if (master) {
       checkboxs.forEach((checkbox) => {
-        const props = checkbox.__props__
-        props.checked = innerChecked.value
+        const props = checkbox.__props__ as Props
+        if (!props.disabled && !props.master) {
+          props.checked = innerChecked.value
+        }
       })
     }
     setTimeout(() => {
