@@ -34,8 +34,8 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 @font-face {
   font-family: kdesign;
   src:
-    url('https://at.alicdn.com/t/c/font_4868388_1tntpuysjw4.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/c/font_4868388_1tntpuysjw4.ttf') format('truetype');
+    url('https://at.alicdn.com/t/c/font_4868388_kyem1c8uofk.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_4868388_kyem1c8uofk.ttf') format('truetype');
 }
 
 .kd-icon {
@@ -59,6 +59,49 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 
 .kd-icon--link::before {
   content: '\e602';
+}
+
+.kd-icon--warn::before {
+  color: var(--kd-color-icon-warning);
+  content: '\e603';
+}
+
+.kd-icon--info::before {
+  color: var(--kd-color-icon-info);
+  content: '\e604';
+}
+
+.kd-icon--error::before {
+  color: var(--kd-color-icon-error);
+  content: '\e605';
+}
+
+.kd-icon--success::before {
+  color: var(--kd-color-icon-success);
+  content: '\e606';
+}
+
+.kd-icon--warn::after {
+  position: absolute;
+  top: 20%;
+  z-index: -1;
+  width: 20%;
+  height: 70%;
+  content: '';
+  background-color: #fff;
+}
+
+.kd-icon--info::after,
+.kd-icon--error::after,
+.kd-icon--success::after {
+  position: absolute;
+  top: 10%;
+  z-index: -1;
+  width: 70%;
+  height: 70%;
+  content: '';
+  background-color: #fff;
+  border-radius: 50%;
 }
 </style>
 

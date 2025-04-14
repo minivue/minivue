@@ -6,9 +6,9 @@
       <slot slot="right" name="navbar_right" />
     </KdNavbar>
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
-    <RootPortal :class="classes">
-      <View :class="themes">
-        <KdToast />
+    <RootPortal>
+      <View :class="rootClasses">
+        <KdToast icon="warn" />
       </View>
     </RootPortal>
   </View>
@@ -55,7 +55,9 @@ const theme = ref(appBaseInfo.theme)
 
 const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
 
-const classes = computed(() => `kd-page ${themes}`)
+const classes = computed(() => `kd-page ${themes.value}`)
+
+const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const onActionTap = (action: string) => emit('action', action)
 
@@ -75,6 +77,18 @@ onThemeChange((res) => {
 
 .kd-page__content {
   flex: 1;
+}
+
+.kd-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 </style>
 
