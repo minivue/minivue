@@ -41,7 +41,12 @@ interface MovableViewProps {}
 
 interface PageContainerProps {}
 
-interface RootPortalProps {}
+interface RootPortalProps {
+  /**
+   * 是否从页面中脱离出来（默认true）
+   */
+  enable?: boolean
+}
 
 interface ScrollViewProps {}
 
@@ -332,6 +337,9 @@ declare module 'vue' {
     MovableArea: DefineComponent<MovableAreaProps>
     MovableView: DefineComponent<MovableViewProps>
     PageContainer: DefineComponent<PageContainerProps>
+    /**
+     * 使整个子树从页面中脱离出来，类似于在 CSS 中使用 fixed position 的效果。主要用于制作弹窗、弹出层等。
+     */
     RootPortal: DefineComponent<RootPortalProps>
     ScrollView: DefineComponent<ScrollViewProps>
     Swiper: DefineComponent<SwiperProps>

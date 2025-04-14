@@ -6,12 +6,18 @@
       <slot slot="right" name="navbar_right" />
     </KdNavbar>
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
+    <RootPortal :class="classes">
+      <View :class="themes">
+        <KdToast />
+      </View>
+    </RootPortal>
   </View>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange } from './utils'
+import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
 
 defineOptions({
@@ -47,7 +53,9 @@ const { title, actions = [], hideNavbar } = defineProps<Props>()
 
 const theme = ref(appBaseInfo.theme)
 
-const classes = computed(() => `kd-page kd-theme--default kd-theme--${theme.value}`)
+const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
+
+const classes = computed(() => `kd-page ${themes}`)
 
 const onActionTap = (action: string) => emit('action', action)
 

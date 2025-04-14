@@ -33,7 +33,9 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 <style>
 @font-face {
   font-family: kdesign;
-  src: url('https://at.alicdn.com/t/c/font_4868388_33rsndtulu2.ttf') format('truetype');
+  src:
+    url('https://at.alicdn.com/t/c/font_4868388_1tntpuysjw4.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_4868388_1tntpuysjw4.ttf') format('truetype');
 }
 
 .kd-icon {
@@ -47,7 +49,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   color: inherit;
 }
 
-.kd-icon--arrow::before {
+.kd-icon--dropdown::before {
   content: '\e600';
 }
 

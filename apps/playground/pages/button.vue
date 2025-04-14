@@ -33,7 +33,7 @@
       <KdButton size="xl" loading>次要按钮</KdButton>
     </View>
     <View>
-      <KdButton highlight dropdown>次要按钮</KdButton>
+      <KdButton highlight dropdown :active="active" @tap="onActive">次要按钮</KdButton>
       <KdButton size="l" highlight dropdown>次要按钮</KdButton>
       <KdButton size="xl" highlight dropdown>次要按钮</KdButton>
     </View>
@@ -97,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from '@minivue/core'
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
 import KdLoading from '@/components/loading.vue'
@@ -104,6 +105,12 @@ import KdButtonGroup from '@/components/button-group.vue'
 import KdDivider from '@/components/divider.vue'
 import KdLink from '@/components/link.vue'
 import KdProgress from '@/components/progress.vue'
+
+const active = ref(false)
+
+const onActive = () => {
+  active.value = !active.value
+}
 </script>
 
 <config lang="json">
