@@ -39,6 +39,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 }
 
 .kd-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;

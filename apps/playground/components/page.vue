@@ -8,7 +8,7 @@
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
     <RootPortal>
       <View :class="rootClasses">
-        <KdToast icon="warn" />
+        <KdToast icon="warn" action="操作按钮" />
       </View>
     </RootPortal>
   </View>

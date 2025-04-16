@@ -63,7 +63,7 @@ const {
 
 const buttonSize = computed(() => (vertical ? 'l' : size))
 
-const iconSize = computed(() => (buttonSize.value === 'm' && !onlyIcon ? 18 : 22))
+const iconSize = computed(() => (buttonSize.value === 'm' ? 18 : 22))
 
 const loadingSize = computed(() => (buttonSize.value === 'm' ? 's' : 'm'))
 
