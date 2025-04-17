@@ -1,14 +1,18 @@
 <template>
-  <View :class="classes">
-    <View class="kd-toast__icon">
-      <KdIcon v-if="icon" :type="icon" size="22" />
-    </View>
-    <View class="kd-toast__text">
-      <Text>这是一个轻量级反馈</Text>
-    </View>
-    <View class="kd-toast__actions">
-      <KdButton class="kd-toast__action" type="light" highlight>{{ action }}</KdButton>
-      <KdButton class="kd-toast__close" icon="close" only-icon size="s"></KdButton>
+  <View class="kd-toast-area">
+    <View :class="classes">
+      <View v-if="icon" class="kd-toast__icon">
+        <KdIcon :type="icon" size="22" />
+      </View>
+      <View class="kd-toast__text"> 这是一个轻量级反馈 </View>
+      <View class="kd-toast__actions">
+        <View class="kd-toast__action">
+          <KdButton type="light" highlight>{{ action }}</KdButton>
+        </View>
+        <View class="kd-toast__close">
+          <KdButton icon="close" size="s" only-icon></KdButton>
+        </View>
+      </View>
     </View>
   </View>
 </template>
@@ -34,11 +38,18 @@ const classes = computed(() => `kd-toast`)
 </script>
 
 <style>
+.kd-toast-area {
+  width: 100%;
+  padding: 60px 16px 0;
+}
+
 .kd-toast {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 60px;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 520px;
+  min-height: 50px;
   pointer-events: all;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
@@ -47,32 +58,58 @@ const classes = computed(() => `kd-toast`)
 
 .kd-toast__icon {
   display: flex;
-  padding: 14px 12px 14px 16px;
+  flex-shrink: 0;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: center;
+  padding: 14px 12px 0 16px;
 }
 
 .kd-toast__text {
   display: flex;
-  flex-shrink: 0;
-  padding: 14px 16px 14px 0;
+  flex: 1 0 0;
+  align-items: flex-start;
+  align-self: stretch;
+  max-width: 100%;
+  padding: 14px 16px;
   font-size: var(--kd-font-size-base);
   line-height: var(--t-kd-font-line-height-base);
   color: var(--kd-color-text-white);
+  word-break: break-all;
+}
+
+.kd-toast__icon ~ .kd-toast__text {
+  padding-left: 0;
 }
 
 .kd-toast__actions {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   align-self: stretch;
-  padding: 0 11px 0 4px;
+  justify-content: center;
+  padding: 3px 5px 0 4px;
 }
 
-.kd-toast__actions .kd-button:first-child {
+.kd-toast__action {
+  display: flex;
+  align-items: center;
+  height: 44px;
+}
+
+.kd-toast__action .kd-button {
   font-weight: 600;
   color: rgb(var(--kd-color-blue-5)) !important;
 }
 
-.kd-toast__actions .kd-toast__close {
-  margin-left: 6px;
+.kd-toast__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 44px;
+}
+
+.kd-toast__close .kd-button {
   color: var(--kd-color-text-white);
 }
 </style>
