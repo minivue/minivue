@@ -47,7 +47,6 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   font-style: normal;
   font-weight: lighter;
   line-height: 1;
-  color: inherit;
 }
 
 .kd-icon--dropdown::before {
