@@ -4,8 +4,8 @@
       <View v-if="icon" class="kd-toast__icon">
         <KdIcon :type="icon" size="22" />
       </View>
-      <View class="kd-toast__text"> 这是一个轻量级反馈 </View>
-      <View class="kd-toast__actions">
+      <View class="kd-toast__text"> {{ content }} </View>
+      <View v-if="action" class="kd-toast__actions">
         <View class="kd-toast__action">
           <KdButton type="light" highlight>{{ action }}</KdButton>
         </View>
@@ -21,39 +21,53 @@
 import { computed } from '@minivue/core'
 import KdIcon from './icon.vue'
 import KdButton from './button.vue'
+import { classObjectToString } from './utils'
 
 interface Props {
   /** 图标 */
   icon?: 'warn' | 'info' | 'error' | 'success'
+  /** 操作文案 */
   action?: string
+  /** 文本内容 */
+  content: string
 }
 
 defineOptions({
   name: 'KdToast',
 })
 
-defineProps<Props>()
+const { action } = defineProps<Props>()
 
-const classes = computed(() => `kd-toast`)
+const classes = computed(() =>
+  classObjectToString('kd-toast', {
+    'kd-toast--full': action,
+  }),
+)
 </script>
 
 <style>
 .kd-toast-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  padding: 60px 16px 0;
+  padding: 62px 16px 0;
 }
 
 .kd-toast {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
   max-width: 520px;
   min-height: 50px;
   pointer-events: all;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
   backdrop-filter: blur(5px);
+}
+
+.kd-toast--full {
+  width: 100%;
 }
 
 .kd-toast__icon {
@@ -67,7 +81,7 @@ const classes = computed(() => `kd-toast`)
 
 .kd-toast__text {
   display: flex;
-  flex: 1 0 0;
+  flex: 1;
   align-items: flex-start;
   align-self: stretch;
   max-width: 100%;
