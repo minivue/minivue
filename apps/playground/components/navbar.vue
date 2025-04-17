@@ -5,7 +5,7 @@
       <View class="kd-navbar__left">
         <View v-if="buttons.length" class="kd-navbar__actions">
           <View class="kd-navbar__action" v-for="item in buttons" :key="item.action">
-            <KdButton type="light" :icon="item.icon" only-icon @tap="onActionTap(item.action)" />
+            <KdButton :icon="item.icon" only-icon @tap="onActionTap(item.action)" />
           </View>
         </View>
         <slot name="left" />

@@ -9,7 +9,7 @@
   </Button>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends boolean">
 import { computed } from '@minivue/core'
 import { classObjectToString } from './utils'
 import KdIcon from './icon.vue'
@@ -19,7 +19,7 @@ defineOptions({
   name: 'KdButton',
 })
 
-interface Props {
+interface Props<T> {
   /** 是否ai按钮 */
   ai?: boolean
   /** 图标 */
@@ -35,13 +35,13 @@ interface Props {
   /** 是否禁用 */
   disabled?: boolean
   /** 是否仅图标 */
-  onlyIcon?: boolean
+  onlyIcon?: T
   /** 是否下拉按钮 */
   dropdown?: boolean
   /** 是否强调 */
   highlight?: boolean
-  /** 按钮尺寸 */
-  size?: 'xl' | 'l' | 'm'
+  /** 按钮尺寸(图标按钮才可以设置s) */
+  size?: T extends true ? 'm' | 's' : 'm' | 'l' | 'xl'
   /** 按钮类型 */
   type?: 'primary' | 'secondary' | 'light'
 }
@@ -59,18 +59,25 @@ const {
   disabled,
   dropdown,
   highlight,
-} = defineProps<Props>()
+} = defineProps<Props<T>>()
 
 const buttonSize = computed(() => (vertical ? 'l' : size))
 
-const iconSize = computed(() => (buttonSize.value === 'm' ? 18 : 22))
+const buttonType = computed(() => (onlyIcon ? 'light' : type))
+
+const iconSize = computed(() => {
+  if (onlyIcon) {
+    return buttonSize.value === 's' ? 18 : 22
+  }
+  return buttonSize.value === 'm' ? 18 : 22
+})
 
 const loadingSize = computed(() => (buttonSize.value === 'm' ? 's' : 'm'))
 
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
-  classObjectToString(`kd-button kd-button--${type} kd-button--${buttonSize.value}`, {
+  classObjectToString(`kd-button kd-button--${buttonType.value} kd-button--${buttonSize.value}`, {
     'kd-button--ai': ai,
     'kd-button--active': active,
     'kd-button--danger': danger,
@@ -220,16 +227,14 @@ const classes = computed(() =>
   padding: 0;
 }
 
+.kd-button--s.kd-button--onlyicon {
+  min-width: 28px;
+  min-height: 28px;
+}
+
 .kd-button--m.kd-button--onlyicon {
   min-width: 32px;
-}
-
-.kd-button--l.kd-button--onlyicon {
-  min-width: 40px;
-}
-
-.kd-button--xl.kd-button--onlyicon {
-  min-width: 48px;
+  min-height: 32px;
 }
 
 .kd-button--onlyicon .kd-icon {

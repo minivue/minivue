@@ -6,9 +6,9 @@
     <View class="kd-toast__text">
       <Text>这是一个轻量级反馈</Text>
     </View>
-    <View class="kd-toast__action">
-      <KdButton type="light" highlight>{{ action }}</KdButton>
-      <KdButton icon="menu" only-icon size="m"></KdButton>
+    <View class="kd-toast__actions">
+      <KdButton class="kd-toast__action" type="light" highlight>{{ action }}</KdButton>
+      <KdButton class="kd-toast__close" icon="close" only-icon size="s"></KdButton>
     </View>
   </View>
 </template>
@@ -59,9 +59,21 @@ const classes = computed(() => `kd-toast`)
   color: var(--kd-color-text-white);
 }
 
-.kd-toast__action {
+.kd-toast__actions {
   display: flex;
   align-items: center;
+  align-self: stretch;
+  padding: 0 11px 0 4px;
+}
+
+.kd-toast__actions .kd-button:first-child {
+  font-weight: 600;
+  color: rgb(var(--kd-color-blue-5)) !important;
+}
+
+.kd-toast__actions .kd-toast__close {
+  margin-left: 6px;
+  color: var(--kd-color-text-white);
 }
 </style>
 

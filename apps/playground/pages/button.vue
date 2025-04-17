@@ -14,7 +14,7 @@
     <KdDivider vertical style="height: 50px; margin-left: 100px" />
     <View>
       <KdButton type="secondary" icon="menu" only-icon></KdButton>
-      <KdButton type="primary" size="l">主要按钮</KdButton>
+      <KdButton type="primary" icon="menu" size="l">主要按钮</KdButton>
       <KdButton type="primary" size="xl" disabled dropdown>主要按钮</KdButton>
     </View>
     <View>
