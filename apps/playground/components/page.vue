@@ -8,9 +8,11 @@
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
     <RootPortal>
       <View :class="rootClasses">
-        <KdToast content="这是一个轻量级反馈" />
-        <KdToast icon="warn" content="这是一个轻量级反馈" />
-        <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
+        <View class="kd-toast-area">
+          <KdToast content="这是一个轻量级反馈" />
+          <KdToast icon="warn" content="这是一个轻量级反馈" />
+          <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
+        </View>
       </View>
     </RootPortal>
   </View>
@@ -91,6 +93,14 @@ onThemeChange((res) => {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+.kd-toast-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 62px 16px 0;
 }
 </style>
 

@@ -1,17 +1,15 @@
 <template>
-  <View class="kd-toast-area">
-    <View :class="classes">
-      <View v-if="icon" class="kd-toast__icon">
-        <KdIcon :type="icon" size="22" />
+  <View :class="classes">
+    <View v-if="icon" class="kd-toast__icon">
+      <KdIcon :type="icon" size="22" />
+    </View>
+    <View class="kd-toast__text"> {{ content }} </View>
+    <View v-if="action" class="kd-toast__actions">
+      <View class="kd-toast__action">
+        <KdButton type="light" highlight>{{ action }}</KdButton>
       </View>
-      <View class="kd-toast__text"> {{ content }} </View>
-      <View v-if="action" class="kd-toast__actions">
-        <View class="kd-toast__action">
-          <KdButton type="light" highlight>{{ action }}</KdButton>
-        </View>
-        <View class="kd-toast__close">
-          <KdButton icon="close" size="s" only-icon></KdButton>
-        </View>
+      <View class="kd-toast__close">
+        <KdButton icon="close" size="s" only-icon></KdButton>
       </View>
     </View>
   </View>
@@ -46,20 +44,13 @@ const classes = computed(() =>
 </script>
 
 <style>
-.kd-toast-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 62px 16px 0;
-}
-
 .kd-toast {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   max-width: 520px;
   min-height: 50px;
+  margin-top: 8px;
   pointer-events: all;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
