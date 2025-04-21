@@ -283,7 +283,16 @@ interface StickySectionProps {}
 
 interface FunctionalPageNavigatorProps {}
 
-interface NavigatorProps {}
+interface NavigatorProps {
+  /** 在哪个目标上发生跳转，默认当前小程序	 */
+  target?: 'self' | 'miniProgram'
+  /** 当前小程序内的跳转链接 */
+  url?: string
+  /** 跳转方式（默认navigate） */
+  openType?: 'navigate' | 'redirect' | 'switchTab' | 'reLaunch' | 'exit' | 'navigateBack'
+  /** 当 open-type 为 'navigateBack' 时有效，表示回退的层数（默认1） */
+  delta?: number
+}
 
 interface AudioProps {}
 
@@ -406,6 +415,11 @@ declare module 'vue' {
     StickyHeader: DefineComponent<StickyHeaderProps>
     StickySection: DefineComponent<StickySectionProps>
     FunctionalPageNavigator: DefineComponent<FunctionalPageNavigatorProps>
+    /**
+     * 页面链接
+     * - navigator 在 Skyline 下视为文本节点，只能嵌套文本节点（如 text），不能嵌套 view、button 等普通节点，如 <button> <navigator>foo</navigator> </button>
+     * - 新增 span 组件用于内联文本和图片，如 <span> <image> </image> <navigator>bar</navigator> </span>
+     */
     Navigator: DefineComponent<NavigatorProps>
     Audio: DefineComponent<AudioProps>
     Camera: DefineComponent<CameraProps>

@@ -10,6 +10,11 @@
       <View :class="rootClasses">
         <View class="kd-toast-area">
           <KdToast content="这是一个轻量级反馈" />
+          <KdToast icon="loading" content="这是一个轻量级反馈" />
+          <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
+          <KdToast icon="progress" content="这是一个轻量级反馈" action="操作按钮" />
+          <KdToast content="这是一个轻量级反馈" action="操作按钮" />
+          <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
           <KdToast icon="warn" content="这是一个轻量级反馈" />
           <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
         </View>

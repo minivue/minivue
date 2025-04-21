@@ -1,17 +1,5 @@
 <template>
-  <KdPage title="示例代码">
-    <View style="height: 60px"></View>
-    <View style="background-color: #ccc">
-      <KdLoading text="加载中…" size="s" />
-      <KdLoading text="加载中…" size="m" />
-      <KdLoading text="加载中…" size="l" />
-      <KdLoading text="加载中…" mode="dark" />
-      <KdLoading text="加载中…" size="s" vertical />
-      <KdLoading text="加载中…" size="m" vertical />
-      <KdLoading text="加载中…" size="l" vertical />
-    </View>
-    <KdDivider />
-    <KdDivider vertical style="height: 50px; margin-left: 100px" />
+  <KdPage title="按钮组件">
     <View>
       <KdButton type="secondary" icon="menu" only-icon></KdButton>
       <KdButton type="primary" icon="menu" size="l">主要按钮</KdButton>
@@ -84,15 +72,6 @@
       <KdButton type="primary" size="l">次要按钮</KdButton>
       <KdButton size="l">次要按钮</KdButton>
     </KdButtonGroup>
-    <KdLink size="s">链接</KdLink>
-    <KdLink size="m">链接</KdLink>
-    <KdLink size="l">Link text</KdLink>
-    <KdProgress :percentage="50" />
-    <KdProgress :percentage="50" mode="dark" text="加载中..." />
-    <KdProgress :percentage="50" horizontal />
-    <KdProgress :percentage="50" mode="dark" horizontal />
-    <KdProgress :percentage="50" horizontal type="track" />
-    <KdProgress :percentage="50" mode="dark" horizontal type="track" text="加载中..." />
   </KdPage>
 </template>
 
@@ -100,11 +79,7 @@
 import { ref } from '@minivue/core'
 import KdPage from '@/components/page.vue'
 import KdButton from '@/components/button.vue'
-import KdLoading from '@/components/loading.vue'
 import KdButtonGroup from '@/components/button-group.vue'
-import KdDivider from '@/components/divider.vue'
-import KdLink from '@/components/link.vue'
-import KdProgress from '@/components/progress.vue'
 
 const active = ref(false)
 
@@ -115,7 +90,7 @@ const onActive = () => {
 
 <config lang="json">
 {
-  "navigationBarTitleText": "首页",
+  "navigationBarTitleText": "按钮组件",
   "disableScroll": true
 }
 </config>

@@ -15,7 +15,15 @@
 
 <config lang="json">
 {
-  "pages": ["pages/index/index", "pages/button/button"],
+  "pages": [
+    "pages/index/index",
+    "pages/button/button",
+    "pages/controls/controls",
+    "pages/divider/divider",
+    "pages/link/link",
+    "pages/loading/loading",
+    "pages/progress/progress"
+  ],
   "subpackages": [
     {
       "root": "account",
