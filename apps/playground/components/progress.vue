@@ -1,15 +1,17 @@
 <template>
-  <View :class="classes">
-    <View class="kd-progress__bar" :style="styles">
-      <View class="kd-progress__bg"></View>
-      <View class="kd-progress__inner">
-        <View class="kd-progress__ring"></View>
+  <View :class="classes" :style="styles">
+    <View class="kd-progress__wrapper">
+      <View class="kd-progress__bar">
+        <View class="kd-progress__bg"></View>
+        <View class="kd-progress__inner">
+          <View class="kd-progress__ring"></View>
+        </View>
+        <View class="kd-progress__inner">
+          <View class="kd-progress__ring"></View>
+        </View>
+        <View class="kd-progress__dot"></View>
+        <View class="kd-progress__dot"></View>
       </View>
-      <View class="kd-progress__inner">
-        <View class="kd-progress__ring"></View>
-      </View>
-      <View class="kd-progress__dot"></View>
-      <View class="kd-progress__dot"></View>
     </View>
     <View v-if="text" class="kd-progress__text">{{ text }}</View>
   </View>
@@ -30,13 +32,22 @@ interface Props {
   text?: string
   /** 类型 */
   type?: 'ring' | 'track'
+  /** 尺寸 */
+  size?: number | string
   /** 进度百分比 */
   percentage: number
   /** 是否水平布局 */
   horizontal?: boolean
 }
 
-const { percentage, horizontal, text, type = 'ring', mode = 'light' } = defineProps<Props>()
+const {
+  percentage,
+  horizontal,
+  text,
+  size = 48,
+  type = 'ring',
+  mode = 'light',
+} = defineProps<Props>()
 
 const classes = computed(() =>
   classObjectToString(`kd-progress kd-progress--${type} kd-progress--${mode}`, {
@@ -47,11 +58,14 @@ const classes = computed(() =>
 const current = ref(percentage)
 
 const styles = computed(() => {
-  const stroke = Math.round(40 * 0.125)
+  const innersize = Math.ceil((Number(size) * 40) / 48)
+  const stroke = Math.ceil(Number(innersize) * 0.125)
   const rotate = (current.value / 100) * 360
   const rotateLeft = Math.max(180, rotate)
   const rotateRight = Math.min(360, 180 + rotate)
   return styleObjectToString({
+    '--size': `${size}px`,
+    '--innersize': `${innersize}px`,
     '--stroke': `${stroke}px`,
     '--rotate': `${rotate}deg`,
     '--rotate-left': `${rotateLeft}deg`,
@@ -66,7 +80,7 @@ const change = () => {
   clearTimeout(timer)
   const currentValue = current.value
   if (currentValue < percentage) {
-    const step = (percentage - currentValue) / 100
+    const step = Math.max((percentage - currentValue) / 100, 0.01)
     current.value = parseFloat(Math.min(currentValue + step, 100).toFixed(2))
     timer = setTimeout(change)
   }
@@ -81,6 +95,13 @@ watch(() => percentage, change)
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+}
+
+.kd-progress__wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .kd-progress--ring {
@@ -164,14 +185,19 @@ watch(() => percentage, change)
   flex-shrink: 0;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
-  color: var(--kd-color-text-primary);
+  color: var(--kd-color-text-secondary);
   text-align: center;
 }
 
 .kd-progress--ring .kd-progress__bar {
   display: inline-flex;
-  width: 40px;
-  height: 40px;
+  width: var(--innersize);
+  height: var(--innersize);
+}
+
+.kd-progress--ring .kd-progress__wrapper {
+  width: var(--size);
+  height: var(--size);
 }
 
 .kd-progress--ring .kd-progress__text {
@@ -237,7 +263,7 @@ watch(() => percentage, change)
 }
 
 .kd-progress--dark .kd-progress__text {
-  border-color: var(--kd-color-text-white);
+  color: var(--kd-color-text-white);
 }
 
 .kd-progress--dark .kd-progress--track {

@@ -3,7 +3,7 @@
     <View :class="classes">
       <View v-if="icon" class="kd-toast__icon">
         <KdLoading v-if="icon === 'loading'" mode="dark" />
-        <KdProgress v-else-if="icon === 'progress'" mode="dark" :percentage="10" />
+        <KdProgress v-else-if="icon === 'progress'" size="22" mode="dark" :percentage="25" />
         <KdIcon v-else :type="icon" size="22" />
       </View>
       <View class="kd-toast__text"> {{ content }} </View>

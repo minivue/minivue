@@ -18,10 +18,11 @@ import KdPage from '@/components/page.vue'
 <style>
 navigator {
   display: block;
-  padding: 16px;
+  padding: 10px;
   margin-bottom: 16px;
+  color: var(--kd-color-text-white);
   text-align: center;
-  background-color: #f5f5f5;
+  background-color: var(--kd-color-public-normal);
   border-radius: 8px;
 }
 </style>
