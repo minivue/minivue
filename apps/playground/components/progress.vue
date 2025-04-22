@@ -35,18 +35,18 @@ interface Props {
   /** 尺寸 */
   size?: number | string
   /** 进度百分比 */
-  percentage: number
+  percentage?: number
   /** 是否水平布局 */
   horizontal?: boolean
 }
 
 const {
-  percentage,
   horizontal,
   text,
   size = 48,
   type = 'ring',
   mode = 'light',
+  percentage = 0,
 } = defineProps<Props>()
 
 const classes = computed(() =>

@@ -7,15 +7,32 @@
     </KdNavbar>
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
     <RootPortal>
-      <View class="kd-toast-area kd-theme--default kd-theme--light">
-        <KdToast content="这是一个轻量级反馈" />
-        <KdToast icon="loading" content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈" />
-        <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
-        <KdToast icon="progress" content="这是一个轻量级反馈" action="操作按钮" />
-        <KdToast content="这是一个轻量级反馈" action="操作按钮" />
-        <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
-        <KdToast icon="warn" content="这是一个轻量级反馈" />
-        <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
+      <View :class="rootClasses">
+        <View class="kd-toast-area">
+          <KdToast icon="loading" hud />
+          <KdToast icon="loading" content="加载中" hud />
+          <KdToast icon="success-hud" content="加载成功" hud />
+          <KdToast icon="error-hud" content="加载失败" hud />
+          <KdToast icon="loading" content="一段长文本，推荐最多2行" hud />
+          <KdToast content="这是一个轻量级反馈" />
+          <KdToast
+            icon="loading"
+            content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈"
+          />
+          <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
+          <KdToast
+            icon="progress"
+            :percentage="50"
+            content="这是一个轻量级反馈"
+            action="操作按钮"
+          />
+          <KdToast content="这是一个轻量级反馈" action="操作按钮" />
+          <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
+          <KdToast icon="success" content="这是一个轻量级反馈" />
+          <KdToast icon="error" content="这是一个轻量级反馈" />
+          <KdToast icon="info" content="这是一个轻量级反馈" />
+          <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
+        </View>
       </View>
     </RootPortal>
   </View>
@@ -64,7 +81,7 @@ const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
 
 const classes = computed(() => `kd-page ${themes.value}`)
 
-// const rootClasses = computed(() => `kd-root ${themes.value}`)
+const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const onActionTap = (action: string) => emit('action', action)
 
@@ -104,6 +121,7 @@ onThemeChange((res) => {
   align-items: center;
   width: 100%;
   padding: 62px 16px 0;
+  pointer-events: none;
 }
 </style>
 
