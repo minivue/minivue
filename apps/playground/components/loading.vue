@@ -112,9 +112,11 @@ const classes = computed(() =>
   content: '';
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 97% 97%;
+  background-size: 96% 96%;
   -webkit-mask-image: var(--icon);
   mask-image: var(--icon);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   mask-size: cover;
 }
 
