@@ -58,15 +58,14 @@ const classes = computed(() =>
 const current = ref(percentage)
 
 const styles = computed(() => {
-  const innersize = Math.ceil((Number(size) * 40) / 48)
-  const stroke = Math.ceil(Number(innersize) * 0.125)
+  const scale = Number(size) / 48
   const rotate = (current.value / 100) * 360
   const rotateLeft = Math.max(180, rotate)
   const rotateRight = Math.min(360, 180 + rotate)
   return styleObjectToString({
     '--size': `${size}px`,
-    '--innersize': `${innersize}px`,
-    '--stroke': `${stroke}px`,
+    '--scale': `scale(${scale})`,
+    '--stroke': '5px',
     '--rotate': `${rotate}deg`,
     '--rotate-left': `${rotateLeft}deg`,
     '--rotate-right': `${rotateRight}deg`,
@@ -80,7 +79,7 @@ const change = () => {
   clearTimeout(timer)
   const currentValue = current.value
   if (currentValue < percentage) {
-    const step = Math.max((percentage - currentValue) / 100, 0.01)
+    const step = Math.max((percentage - currentValue) / 100, 0.1)
     current.value = parseFloat(Math.min(currentValue + step, 100).toFixed(2))
     timer = setTimeout(change)
   }
@@ -191,8 +190,10 @@ watch(() => percentage, change)
 
 .kd-progress--ring .kd-progress__bar {
   display: inline-flex;
-  width: var(--innersize);
-  height: var(--innersize);
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  transform: var(--scale);
 }
 
 .kd-progress--ring .kd-progress__wrapper {
