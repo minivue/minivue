@@ -7,17 +7,15 @@
     </KdNavbar>
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
     <RootPortal>
-      <View :class="rootClasses">
-        <View class="kd-toast-area">
-          <KdToast content="这是一个轻量级反馈" />
-          <KdToast icon="loading" content="这是一个轻量级反馈" />
-          <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
-          <KdToast icon="progress" content="这是一个轻量级反馈" action="操作按钮" />
-          <KdToast content="这是一个轻量级反馈" action="操作按钮" />
-          <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
-          <KdToast icon="warn" content="这是一个轻量级反馈" />
-          <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
-        </View>
+      <View class="kd-toast-area kd-theme--default kd-theme--light">
+        <KdToast content="这是一个轻量级反馈" />
+        <KdToast icon="loading" content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈" />
+        <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
+        <KdToast icon="progress" content="这是一个轻量级反馈" action="操作按钮" />
+        <KdToast content="这是一个轻量级反馈" action="操作按钮" />
+        <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
+        <KdToast icon="warn" content="这是一个轻量级反馈" />
+        <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
       </View>
     </RootPortal>
   </View>
@@ -66,7 +64,7 @@ const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
 
 const classes = computed(() => `kd-page ${themes.value}`)
 
-const rootClasses = computed(() => `kd-root ${themes.value}`)
+// const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const onActionTap = (action: string) => emit('action', action)
 
