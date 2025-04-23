@@ -2,8 +2,8 @@
   <KdPage title="Toast组件">
     <KdToast icon="loading" hud />
     <KdToast icon="loading" content="加载中" hud />
-    <KdToast icon="success-hud" content="加载成功" hud />
-    <KdToast icon="error-hud" content="加载失败" hud />
+    <KdToast icon="success" content="加载成功" hud />
+    <KdToast icon="error" content="加载失败" hud />
     <KdToast icon="loading" content="一段长文本，推荐最多2行" hud />
     <KdToast content="这是一个轻量级反馈" />
     <KdToast icon="loading" content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈" />
@@ -14,7 +14,7 @@
     <KdToast icon="success" content="这是一个轻量级反馈" />
     <KdToast icon="error" content="这是一个轻量级反馈" />
     <KdToast icon="info" content="这是一个轻量级反馈" />
-    <KdToast icon="warn" content="这是一个轻量级反馈" action="操作按钮" />
+    <KdToast icon="warning" content="这是一个轻量级反馈" action="操作按钮" />
   </KdPage>
 </template>
 

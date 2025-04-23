@@ -61,7 +61,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   content: '\e602';
 }
 
-.kd-icon--warn::before {
+.kd-icon--warning::before {
   color: var(--kd-color-icon-warning);
   content: '\e603';
 }
@@ -81,7 +81,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   content: '\e606';
 }
 
-.kd-icon--warn::after {
+.kd-icon--warning::after {
   position: absolute;
   top: 20%;
   z-index: -1;

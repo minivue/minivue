@@ -24,7 +24,7 @@
   </View>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends boolean">
 import { computed } from '@minivue/core'
 import KdIcon from './icon.vue'
 import KdButton from './button.vue'
@@ -34,9 +34,11 @@ import { classObjectToString } from './utils'
 
 interface Props {
   /** 是否hud显示 */
-  hud?: boolean
+  hud?: T
   /** 图标 */
-  icon?: 'warn' | 'info' | 'error' | 'success' | string
+  icon?: T extends true
+    ? 'loading' | 'success' | 'error' | (string & {})
+    : 'info' | 'success' | 'warning' | 'error' | 'loading' | 'loading' | 'progress' | (string & {})
   /** 操作文案 */
   action?: string
   /** 文本内容 */
@@ -152,6 +154,21 @@ const onCloseTap = () => {
   margin-top: 12px;
   font-size: var(--kd-font-size-middle);
   line-height: var(--kd-font-line-height-middle);
+}
+
+.kd-toast--hud .kd-icon--error::before {
+  color: var(--kd-color-text-white);
+  content: '\e607';
+}
+
+.kd-toast--hud .kd-icon--success::before {
+  color: var(--kd-color-text-white);
+  content: '\e608';
+}
+
+.kd-toast--hud .kd-icon--error::after,
+.kd-toast--hud .kd-icon--success::after {
+  display: none;
 }
 
 .kd-toast__icon ~ .kd-toast__text {
