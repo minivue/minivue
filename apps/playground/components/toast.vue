@@ -77,7 +77,7 @@ const onCloseTap = () => {
   flex-shrink: 0;
   justify-content: center;
   width: 100%;
-  padding-top: 8px;
+  padding: 8px 16px 0;
   pointer-events: none;
 }
 

@@ -20,6 +20,7 @@
     "pages/button/button",
     "pages/controls/controls",
     "pages/divider/divider",
+    "pages/toast/toast",
     "pages/link/link",
     "pages/loading/loading",
     "pages/progress/progress"

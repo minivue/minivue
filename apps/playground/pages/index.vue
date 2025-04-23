@@ -7,6 +7,7 @@
       <Navigator url="/pages/link/link">链接组件</Navigator>
       <Navigator url="/pages/loading/loading">加载组件</Navigator>
       <Navigator url="/pages/progress/progress">进度组件</Navigator>
+      <Navigator url="/pages/toast/toast">Toast组件</Navigator>
     </View>
   </KdPage>
 </template>
