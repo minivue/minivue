@@ -16,7 +16,7 @@
         <View class="kd-toast__action">
           <KdButton type="light" highlight @tap="onActionTap">{{ action }}</KdButton>
         </View>
-        <View class="kd-toast__close">
+        <View v-if="closeable" class="kd-toast__close">
           <KdButton icon="close" size="s" only-icon @tap="onCloseTap"></KdButton>
         </View>
       </View>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends boolean">
-import { computed } from '@minivue/core'
+import { computed, ref, watch } from '@minivue/core'
 import KdIcon from './icon.vue'
 import KdButton from './button.vue'
 import KdLoading from './loading.vue'
@@ -45,31 +45,73 @@ interface Props {
   content?: string
   /** 进度百分比 */
   percentage?: number
+  /** 显示时长 */
+  duration?: number
+  /** 是否显示关闭按钮 */
+  closeable?: boolean
+  /** 是否显示 */
+  show?: boolean
+}
+
+interface Events {
+  hide: []
+  close: []
+  action: []
 }
 
 defineOptions({
   name: 'KdToast',
 })
 
-const { hud, action, content } = defineProps<Props>()
+let timer: NodeJS.Timeout
+
+const emit = defineEmits<Events>()
+
+const { hud, show, icon, action, content, duration = 2500, closeable = true } = defineProps<Props>()
 
 const iconSize = computed(() => (hud ? 48 : 22))
+
+const innerShow = ref(show)
+
+const isAutoHide = duration > 0 && !['progress', 'loading'].includes(icon as string)
 
 const classes = computed(() =>
   classObjectToString('kd-toast', {
     'kd-toast--hud': hud,
     'kd-toast--hudtext': hud && content,
     'kd-toast--full': action,
+    'kd-toast--show': innerShow.value,
   }),
 )
 
 const onActionTap = () => {
-  console.log('action tap')
+  innerShow.value = false
+  emit('action')
 }
 
 const onCloseTap = () => {
-  console.log('close tap')
+  innerShow.value = false
+  emit('close')
 }
+
+watch(innerShow, (newVal) => {
+  if (!newVal) {
+    emit('hide')
+  }
+})
+
+watch(
+  () => show,
+  (newVal) => {
+    clearTimeout(timer)
+    innerShow.value = newVal
+    if (newVal && isAutoHide) {
+      timer = setTimeout(() => {
+        innerShow.value = false
+      }, duration)
+    }
+  },
+)
 </script>
 
 <style>
@@ -89,10 +131,20 @@ const onCloseTap = () => {
   justify-content: flex-end;
   max-width: 520px;
   min-height: 50px;
-  pointer-events: auto;
+  pointer-events: none;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
+  opacity: 0;
+  backdrop-filter: blur(0);
+  transform: translateY(-16px);
+  transition: all 0.25s ease-in-out;
+}
+
+.kd-toast--show {
+  pointer-events: auto;
+  opacity: 1;
   backdrop-filter: blur(5px);
+  transform: translateY(0);
 }
 
 .kd-toast--full {

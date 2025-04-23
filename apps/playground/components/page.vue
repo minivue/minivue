@@ -9,10 +9,10 @@
     <RootPortal>
       <View :class="rootClasses">
         <View class="kd-toast-area">
-          <KdToast
+          <!-- <KdToast
             icon="loading"
             content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈"
-          />
+          /> -->
         </View>
       </View>
     </RootPortal>
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { computed, ref } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange } from './utils'
-import KdToast from './toast.vue'
+// import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
 
 defineOptions({
