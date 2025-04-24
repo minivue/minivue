@@ -1,12 +1,12 @@
 <template>
   <KdPage title="Toast组件">
-    <Button @tap="onTap">check</Button>
-    <KdToast
+    <Button @tap="onTap" style="margin-top: 100px">check</Button>
+    <!-- <KdToast
       :show="show"
       content="情報通知に関するグローバル ヒント"
       action="ボタン"
       @hide="onHide"
-    />
+    /> -->
     <!-- <KdToast icon="loading" hud />
     <KdToast icon="loading" content="加载中" hud />
     <KdToast icon="success" content="加载成功" hud />
@@ -27,17 +27,11 @@
 </template>
 
 <script setup lang="ts">
+import { showToast } from '@/api'
 import KdPage from '@/components/page.vue'
-import KdToast from '@/components/toast.vue'
-import { ref } from '@minivue/core'
-
-const show = ref(false)
+let i = 1
 const onTap = () => {
-  show.value = !show.value
-}
-
-const onHide = () => {
-  show.value = false
+  showToast('情報通知に関するグローバル ヒント' + i++)
 }
 </script>
 

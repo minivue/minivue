@@ -58,6 +58,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
+      console.warn(this.properties)
       const ctx = this
       const rawProps: Record<string, any> = {}
       propKeys.forEach((property) => {

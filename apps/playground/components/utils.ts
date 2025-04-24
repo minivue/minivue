@@ -48,6 +48,12 @@ export function getPages() {
   return getCurrentPages()
 }
 
+export function getPage() {
+  const pages = getPages()
+  const page = pages[pages.length - 1]
+  return page
+}
+
 export function getRelationNodes(ctx: ComponentInstance, path: string) {
   return ctx.getRelationNodes(path)
 }

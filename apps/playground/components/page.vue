@@ -9,7 +9,18 @@
     <RootPortal>
       <View :class="rootClasses">
         <View class="kd-toast-area">
-          <KdToast content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈" />
+          <KdToast
+            v-for="toast in toasts"
+            show
+            :key="toast.id"
+            :hud="toast.hud"
+            :icon="toast.icon"
+            :action="toast.action"
+            :content="toast.content"
+            :duration="toast.duration"
+            :closeable="toast.closeable"
+            :percentage="toast.percentage"
+          />
         </View>
       </View>
     </RootPortal>
@@ -18,9 +29,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from '@minivue/core'
-import { getAppBaseInfo, onThemeChange } from './utils'
+import { getAppBaseInfo, getPage, onThemeChange } from './utils'
+
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
+import { ToastProps } from '@/type'
 
 defineOptions({
   name: 'KdPage',
@@ -53,6 +66,8 @@ const emit = defineEmits<Events>()
 
 const { title, actions = [], hideNavbar } = defineProps<Props>()
 
+const page = getPage()
+
 const theme = ref(appBaseInfo.theme)
 
 const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
@@ -61,7 +76,17 @@ const classes = computed(() => `kd-page ${themes.value}`)
 
 const rootClasses = computed(() => `kd-root ${themes.value}`)
 
+const toasts = ref<ToastProps<boolean>[]>([])
+
 const onActionTap = (action: string) => emit('action', action)
+
+page.$showToast = (options: ToastProps<boolean>) => {
+  console.warn(options)
+  toasts.value.unshift(options)
+  if (toasts.value.length > 3) {
+    toasts.value.pop() // 如果超过3个，移除最后一个
+  }
+}
 
 onThemeChange((res) => {
   theme.value = res.theme

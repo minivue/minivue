@@ -31,27 +31,7 @@ import KdButton from './button.vue'
 import KdLoading from './loading.vue'
 import KdProgress from './progress.vue'
 import { classObjectToString } from './utils'
-
-export interface Props<T> {
-  /** 是否hud显示 */
-  hud?: T
-  /** 图标 */
-  icon?: T extends true
-    ? 'loading' | 'success' | 'error' | (string & {})
-    : 'info' | 'success' | 'warning' | 'error' | 'loading' | 'loading' | 'progress' | (string & {})
-  /** 操作文案 */
-  action?: string
-  /** 文本内容 */
-  content?: string
-  /** 进度百分比 */
-  percentage?: number
-  /** 显示时长 */
-  duration?: number
-  /** 是否显示关闭按钮 */
-  closeable?: boolean
-  /** 是否显示 */
-  show?: boolean
-}
+import { ToastProps } from '@/type'
 
 interface Events {
   hide: []
@@ -75,7 +55,7 @@ const {
   content,
   duration = 2500,
   closeable = true,
-} = defineProps<Props<T>>()
+} = defineProps<ToastProps<T>>()
 
 const iconSize = computed(() => (hud ? 48 : 22))
 
@@ -131,6 +111,7 @@ watch(
 <style>
 /* 加这次是为了防止kd-toast宽度益处问题 */
 .kd-toast-wrapper {
+  box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
   justify-content: center;
@@ -140,7 +121,7 @@ watch(
 }
 
 .kd-toast {
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   max-width: 520px;
@@ -154,13 +135,11 @@ watch(
 }
 
 .kd-toast--show {
-  display: inline-flex;
-  animation: k-anim-toast-show 0.25s forwards;
+  animation: k-anim-toast-show 0.25s ease-in-out forwards;
 }
 
 .kd-toast--hide {
-  display: inline-flex;
-  animation: k-anim-toast-hide 0.25s forwards;
+  animation: k-anim-toast-hide 0.25s ease-in-out forwards;
 }
 
 @keyframes k-anim-toast-show {

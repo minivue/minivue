@@ -45,7 +45,7 @@
   },
   "themeLocation": "theme.json",
   "darkmode": true,
-  "resizable": true,
+  "resizable": false,
   "frameset": false,
   "renderer": "skyline",
   "componentFramework": "glass-easel",

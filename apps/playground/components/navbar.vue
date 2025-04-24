@@ -72,7 +72,7 @@ const styles = computed(() => {
   const paddingTop = top - offset
   return styleObjectToString({
     '--padding-top': `${paddingTop}px`,
-    '--padding-width': `${windowWidth - left}px)`,
+    '--padding-width': `${windowWidth - left}px`,
   })
 })
 
