@@ -32,7 +32,7 @@ import KdLoading from './loading.vue'
 import KdProgress from './progress.vue'
 import { classObjectToString } from './utils'
 
-interface Props {
+export interface Props<T> {
   /** 是否hud显示 */
   hud?: T
   /** 图标 */
@@ -67,7 +67,15 @@ let timer: NodeJS.Timeout
 
 const emit = defineEmits<Events>()
 
-const { hud, show, icon, action, content, duration = 2500, closeable = true } = defineProps<Props>()
+const {
+  hud,
+  show,
+  icon,
+  action,
+  content,
+  duration = 2500,
+  closeable = true,
+} = defineProps<Props<T>>()
 
 const iconSize = computed(() => (hud ? 48 : 22))
 

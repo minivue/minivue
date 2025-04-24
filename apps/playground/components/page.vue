@@ -19,9 +19,8 @@
 <script setup lang="ts">
 import { computed, ref } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange } from './utils'
-// import KdToast from './toast.vue'
+import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
-// import { KdToastOptions } from '../type'
 
 defineOptions({
   name: 'KdPage',
