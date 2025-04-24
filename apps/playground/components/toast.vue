@@ -1,6 +1,6 @@
 <template>
-  <View class="kd-toast-wrapper">
-    <View :class="classes">
+  <View v-if="show" class="kd-toast-wrapper">
+    <View :class="classes" @animationend="onAnimationEnd">
       <View v-if="icon" class="kd-toast__icon">
         <KdLoading v-if="icon === 'loading'" mode="dark" />
         <KdProgress
@@ -81,36 +81,42 @@ const classes = computed(() =>
     'kd-toast--hudtext': hud && content,
     'kd-toast--full': action,
     'kd-toast--show': innerShow.value,
+    'kd-toast--hide': !innerShow.value,
   }),
 )
 
-const onActionTap = () => {
+const hideToast = () => {
   innerShow.value = false
+}
+
+const showToast = () => {
+  clearTimeout(timer)
+  innerShow.value = true
+  if (isAutoHide) {
+    timer = setTimeout(hideToast, duration)
+  }
+}
+
+const onActionTap = () => {
+  hideToast()
   emit('action')
 }
 
 const onCloseTap = () => {
-  innerShow.value = false
+  hideToast()
   emit('close')
 }
 
-watch(innerShow, (newVal) => {
-  if (!newVal) {
+const onAnimationEnd = (e: WechatMiniprogram.CustomEvent) => {
+  const { animationName } = e.detail
+  if (animationName === 'k-anim-toast-hide') {
     emit('hide')
   }
-})
+}
 
 watch(
   () => show,
-  (newVal) => {
-    clearTimeout(timer)
-    innerShow.value = newVal
-    if (newVal && isAutoHide) {
-      timer = setTimeout(() => {
-        innerShow.value = false
-      }, duration)
-    }
-  },
+  (val) => (val ? showToast() : hideToast()),
 )
 </script>
 
@@ -126,25 +132,41 @@ watch(
 }
 
 .kd-toast {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: flex-end;
   max-width: 520px;
   min-height: 50px;
-  pointer-events: none;
+  pointer-events: auto;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
   opacity: 0;
-  backdrop-filter: blur(0);
+  backdrop-filter: blur(5px);
   transform: translateY(-16px);
-  transition: all 0.25s ease-in-out;
 }
 
 .kd-toast--show {
-  pointer-events: auto;
-  opacity: 1;
-  backdrop-filter: blur(5px);
-  transform: translateY(0);
+  display: inline-flex;
+  animation: k-anim-toast-show 0.25s forwards;
+}
+
+.kd-toast--hide {
+  display: inline-flex;
+  animation: k-anim-toast-hide 0.25s forwards;
+}
+
+@keyframes k-anim-toast-show {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes k-anim-toast-hide {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .kd-toast--full {

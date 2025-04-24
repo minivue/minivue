@@ -24,11 +24,12 @@
 <script setup lang="ts">
 import { computed } from '@minivue/core'
 import {
-  classObjectToString,
-  getMenuButtonBoundingClientRect,
   getPages,
   navigateBack,
+  getWindowInfo,
   styleObjectToString,
+  classObjectToString,
+  getMenuButtonBoundingClientRect,
 } from './utils'
 
 import KdButton from './button.vue'
@@ -60,6 +61,8 @@ const emit = defineEmits<Events>()
 
 const { title, actions = [] } = defineProps<Props>()
 
+const { windowWidth } = getWindowInfo()
+
 const { top, left, height } = getMenuButtonBoundingClientRect()
 
 const classes = computed(() => classObjectToString('kd-navbar'))
@@ -69,7 +72,7 @@ const styles = computed(() => {
   const paddingTop = top - offset
   return styleObjectToString({
     '--padding-top': `${paddingTop}px`,
-    '--padding-width': `calc(100% - ${left}px)`,
+    '--padding-width': `${windowWidth - left}px)`,
   })
 })
 

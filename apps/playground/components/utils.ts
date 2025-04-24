@@ -28,6 +28,10 @@ export function getAppBaseInfo() {
   return wx.getAppBaseInfo()
 }
 
+export function getWindowInfo() {
+  return wx.getWindowInfo()
+}
+
 export function getMenuButtonBoundingClientRect() {
   return wx.getMenuButtonBoundingClientRect()
 }
