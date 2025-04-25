@@ -1,4 +1,4 @@
-export interface ToastProps<T extends boolean> {
+export interface KdToastOptions<T> {
   id?: string
   /** 是否hud显示 */
   hud?: T
@@ -18,4 +18,8 @@ export interface ToastProps<T extends boolean> {
   closeable?: boolean
   /** 进度百分比 */
   percentage?: number
+  /**
+   * 点击按钮回调函数
+   */
+  onAction?: () => void
 }

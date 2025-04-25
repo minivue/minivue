@@ -1,12 +1,5 @@
 import { getPage } from '@/components/utils'
-import { ToastProps } from '@/type'
-
-type KdToastOptions<T extends boolean> = ToastProps<T> & {
-  /**
-   * 点击按钮回调函数
-   */
-  onAction?: () => void
-}
+import { KdToastOptions } from '@/type'
 
 /**
  * 显示消息提示框

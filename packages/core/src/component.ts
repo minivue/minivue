@@ -37,9 +37,11 @@ export const defineComponent: DefineComponentFunction = (options) => {
     props[key].value = isFunction(props[key].default) ? props[key].default() : props[key].default
     delete props[key].default
     observers[key] = function (value: any) {
-      this.__props__[key] = value
+      this.__props__[key] = value === null ? undefined : value
+      console.warn('observers:', key, value)
     }
   })
+
   props.externalClass = {
     type: String,
     value: '',
@@ -58,7 +60,6 @@ export const defineComponent: DefineComponentFunction = (options) => {
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
-      console.warn(this.properties)
       const ctx = this
       const rawProps: Record<string, any> = {}
       propKeys.forEach((property) => {
@@ -67,6 +68,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
         rawProps[property] = value === null ? undefined : value
       })
       ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
+      console.warn('created:', JSON.stringify(rawProps))
       // @ts-ignore
       ctx.__props__ = shallowReactive(rawProps)
       triggerHook(this, ON_CREATED)
@@ -75,6 +77,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
       const ctx = this
       setCurrentInstance(ctx)
       // @ts-ignore
+      console.warn('attached:', JSON.stringify(ctx.__props__))
       callSetup(setup, ctx.__props__, ctx)
       setCurrentInstance()
       triggerHook(this, ON_ATTACHED)

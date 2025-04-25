@@ -25,18 +25,39 @@
 </template>
 
 <script setup lang="ts" generic="T extends boolean">
-import { computed, ref, watch } from '@minivue/core'
+import { computed, onAttached, ref, watch } from '@minivue/core'
 import KdIcon from './icon.vue'
 import KdButton from './button.vue'
 import KdLoading from './loading.vue'
 import KdProgress from './progress.vue'
 import { classObjectToString } from './utils'
-import { ToastProps } from '@/type'
 
 interface Events {
   hide: []
   close: []
   action: []
+}
+
+interface ToastProps {
+  id?: string
+  /** 是否hud显示 */
+  hud?: T
+  /** 是否显示 */
+  show?: boolean
+  /** 图标 */
+  icon?: T extends true
+    ? 'loading' | 'success' | 'error' | (string & {})
+    : 'info' | 'success' | 'warning' | 'error' | 'loading' | 'loading' | 'progress' | (string & {})
+  /** 操作文案 */
+  action?: string
+  /** 文本内容 */
+  content?: string
+  /** 显示时长 */
+  duration?: number
+  /** 是否显示关闭按钮 */
+  closeable?: boolean
+  /** 进度百分比 */
+  percentage?: number
 }
 
 defineOptions({
@@ -55,13 +76,21 @@ const {
   content,
   duration = 2500,
   closeable = true,
-} = defineProps<ToastProps<T>>()
+} = defineProps<ToastProps>()
+
+// console.warn('props', props)
+
+// const { hud, show, icon, action, content, duration = 2500, closeable = true } = props
 
 const iconSize = computed(() => (hud ? 48 : 22))
 
-const innerShow = ref(show)
+const innerShow = ref(false)
+
+console.log('duration', duration)
 
 const isAutoHide = duration > 0 && !['progress', 'loading'].includes(icon as string)
+
+console.log('isAutoHide', isAutoHide, icon)
 
 const classes = computed(() =>
   classObjectToString('kd-toast', {
@@ -106,6 +135,12 @@ watch(
   () => show,
   (val) => (val ? showToast() : hideToast()),
 )
+
+onAttached(() => {
+  if (show) {
+    showToast()
+  }
+})
 </script>
 
 <style>

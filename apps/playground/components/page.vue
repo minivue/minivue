@@ -33,7 +33,7 @@ import { getAppBaseInfo, getPage, onThemeChange } from './utils'
 
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
-import { ToastProps } from '@/type'
+import { KdToastOptions } from '../type'
 
 defineOptions({
   name: 'KdPage',
@@ -76,11 +76,11 @@ const classes = computed(() => `kd-page ${themes.value}`)
 
 const rootClasses = computed(() => `kd-root ${themes.value}`)
 
-const toasts = ref<ToastProps<boolean>[]>([])
+const toasts = ref<KdToastOptions<boolean>[]>([])
 
 const onActionTap = (action: string) => emit('action', action)
 
-page.$showToast = (options: ToastProps<boolean>) => {
+page.$showToast = (options: KdToastOptions<boolean>) => {
   console.warn(options)
   toasts.value.unshift(options)
   if (toasts.value.length > 3) {
