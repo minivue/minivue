@@ -20,6 +20,9 @@
             :duration="toast.duration"
             :closeable="toast.closeable"
             :percentage="toast.percentage"
+            @hide="onToastHide(toast)"
+            @close="toast.onClose"
+            @action="toast.onAction"
           />
         </View>
       </View>
@@ -80,12 +83,23 @@ const toasts = ref<KdToastOptions<boolean>[]>([])
 
 const onActionTap = (action: string) => emit('action', action)
 
+const onToastHide = (toast: KdToastOptions<boolean>) => {
+  const index = toasts.value.findIndex((t) => t.id === toast.id)
+  if (index !== -1) {
+    toasts.value.splice(index, 1)
+  }
+}
+
 page.$showToast = (options: KdToastOptions<boolean>) => {
-  console.warn(options)
+  options.id = options.id || Math.random().toString(36).slice(2)
   toasts.value.unshift(options)
   if (toasts.value.length > 3) {
     toasts.value.pop() // 如果超过3个，移除最后一个
   }
+}
+
+page.$hideToast = () => {
+  toasts.value = []
 }
 
 onThemeChange((res) => {

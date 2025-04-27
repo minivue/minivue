@@ -78,19 +78,11 @@ const {
   closeable = true,
 } = defineProps<ToastProps>()
 
-// console.warn('props', props)
-
-// const { hud, show, icon, action, content, duration = 2500, closeable = true } = props
-
 const iconSize = computed(() => (hud ? 48 : 22))
 
 const innerShow = ref(false)
 
-console.log('duration', duration)
-
 const isAutoHide = duration > 0 && !['progress', 'loading'].includes(icon as string)
-
-console.log('isAutoHide', isAutoHide, icon)
 
 const classes = computed(() =>
   classObjectToString('kd-toast', {
@@ -165,11 +157,11 @@ onAttached(() => {
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
   opacity: 0;
-  backdrop-filter: blur(5px);
   transform: translateY(-16px);
 }
 
 .kd-toast--show {
+  backdrop-filter: blur(5px);
   animation: k-anim-toast-show 0.25s ease-in-out forwards;
 }
 

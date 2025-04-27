@@ -37,8 +37,13 @@ export const defineComponent: DefineComponentFunction = (options) => {
     props[key].value = isFunction(props[key].default) ? props[key].default() : props[key].default
     delete props[key].default
     observers[key] = function (value: any) {
-      this.__props__[key] = value === null ? undefined : value
-      console.warn('observers:', key, value)
+      const ctx = this
+      // 在attached之前，__props__是初始值，需要处理
+      if (ctx.__attached__) {
+        ctx.__props__[key] = value
+      } else {
+        ctx.__props__[key] = value === null ? props[key].value || undefined : value
+      }
     }
   })
 
@@ -68,16 +73,15 @@ export const defineComponent: DefineComponentFunction = (options) => {
         rawProps[property] = value === null ? undefined : value
       })
       ctx.emit = (event: string, ...args: any[]) => ctx.triggerEvent(event, args)
-      console.warn('created:', JSON.stringify(rawProps))
       // @ts-ignore
       ctx.__props__ = shallowReactive(rawProps)
       triggerHook(this, ON_CREATED)
     },
     attached(this: ComponentInstance) {
       const ctx = this
+      ctx.__attached__ = true
       setCurrentInstance(ctx)
       // @ts-ignore
-      console.warn('attached:', JSON.stringify(ctx.__props__))
       callSetup(setup, ctx.__props__, ctx)
       setCurrentInstance()
       triggerHook(this, ON_ATTACHED)

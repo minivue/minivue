@@ -1,6 +1,15 @@
 <template>
   <KdPage title="Toast组件">
-    <Button @tap="onTap" style="margin-top: 100px">check</Button>
+    <View class="p-toast">
+      <KdButton
+        @tap="onTap"
+        size="xl"
+        type="primary"
+        style="width: 100% !important; margin-top: 50px"
+      >
+        check
+      </KdButton>
+    </View>
     <!-- <KdToast
       :show="show"
       content="情報通知に関するグローバル ヒント"
@@ -27,13 +36,43 @@
 </template>
 
 <script setup lang="ts">
-import { showToast } from '@/api'
+import { showProgressToast } from '@/api'
+import KdButton from '@/components/button.vue'
 import KdPage from '@/components/page.vue'
-let i = 1
+import { ref } from '@minivue/core'
+// const i = 1
+const percentage = ref(0)
 const onTap = () => {
-  showToast('情報通知に関するグローバル ヒント' + i++)
+  showProgressToast('信息通知に関するグローバル ヒント', percentage)
+  setInterval(() => {
+    percentage.value += 10
+  }, 1000)
+  // showToast({
+  //   content: '情報通知に関するグローバル ヒント',
+  //   action: '我知道了',
+  //   duration: 2000,
+  //   closeable: true,
+  //   percentage: 50,
+  //   onAction() {
+  //     console.log('onAction')
+  //   },
+  //   onClose() {
+  //     console.log('onClose')
+  //   },
+  // })
 }
 </script>
+
+<style>
+.p-toast {
+  padding: 16px;
+}
+
+.p-toast .kd-button {
+  width: 100% !important;
+  margin-top: 10px;
+}
+</style>
 
 <config lang="json">
 {

@@ -233,7 +233,9 @@ function transformAttributes(
               .replace('once', 'bind')
               .replace('passive', 'bind')
             eventNames.push(funcName)
-            newAttrs[`${newModifier}:${eventName}`] = funcName
+            newAttrs[`${newModifier}:${eventName}`] = funcName.includes('.')
+              ? `{{${funcName}}}`
+              : funcName
             if (funcArgsStr) {
               newAttrs[markKey] = `{{[${funcArgsStr}]}}`
             }

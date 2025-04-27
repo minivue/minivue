@@ -1,30 +1,42 @@
 <template>
   <KdPage title="WPS灵犀">
-    <View style="padding: 16px">
-      <Navigator url="/pages/button/button">按钮组件</Navigator>
-      <Navigator url="/pages/controls/controls">控制组件</Navigator>
-      <Navigator url="/pages/divider/divider">分割线组件</Navigator>
-      <Navigator url="/pages/link/link">链接组件</Navigator>
-      <Navigator url="/pages/loading/loading">加载组件</Navigator>
-      <Navigator url="/pages/progress/progress">进度组件</Navigator>
-      <Navigator url="/pages/toast/toast">Toast组件</Navigator>
+    <View class="p-index">
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/button/button')"> 按钮组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/controls/controls')">
+        控制组件
+      </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/divider/divider')">
+        分割线组件
+      </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/link/link')"> 链接组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/loading/loading')">
+        加载组件
+      </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/progress/progress')">
+        进度组件
+      </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/toast/toast')"> Toast组件 </KdButton>
     </View>
   </KdPage>
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
+import KdButton from '@/components/button.vue'
+
+function onTap(url: string) {
+  wx.navigateTo({ url })
+}
 </script>
 
 <style>
-navigator {
-  display: block;
-  padding: 10px;
-  margin-bottom: 16px;
-  color: var(--kd-color-text-white);
-  text-align: center;
-  background-color: var(--kd-color-public-normal);
-  border-radius: 8px;
+.p-index {
+  padding: 16px;
+}
+
+.p-index .kd-button {
+  width: 100% !important;
+  margin-top: 10px;
 }
 </style>
 

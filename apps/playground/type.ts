@@ -19,7 +19,11 @@ export interface KdToastOptions<T> {
   /** 进度百分比 */
   percentage?: number
   /**
-   * 点击按钮回调函数
+   * 点击操作按钮回调函数
    */
   onAction?: () => void
+  /**
+   * 点击关闭按钮回调函数
+   */
+  onClose?: () => void
 }
