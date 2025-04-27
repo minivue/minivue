@@ -39,7 +39,6 @@ interface Events {
 }
 
 interface ToastProps {
-  id?: string
   /** 是否hud显示 */
   hud?: T
   /** 是否显示 */
@@ -82,7 +81,7 @@ const iconSize = computed(() => (hud ? 48 : 22))
 
 const innerShow = ref(false)
 
-const isAutoHide = duration > 0 && !['progress', 'loading'].includes(icon as string)
+const isAutoHide = computed(() => duration > 0 && !['progress', 'loading'].includes(icon as string))
 
 const classes = computed(() =>
   classObjectToString('kd-toast', {
@@ -101,7 +100,7 @@ const hideToast = () => {
 const showToast = () => {
   clearTimeout(timer)
   innerShow.value = true
-  if (isAutoHide) {
+  if (isAutoHide.value) {
     timer = setTimeout(hideToast, duration)
   }
 }
@@ -122,6 +121,13 @@ const onAnimationEnd = (e: WechatMiniprogram.CustomEvent) => {
     emit('hide')
   }
 }
+
+watch(isAutoHide, (val) => {
+  if (val) {
+    clearTimeout(timer)
+    timer = setTimeout(hideToast, duration)
+  }
+})
 
 watch(
   () => show,

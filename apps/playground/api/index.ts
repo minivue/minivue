@@ -17,24 +17,29 @@ export function showToast<T extends boolean>(options: KdToastOptions<T> | string
   page.$showToast(options)
 }
 
-export function showToastWithIcon(content: string, icon?: string, percentage?: Ref<number>) {
-  showToast({ icon, content, percentage: percentage as any })
+export function showToastWithIcon(
+  content: string,
+  icon?: string,
+  followUp?: boolean,
+  percentage?: Ref<number>,
+) {
+  showToast({ icon, content, followUp, percentage: percentage as any })
 }
 
-export function showInfoToast(content: string) {
-  showToastWithIcon(content, 'info')
+export function showInfoToast(content: string, followUp?: boolean) {
+  showToastWithIcon(content, 'info', followUp)
 }
 
-export function showSuccessToast(content: string) {
-  showToastWithIcon(content, 'success')
+export function showSuccessToast(content: string, followUp?: boolean) {
+  showToastWithIcon(content, 'success', followUp)
 }
 
-export function showWarningToast(content: string) {
-  showToastWithIcon(content, 'warning')
+export function showWarningToast(content: string, followUp?: boolean) {
+  showToastWithIcon(content, 'warning', followUp)
 }
 
-export function showErrorToast(content: string) {
-  showToastWithIcon(content, 'error')
+export function showErrorToast(content: string, followUp?: boolean) {
+  showToastWithIcon(content, 'error', followUp)
 }
 
 export function showLoadingToast(content: string) {
@@ -42,5 +47,5 @@ export function showLoadingToast(content: string) {
 }
 
 export function showProgressToast(content: string, percentage: Ref<number>) {
-  showToastWithIcon(content, 'progress', percentage)
+  showToastWithIcon(content, 'progress', false, percentage)
 }

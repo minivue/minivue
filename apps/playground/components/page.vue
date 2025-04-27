@@ -92,9 +92,17 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
 
 page.$showToast = (options: KdToastOptions<boolean>) => {
   options.id = options.id || Math.random().toString(36).slice(2)
-  toasts.value.unshift(options)
-  if (toasts.value.length > 3) {
-    toasts.value.pop() // 如果超过3个，移除最后一个
+  if (options.followUp) {
+    const firstToast = toasts.value[0]
+    if (firstToast) {
+      options.id = firstToast.id
+    }
+    toasts.value[0] = options
+  } else {
+    toasts.value.unshift(options)
+    if (toasts.value.length > 3) {
+      toasts.value.pop() // 如果超过3个，移除最后一个
+    }
   }
 }
 

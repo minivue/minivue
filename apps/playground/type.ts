@@ -18,6 +18,8 @@ export interface KdToastOptions<T> {
   closeable?: boolean
   /** 进度百分比 */
   percentage?: number
+  /** 是否直接在上一个toast上进行切换 */
+  followUp?: boolean
   /**
    * 点击操作按钮回调函数
    */

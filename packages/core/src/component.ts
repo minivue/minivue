@@ -38,12 +38,9 @@ export const defineComponent: DefineComponentFunction = (options) => {
     delete props[key].default
     observers[key] = function (value: any) {
       const ctx = this
-      // 在attached之前，__props__是初始值，需要处理
-      if (ctx.__attached__) {
-        ctx.__props__[key] = value
-      } else {
-        ctx.__props__[key] = value === null ? props[key].value || undefined : value
-      }
+      let defaultValue = props[key].value
+      defaultValue = defaultValue === null ? undefined : defaultValue
+      ctx.__props__[key] = value === null ? defaultValue : value
     }
   })
 
@@ -79,7 +76,6 @@ export const defineComponent: DefineComponentFunction = (options) => {
     },
     attached(this: ComponentInstance) {
       const ctx = this
-      ctx.__attached__ = true
       setCurrentInstance(ctx)
       // @ts-ignore
       callSetup(setup, ctx.__props__, ctx)

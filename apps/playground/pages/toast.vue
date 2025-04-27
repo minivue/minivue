@@ -10,6 +10,16 @@
         check
       </KdButton>
     </View>
+    <View class="p-toast">
+      <KdButton
+        @tap="onFollow"
+        size="xl"
+        type="primary"
+        style="width: 100% !important; margin-top: 50px"
+      >
+        follow up
+      </KdButton>
+    </View>
     <!-- <KdToast
       :show="show"
       content="情報通知に関するグローバル ヒント"
@@ -36,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { showProgressToast } from '@/api'
+import { showProgressToast, showSuccessToast } from '@/api'
 import KdButton from '@/components/button.vue'
 import KdPage from '@/components/page.vue'
 import { ref } from '@minivue/core'
@@ -60,6 +70,10 @@ const onTap = () => {
   //     console.log('onClose')
   //   },
   // })
+}
+
+const onFollow = () => {
+  showSuccessToast('解析完成', true)
 }
 </script>
 
