@@ -15,13 +15,13 @@
     }
   },
   "dependencies": {
-    "@swc/core": "1.11.21",
+    "@swc/core": "1.11.22",
     "@vue/compiler-sfc": "3.5.13",
     "@vue/compiler-core": "3.5.13"
   },
   "devDependencies": {
     "@types/node": "latest",
-    "esbuild": "0.25.2",
+    "esbuild": "0.25.3",
     "typescript": "latest"
   },
   "packageManager": "pnpm@10.3.0",

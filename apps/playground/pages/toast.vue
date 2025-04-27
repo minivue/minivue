@@ -2,79 +2,208 @@
   <KdPage title="Toast组件">
     <View class="p-toast">
       <KdButton
-        @tap="onTap"
+        v-for="(example, index) in examples"
+        :key="index"
+        @tap="onTap(example.options)"
         size="xl"
         type="primary"
-        style="width: 100% !important; margin-top: 50px"
+        style="width: 100% !important; margin-top: 10px"
       >
-        check
+        {{ example.title }}
       </KdButton>
     </View>
-    <View class="p-toast">
-      <KdButton
-        @tap="onFollow"
-        size="xl"
-        type="primary"
-        style="width: 100% !important; margin-top: 50px"
-      >
-        follow up
-      </KdButton>
-    </View>
-    <!-- <KdToast
-      :show="show"
-      content="情報通知に関するグローバル ヒント"
-      action="ボタン"
-      @hide="onHide"
-    /> -->
-    <!-- <KdToast icon="loading" hud />
-    <KdToast icon="loading" content="加载中" hud />
-    <KdToast icon="success" content="加载成功" hud />
-    <KdToast icon="error" content="加载失败" hud />
-    <KdToast icon="loading" content="一段长文本，推荐最多2行" hud />
-    <KdToast content="这是一个轻量级反馈" />
-    <KdToast icon="loading" content="这是一个轻量级反馈这是一个轻量级反馈这是一个轻量级反馈" />
-    <KdToast icon="loading" content="这是一个轻量级反馈" action="操作按钮" />
-    <KdToast icon="progress" :percentage="50" content="这是一个轻量级反馈" action="操作按钮" />
-    <KdToast content="这是一个轻量级反馈" action="操作按钮" />
-    <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" />
-    <KdToast content="情報通知に関するグローバル ヒント" action="ボタン" :closeable="false" />
-    <KdToast icon="success" content="这是一个轻量级反馈" />
-    <KdToast icon="error" content="这是一个轻量级反馈" />
-    <KdToast icon="info" content="这是一个轻量级反馈" />
-    <KdToast icon="warning" content="这是一个轻量级反馈" action="操作按钮" /> -->
   </KdPage>
 </template>
 
 <script setup lang="ts">
-import { showProgressToast, showSuccessToast } from '@/api'
+import { showToast, hideToast } from '@/api'
 import KdButton from '@/components/button.vue'
 import KdPage from '@/components/page.vue'
-import { ref } from '@minivue/core'
-// const i = 1
-const percentage = ref(0)
-const onTap = () => {
-  showProgressToast('信息通知に関するグローバル ヒント', percentage)
-  setInterval(() => {
-    percentage.value += 10
-  }, 1000)
-  // showToast({
-  //   content: '情報通知に関するグローバル ヒント',
-  //   action: '我知道了',
-  //   duration: 2000,
-  //   closeable: true,
-  //   percentage: 50,
-  //   onAction() {
-  //     console.log('onAction')
-  //   },
-  //   onClose() {
-  //     console.log('onClose')
-  //   },
-  // })
+import { KdToastOptions } from '@/type'
+
+const examples: {
+  title: string
+  options: KdToastOptions<boolean>
+}[] = [
+  {
+    title: '基本用法',
+    options: {
+      content: '信息通知',
+    },
+  },
+  {
+    title: '基本用法,长内容',
+    options: {
+      content: '这是一个轻量级反馈,随着文本自适应宽度，撑满屏幕宽度，左右留 16 安全间距',
+    },
+  },
+  {
+    title: '警告',
+    options: {
+      content: '这是一个轻量级反馈',
+      icon: 'warning',
+    },
+  },
+  {
+    title: '成功',
+    options: {
+      content: '这是一个轻量级反馈',
+      icon: 'success',
+    },
+  },
+  {
+    title: '错误',
+    options: {
+      content: '这是一个轻量级反馈',
+      icon: 'error',
+    },
+  },
+  {
+    title: '信息',
+    options: {
+      content: '这是一个轻量级反馈',
+      icon: 'info',
+    },
+  },
+  {
+    title: '带图标,长内容',
+    options: {
+      content: '这是一个轻量级反馈,随着文本自适应宽度，撑满屏幕宽度，左右留 16 安全间距',
+      icon: 'info',
+    },
+  },
+  {
+    title: '加载中',
+    options: {
+      content: '加载中',
+      icon: 'loading',
+    },
+  },
+  {
+    title: '进度',
+    options: {
+      id: 'progress',
+      content: '文件上传中',
+      icon: 'progress',
+      percentage: 0,
+    },
+  },
+  {
+    title: '带操作按钮',
+    options: {
+      content: '这是一个轻量级反馈',
+      action: '我知道了',
+      onAction() {
+        console.log('onAction:', '我知道了')
+      },
+    },
+  },
+  {
+    title: '带操作按钮和关闭按钮',
+    options: {
+      content: '这是一个轻量级反馈',
+      action: '我知道了',
+      closeable: true,
+      onAction() {
+        console.log('onAction:', '我知道了')
+      },
+    },
+  },
+  {
+    title: '带图标和操作按钮和关闭按钮',
+    options: {
+      icon: 'info',
+      content: '这是一个轻量级反馈',
+      action: '我知道了',
+      closeable: true,
+      onAction() {
+        console.log('onAction:', '我知道了')
+      },
+    },
+  },
+  {
+    title: '操作按钮和关闭按钮和长内容',
+    options: {
+      content: '这是一个轻量级反馈,随着文本自适应宽度，撑满屏幕宽度，左右留 16 安全间距',
+      action: '我知道了',
+      closeable: true,
+      onAction() {
+        console.log('onAction:', '我知道了')
+      },
+    },
+  },
+  {
+    title: '长内容，长操作按钮',
+    options: {
+      content: '这是一个轻量级反馈,随着文本自适应宽度，撑满屏幕宽度，左右留 16 安全间距',
+      action: '操作文本行数超过1行',
+      closeable: true,
+      onAction() {
+        console.log('onAction:', '我知道了')
+      },
+    },
+  },
+  {
+    title: '加载中hud',
+    options: {
+      hud: true,
+      content: '加载中',
+      icon: 'loading',
+    },
+  },
+  {
+    title: '成功hud',
+    options: {
+      hud: true,
+      content: '成功',
+      icon: 'success',
+    },
+  },
+  {
+    title: '成功hud，没有文本',
+    options: {
+      hud: true,
+      icon: 'success',
+    },
+  },
+  {
+    title: '失败hud',
+    options: {
+      hud: true,
+      content: '一段长文本，推荐最多2行',
+      icon: 'error',
+    },
+  },
+]
+
+let interval: NodeJS.Timeout
+
+const onTap = (options: KdToastOptions<boolean>) => {
+  showToast(options)
+  if (options.icon === 'loading') {
+    setTimeout(() => {
+      hideToast()
+    }, 2000)
+  }
+  if (options.icon === 'progress') {
+    interval = setInterval(() => {
+      options.percentage = options.percentage! + 10
+      if (options.percentage! >= 100) {
+        clearInterval(interval)
+        // hideToast()
+      } else {
+        showToast(options)
+      }
+    }, 1000)
+  }
 }
 
-const onFollow = () => {
-  showSuccessToast('解析完成', true)
-}
+// let percentage = 0
+// setInterval(() => {
+//   if (percentage <= 100) {
+//     showProgressToast('progress', '信息通知に関するグローバル ヒント', percentage++)
+//   }
+// }, 1000)
 </script>
 
 <style>

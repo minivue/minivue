@@ -123,8 +123,8 @@ const onAnimationEnd = (e: WechatMiniprogram.CustomEvent) => {
 }
 
 watch(isAutoHide, (val) => {
+  clearTimeout(timer)
   if (val) {
-    clearTimeout(timer)
     timer = setTimeout(hideToast, duration)
   }
 })

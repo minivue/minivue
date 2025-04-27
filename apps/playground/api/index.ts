@@ -1,6 +1,5 @@
 import { getPage } from '@/components/utils'
 import { KdToastOptions } from '@/type'
-import { Ref } from 'vue'
 
 /**
  * 显示消息提示框
@@ -17,13 +16,18 @@ export function showToast<T extends boolean>(options: KdToastOptions<T> | string
   page.$showToast(options)
 }
 
+export function hideToast() {
+  const page = getPage()
+  page.$hideToast()
+}
+
 export function showToastWithIcon(
   content: string,
   icon?: string,
   followUp?: boolean,
-  percentage?: Ref<number>,
+  percentage?: number,
 ) {
-  showToast({ icon, content, followUp, percentage: percentage as any })
+  showToast({ icon, content, followUp, percentage })
 }
 
 export function showInfoToast(content: string, followUp?: boolean) {
@@ -42,10 +46,15 @@ export function showErrorToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'error', followUp)
 }
 
-export function showLoadingToast(content: string) {
-  showToastWithIcon(content, 'loading')
+export function showLoadingToast(content: string, followUp?: boolean) {
+  showToastWithIcon(content, 'loading', followUp)
 }
 
-export function showProgressToast(content: string, percentage: Ref<number>) {
-  showToastWithIcon(content, 'progress', false, percentage)
+export function showProgressToast(
+  id: string,
+  content: string,
+  percentage: number,
+  followUp?: boolean,
+) {
+  showToast({ id, icon: 'progress', content, percentage, followUp })
 }

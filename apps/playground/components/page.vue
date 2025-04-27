@@ -92,7 +92,14 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
 
 page.$showToast = (options: KdToastOptions<boolean>) => {
   options.id = options.id || Math.random().toString(36).slice(2)
-  if (options.followUp) {
+  if (options.icon === 'progress') {
+    const targetToastIndex = toasts.value.findIndex((t) => t.id === options.id)
+    if (targetToastIndex > -1) {
+      toasts.value[targetToastIndex] = options
+    } else {
+      toasts.value.unshift(options)
+    }
+  } else if (options.followUp) {
     const firstToast = toasts.value[0]
     if (firstToast) {
       options.id = firstToast.id
@@ -104,6 +111,7 @@ page.$showToast = (options: KdToastOptions<boolean>) => {
       toasts.value.pop() // 如果超过3个，移除最后一个
     }
   }
+  console.log('toasts.value: ', JSON.stringify(toasts.value))
 }
 
 page.$hideToast = () => {
