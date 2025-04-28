@@ -179,6 +179,7 @@ const examples: {
 let interval: NodeJS.Timeout
 
 const onTap = (options: KdToastOptions<boolean>) => {
+  console.log('onTap: ', JSON.stringify(options))
   showToast(options)
   if (options.icon === 'loading') {
     setTimeout(() => {

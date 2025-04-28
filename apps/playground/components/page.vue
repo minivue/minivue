@@ -11,7 +11,6 @@
         <View class="kd-toast-area">
           <KdToast
             v-for="toast in toasts"
-            show
             :key="toast.id"
             :hud="toast.hud"
             :icon="toast.icon"
@@ -32,7 +31,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from '@minivue/core'
-import { getAppBaseInfo, getPage, onThemeChange } from './utils'
+import { clone, getAppBaseInfo, getPage, onThemeChange } from './utils'
 
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
@@ -91,6 +90,7 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
 }
 
 page.$showToast = (options: KdToastOptions<boolean>) => {
+  options = clone(options)
   options.id = options.id || Math.random().toString(36).slice(2)
   if (options.icon === 'progress') {
     const targetToastIndex = toasts.value.findIndex((t) => t.id === options.id)
@@ -111,7 +111,6 @@ page.$showToast = (options: KdToastOptions<boolean>) => {
       toasts.value.pop() // 如果超过3个，移除最后一个
     }
   }
-  console.log('toasts.value: ', JSON.stringify(toasts.value))
 }
 
 page.$hideToast = () => {
@@ -134,6 +133,7 @@ onThemeChange((res) => {
 
 .kd-page__content {
   flex: 1;
+  min-height: 0;
 }
 
 .kd-root {

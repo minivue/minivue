@@ -1,6 +1,6 @@
 <template>
-  <View v-if="show" class="kd-toast-wrapper">
-    <View :class="classes" @animationend="onAnimationEnd">
+  <View class="kd-toast-wrapper">
+    <View :class="classes" @transitionend="onTransitionEnd">
       <View v-if="icon" class="kd-toast__icon">
         <KdLoading v-if="icon === 'loading'" mode="dark" />
         <KdProgress
@@ -41,8 +41,6 @@ interface Events {
 interface ToastProps {
   /** 是否hud显示 */
   hud?: T
-  /** 是否显示 */
-  show?: boolean
   /** 图标 */
   icon?: T extends true
     ? 'loading' | 'success' | 'error' | (string & {})
@@ -67,15 +65,7 @@ let timer: NodeJS.Timeout
 
 const emit = defineEmits<Events>()
 
-const {
-  hud,
-  show,
-  icon,
-  action,
-  content,
-  duration = 2500,
-  closeable = true,
-} = defineProps<ToastProps>()
+const { hud, icon, action, content, duration = 2500, closeable = true } = defineProps<ToastProps>()
 
 const iconSize = computed(() => (hud ? 48 : 22))
 
@@ -89,7 +79,6 @@ const classes = computed(() =>
     'kd-toast--hudtext': hud && content,
     'kd-toast--full': action,
     'kd-toast--show': innerShow.value,
-    'kd-toast--hide': !innerShow.value,
   }),
 )
 
@@ -115,9 +104,8 @@ const onCloseTap = () => {
   emit('close')
 }
 
-const onAnimationEnd = (e: WechatMiniprogram.CustomEvent) => {
-  const { animationName } = e.detail
-  if (animationName === 'k-anim-toast-hide') {
+const onTransitionEnd = (e: WechatMiniprogram.CustomEvent) => {
+  if (e.detail.propertyName === 'opacity' && !innerShow.value) {
     emit('hide')
   }
 }
@@ -129,15 +117,8 @@ watch(isAutoHide, (val) => {
   }
 })
 
-watch(
-  () => show,
-  (val) => (val ? showToast() : hideToast()),
-)
-
 onAttached(() => {
-  if (show) {
-    showToast()
-  }
+  setTimeout(showToast, 30)
 })
 </script>
 
@@ -159,34 +140,20 @@ onAttached(() => {
   justify-content: flex-end;
   max-width: 520px;
   min-height: 50px;
+  overflow: hidden;
   pointer-events: auto;
   background-color: var(--kd-color-mask-heavy);
   border-radius: 12px;
   opacity: 0;
+  backdrop-filter: blur(0);
   transform: translateY(-16px);
+  transition: all 0.25s ease-in-out;
 }
 
 .kd-toast--show {
+  opacity: 1;
   backdrop-filter: blur(5px);
-  animation: k-anim-toast-show 0.25s ease-in-out forwards;
-}
-
-.kd-toast--hide {
-  animation: k-anim-toast-hide 0.25s ease-in-out forwards;
-}
-
-@keyframes k-anim-toast-show {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes k-anim-toast-hide {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  transform: translateY(0);
 }
 
 .kd-toast--full {
@@ -195,6 +162,7 @@ onAttached(() => {
 }
 
 .kd-toast--hud {
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   justify-content: center;

@@ -24,6 +24,10 @@ export function styleObjectToString(styleObj: CSSProperties) {
     .join(';')
 }
 
+export function clone<T>(original: T): T {
+  return JSON.parse(JSON.stringify(original))
+}
+
 export function getAppBaseInfo() {
   return wx.getAppBaseInfo()
 }
