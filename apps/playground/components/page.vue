@@ -1,6 +1,12 @@
 <template>
   <View :class="classes">
-    <KdNavbar v-if="!hideNavbar" :title="title" :actions="actions" @action="onActionTap">
+    <KdNavbar
+      v-if="!hideNavbar"
+      :title="title"
+      :actions="actions"
+      @action="onNavbarAction"
+      @attached="onNavbarAttached"
+    >
       <slot slot="left" name="navbar_left" />
       <slot name="navbar_center" />
       <slot slot="right" name="navbar_right" />
@@ -8,7 +14,7 @@
     <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
     <RootPortal>
       <View :class="rootClasses">
-        <View class="kd-toast-area">
+        <View class="kd-toast-area" :style="navbarStyle">
           <KdToast
             v-for="toast in toasts"
             :key="toast.id"
@@ -80,7 +86,13 @@ const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const toasts = ref<KdToastOptions<boolean>[]>([])
 
-const onActionTap = (action: string) => emit('action', action)
+const navbarHeight = ref(0)
+
+const navbarStyle = computed(() => `margin-top: ${navbarHeight.value}px`)
+
+const onNavbarAction = (action: string) => emit('action', action)
+
+const onNavbarAttached = (height: number) => (navbarHeight.value = height)
 
 const onToastHide = (toast: KdToastOptions<boolean>) => {
   const index = toasts.value.findIndex((t) => t.id === toast.id)
@@ -145,6 +157,9 @@ onThemeChange((res) => {
   align-items: center;
   width: 100%;
   height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
+    'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   pointer-events: none;
 }
 

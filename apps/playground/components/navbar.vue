@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from '@minivue/core'
+import { computed, onAttached } from '@minivue/core'
 import {
   getPages,
   navigateBack,
@@ -55,6 +55,8 @@ interface Props {
 interface Events {
   /** 按钮点击 */
   action: [action: string]
+  /** 挂载 */
+  attached: [height: number]
 }
 
 const emit = defineEmits<Events>()
@@ -65,15 +67,15 @@ const { windowWidth } = getWindowInfo()
 
 const { top, left, height } = getMenuButtonBoundingClientRect()
 
+const offset = (44 - height) / 2
+const paddingTop = top - offset
+const totalHeight = 44 + paddingTop
+
 const classes = computed(() => classObjectToString('kd-navbar'))
 
-const styles = computed(() => {
-  const offset = (44 - height) / 2
-  const paddingTop = top - offset
-  return styleObjectToString({
-    '--padding-top': `${paddingTop}px`,
-    '--padding-width': `${windowWidth - left}px`,
-  })
+const styles = styleObjectToString({
+  '--padding-top': `${paddingTop}px`,
+  '--padding-width': `${windowWidth - left}px`,
 })
 
 const buttons = computed(() => {
@@ -98,6 +100,10 @@ const onActionTap = (action: string) => {
   }
   emit('action', action)
 }
+
+onAttached(() => {
+  emit('attached', totalHeight)
+})
 </script>
 
 <style>

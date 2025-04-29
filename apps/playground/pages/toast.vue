@@ -191,20 +191,13 @@ const onTap = (options: KdToastOptions<boolean>) => {
       options.percentage = options.percentage! + 10
       if (options.percentage! >= 100) {
         clearInterval(interval)
-        // hideToast()
+        hideToast()
       } else {
         showToast(options)
       }
     }, 1000)
   }
 }
-
-// let percentage = 0
-// setInterval(() => {
-//   if (percentage <= 100) {
-//     showProgressToast('progress', '信息通知に関するグローバル ヒント', percentage++)
-//   }
-// }, 1000)
 </script>
 
 <style>
