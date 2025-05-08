@@ -16,6 +16,9 @@
         进度组件
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/toast/toast')"> Toast组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/message-bar/message-bar')">
+        MessageBar组件
+      </KdButton>
     </View>
   </KdPage>
 </template>

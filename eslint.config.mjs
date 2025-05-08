@@ -30,6 +30,7 @@ export default typescriptEslint.config(
       'vue/v-on-event-hyphenation': 'off',
       'vue/no-mutating-props': 'off',
       'vue/no-deprecated-slot-attribute': 'off',
+      'vue/require-default-prop': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',

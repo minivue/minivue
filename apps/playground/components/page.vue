@@ -11,7 +11,10 @@
       <slot name="navbar_center" />
       <slot slot="right" name="navbar_right" />
     </KdNavbar>
-    <ScrollView class="kd-page__content" scroll-y><slot /></ScrollView>
+    <slot name="top" />
+    <ScrollView class="kd-page__content" scroll-y using-sticky>
+      <slot />
+    </ScrollView>
     <RootPortal>
       <View :class="rootClasses">
         <View class="kd-toast-area" :style="navbarStyle">
