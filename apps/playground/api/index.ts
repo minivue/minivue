@@ -4,7 +4,6 @@ import { KdToastOptions } from '@/type'
 /**
  * 显示消息提示框
  * @param {KToastOptions | string} options toast参数
- * @returns Promise
  */
 export function showToast<T extends boolean>(options: KdToastOptions<T> | string) {
   if (typeof options === 'string') {
@@ -16,40 +15,76 @@ export function showToast<T extends boolean>(options: KdToastOptions<T> | string
   page.$showToast(options)
 }
 
+/**
+ * 隐藏消息提示框
+ */
 export function hideToast() {
   const page = getPage()
   page.$hideToast()
 }
 
-export function showToastWithIcon(
-  content: string,
-  icon?: string,
-  followUp?: boolean,
-  percentage?: number,
-) {
-  showToast({ icon, content, followUp, percentage })
+/**
+ * 显示消息提示框
+ * @param {string} content toast内容
+ * @param {string} icon toast图标
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
+export function showToastWithIcon(content: string, icon?: string, followUp?: boolean) {
+  showToast({ icon, content, followUp })
 }
 
+/**
+ * 显示信息提示框
+ * @param {string} content toast内容
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showInfoToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'info', followUp)
 }
 
+/**
+ * 显示成功提示框
+ * @param {string} content toast内容
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showSuccessToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'success', followUp)
 }
 
+/**
+ * 显示警告提示框
+ * @param {string} content toast内容
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showWarningToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'warning', followUp)
 }
 
+/**
+ * 显示错误提示框
+ * @param {string} content toast内容
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showErrorToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'error', followUp)
 }
 
+/**
+ * 显示加载提示框
+ * @param {string} content toast内容
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showLoadingToast(content: string, followUp?: boolean) {
   showToastWithIcon(content, 'loading', followUp)
 }
 
+/**
+ * 显示进度条
+ * @param {string} id 进度条id
+ * @param {string} content 进度条内容
+ * @param {number} percentage 进度条百分比
+ * @param {boolean} followUp 是否跟随上一个toast变化
+ */
 export function showProgressToast(
   id: string,
   content: string,

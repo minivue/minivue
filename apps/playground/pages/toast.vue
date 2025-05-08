@@ -42,6 +42,7 @@ const examples: {
     options: {
       content: '这是一个轻量级反馈',
       icon: 'warning',
+      followUp: true,
     },
   },
   {
@@ -49,6 +50,7 @@ const examples: {
     options: {
       content: '这是一个轻量级反馈',
       icon: 'success',
+      followUp: true,
     },
   },
   {
@@ -56,6 +58,7 @@ const examples: {
     options: {
       content: '这是一个轻量级反馈',
       icon: 'error',
+      followUp: true,
     },
   },
   {
@@ -63,6 +66,7 @@ const examples: {
     options: {
       content: '这是一个轻量级反馈',
       icon: 'info',
+      followUp: true,
     },
   },
   {

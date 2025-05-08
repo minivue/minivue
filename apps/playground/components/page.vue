@@ -99,6 +99,7 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
   if (index !== -1) {
     toasts.value.splice(index, 1)
   }
+  toast.onHide?.()
 }
 
 page.$showToast = (options: KdToastOptions<boolean>) => {

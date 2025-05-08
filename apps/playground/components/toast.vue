@@ -67,9 +67,9 @@ const emit = defineEmits<Events>()
 
 const { hud, icon, action, content, duration = 2500, closeable = true } = defineProps<ToastProps>()
 
-const iconSize = computed(() => (hud ? 48 : 22))
-
 const innerShow = ref(false)
+
+const iconSize = computed(() => (hud ? 48 : 22))
 
 const isAutoHide = computed(() => duration > 0 && !['progress', 'loading'].includes(icon as string))
 
@@ -110,9 +110,9 @@ const onTransitionEnd = (e: WechatMiniprogram.CustomEvent) => {
   }
 }
 
-watch(isAutoHide, (val) => {
+watch([() => hud, () => icon, () => action, () => content, () => duration, () => closeable], () => {
   clearTimeout(timer)
-  if (val) {
+  if (isAutoHide.value) {
     timer = setTimeout(hideToast, duration)
   }
 })

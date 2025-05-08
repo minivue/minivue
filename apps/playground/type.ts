@@ -28,4 +28,8 @@ export interface KdToastOptions<T> {
    * 点击关闭按钮回调函数
    */
   onClose?: () => void
+  /**
+   * 隐藏回调函数
+   */
+  onHide?: () => void
 }
