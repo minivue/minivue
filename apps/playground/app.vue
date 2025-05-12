@@ -25,7 +25,8 @@
     "pages/loading/loading",
     "pages/progress/progress",
     "pages/message-bar/message-bar",
-    "pages/bdage/bdage"
+    "pages/bdage/bdage",
+    "pages/skeleton/skeleton"
   ],
   "subpackages": [
     {
