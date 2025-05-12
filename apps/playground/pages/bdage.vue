@@ -2,7 +2,7 @@
   <KdPage title="徽标组件">
     <View class="p-badge">
       有消息
-      <KdBdage />
+      <KdBdage content="1" ellipsis />
     </View>
   </KdPage>
 </template>
