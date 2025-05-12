@@ -1,5 +1,5 @@
 <template>
-  <KdPage title="MessageBar组件">
+  <KdPage title="消息横幅组件">
     <KdMessageBar
       v-if="show"
       slot="top"
@@ -75,7 +75,7 @@ const onClose = () => {
 
 <config lang="json">
 {
-  "navigationBarTitleText": "MessageBar组件",
+  "navigationBarTitleText": "消息横幅组件",
   "disableScroll": true
 }
 </config>

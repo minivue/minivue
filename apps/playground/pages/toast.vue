@@ -1,5 +1,5 @@
 <template>
-  <KdPage title="Toast组件">
+  <KdPage title="轻提示组件">
     <View class="p-toast">
       <KdButton
         v-for="(example, index) in examples"
@@ -217,7 +217,7 @@ const onTap = (options: KdToastOptions<boolean>) => {
 
 <config lang="json">
 {
-  "navigationBarTitleText": "Toast组件",
+  "navigationBarTitleText": "轻提示组件",
   "disableScroll": true
 }
 </config>

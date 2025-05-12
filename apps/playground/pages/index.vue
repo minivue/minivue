@@ -15,9 +15,9 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/progress/progress')">
         进度组件
       </KdButton>
-      <KdButton type="primary" size="xl" @tap="onTap('/pages/toast/toast')"> Toast组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/toast/toast')"> 轻提示组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/message-bar/message-bar')">
-        MessageBar组件
+        消息横幅组件
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/bdage/bdage')"> 徽标组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/skeleton/skeleton')">
