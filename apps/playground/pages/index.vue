@@ -23,6 +23,9 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/skeleton/skeleton')">
         骨架屏组件
       </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/input/input')">
+        文本输入框组件
+      </KdButton>
     </View>
   </KdPage>
 </template>
