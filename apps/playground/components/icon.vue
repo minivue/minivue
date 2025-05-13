@@ -34,8 +34,8 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 @font-face {
   font-family: kdesign;
   src:
-    url('https://at.alicdn.com/t/c/font_4868388_qivchy9wx5.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/c/font_4868388_qivchy9wx5.ttf') format('truetype');
+    url('https://at.alicdn.com/t/c/font_4868388_19x56qgsdw2.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_4868388_19x56qgsdw2.ttf') format('truetype');
 }
 
 .kd-icon {
@@ -81,6 +81,26 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   content: '\e606';
 }
 
+.kd-icon--error-hud::before {
+  content: '\e607';
+}
+
+.kd-icon--success-hud::before {
+  content: '\e608';
+}
+
+.kd-icon--close::before {
+  content: '\e609';
+}
+
+.kd-icon--clear::before {
+  content: '\e610';
+}
+
+.kd-icon--search::before {
+  content: '\e611';
+}
+
 .kd-icon--warning::after {
   position: absolute;
   top: 20%;
@@ -102,22 +122,6 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   content: '';
   background-color: #fff;
   border-radius: 50%;
-}
-
-.kd-icon--error-hud::before {
-  content: '\e607';
-}
-
-.kd-icon--success-hud::before {
-  content: '\e608';
-}
-
-.kd-icon--close::before {
-  content: '\e609';
-}
-
-.kd-icon--clear::before {
-  content: '\e610';
 }
 </style>
 

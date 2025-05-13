@@ -1,5 +1,8 @@
 <template>
-  <View :class="classes">
+  <View :class="classes" @tap="onTap">
+    <View class="kd-input__prefix">
+      <slot name="prefix" />
+    </View>
     <View class="kd-input__inner">
       <Input
         class="kd-input__text"
@@ -10,7 +13,7 @@
         :disabled="disabled"
         :maxlength="maxlength"
         :cursor-spacing="cursorSpacing"
-        :focus="focus"
+        :focus="innerFocus"
         :confirm-type="confirmType"
         cursor-color="#1E5FC7"
         @focus="onFocus"
@@ -18,8 +21,16 @@
         @input="onInput"
       />
     </View>
-    <View v-if="value" class="kd-input__clear">
-      <KdButton icon="clear" size="s" only-icon @tap="onClearTap"></KdButton>
+    <View class="kd-input__suffix">
+      <KdButton
+        v-if="clearable"
+        icon="clear"
+        size="s"
+        only-icon
+        @tap="onClearTap"
+        :style="clearStyle"
+      />
+      <slot name="suffix" />
     </View>
     <View v-if="tips" class="kd-input__tips">{{ tips }}</View>
   </View>
@@ -28,7 +39,7 @@
 <script setup lang="ts">
 import KdButton from './button.vue'
 import { computed, ref } from '@minivue/core'
-import { classObjectToString } from './utils'
+import { classObjectToString, styleObjectToString } from './utils'
 
 interface Props {
   /** 输入框的初始内容 */
@@ -36,7 +47,7 @@ interface Props {
   /** 输入框下方的提示信息 */
   tips?: string
   /** 输入框尺寸 */
-  size?: 'm' | 'l'
+  size?: 'm' | 'l' | 'xl'
   /** 白色背景 */
   white?: boolean
   /** input 的类型 */
@@ -53,8 +64,16 @@ interface Props {
   cursorSpacing?: number
   /** 获取焦点 */
   focus?: boolean
+  /** 是否显示清除图标 */
+  clearable?: boolean
   /** 设置键盘右下角按钮的文字，仅在type='text'时生效 */
   confirmType?: 'send' | 'search' | 'next' | 'go' | 'done'
+  /** 报错 */
+  error?: boolean
+  /** 是否圆角 */
+  rounded?: boolean
+  /** 是否只读 */
+  readonly?: boolean
 }
 
 interface Events {
@@ -66,17 +85,40 @@ interface Events {
 
 const emit = defineEmits<Events>()
 
-const { size = 'm', focus, white, disabled } = defineProps<Props>()
+const {
+  size = 'm',
+  value,
+  error,
+  focus,
+  white,
+  rounded,
+  readonly,
+  disabled,
+  maxlength = 140,
+} = defineProps<Props>()
 
-const innerFocus = ref(false)
+const innerFocus = ref(focus)
 
 const classes = computed(() =>
   classObjectToString(`kd-input kd-input--${size}`, {
     'kd-input--white': white,
     'kd-input--focus': innerFocus.value,
+    'kd-input--error': error,
+    'kd-input--rounded': rounded,
+    'kd-input--readonly': readonly,
     'kd-input--disabled': disabled,
   }),
 )
+
+const clearStyle = computed(() =>
+  styleObjectToString({
+    opacity: value ? 0.35 : 0,
+  }),
+)
+
+const onTap = () => {
+  innerFocus.value = true
+}
 
 const onInput = (e: WechatMiniprogram.Input) => {
   emit('input', e)
@@ -106,14 +148,48 @@ const onClearTap = () => {
   border-radius: 8px;
 }
 
+.kd-input::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  content: '';
+  border: 1px solid var(--kd-color-line-public);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.kd-input--m {
+  height: 36px;
+}
+
+.kd-input--l {
+  height: 40px;
+}
+
+.kd-input--xl {
+  height: 48px;
+  border-radius: 12px;
+}
+
+.kd-input--error::after {
+  border-color: var(--kd-color-line-error);
+}
+
 .kd-input--disabled {
   pointer-events: none;
   opacity: 0.4;
 }
 
-.kd-input--l {
-  height: 48px;
-  border-radius: 12px;
+.kd-input--readonly {
+  pointer-events: none;
+}
+
+.kd-input--rounded {
+  border-radius: 24px;
 }
 
 .kd-input--white {
@@ -121,19 +197,16 @@ const onClearTap = () => {
 }
 
 .kd-input--focus::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  content: '';
-  border: 1px solid var(--kd-color-line-public);
-  border-radius: inherit; /* 继承父元素圆角 */
+  opacity: 1;
 }
 
 .kd-input__inner {
   flex: 1;
-  padding: 8px 12px;
+  padding: 0 12px;
+}
+
+.kd-input--m .kd-input__inner {
+  padding: 0 8px;
 }
 
 .kd-input__text {
@@ -144,11 +217,22 @@ const onClearTap = () => {
   color: var(--kd-color-text-primary);
 }
 
-.kd-input__clear {
+.kd-input__prefix {
   display: flex;
   align-items: center;
+  padding-left: 12px;
+}
+
+.kd-input__suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
-  opacity: 0.35;
+}
+
+.kd-input__prefix:empty,
+.kd-input__suffix:empty {
+  display: none;
 }
 
 .kd-input__tips {
