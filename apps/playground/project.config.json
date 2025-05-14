@@ -54,7 +54,7 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "appid": "wx0b247efc57f7cc58",
-  "libVersion": "3.7.7",
+  "libVersion": "3.7.12",
   "qqLibVersion": "1.48.4",
   "srcMiniprogramRoot": "dist/",
   "editorSetting": {

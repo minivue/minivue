@@ -3,14 +3,12 @@
     <View style="padding: 16px">
       <KdInput
         placeholder="请输入文本"
-        tips="辅助文本"
         :value="value"
         clearable
         focus
         @input="onInput"
         @clear="onClear"
       >
-        <KdIcon type="search" slot="prefix" />
       </KdInput>
     </View>
     <View style="padding: 16px">
@@ -19,12 +17,57 @@
         tips="辅助文本"
         :value="value"
         clearable
-        focus
-        error
+        @input="onInput"
+        @clear="onClear"
+      >
+      </KdInput>
+    </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="前置图标示例"
+        tips="辅助文本"
+        :value="value"
+        clearable
         @input="onInput"
         @clear="onClear"
       >
         <KdIcon type="search" slot="prefix" />
+      </KdInput>
+    </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="后置图标示例"
+        tips="辅助文本"
+        :value="value"
+        @input="onInput"
+        @clear="onClear"
+      >
+        <KdIcon type="warning" slot="suffix" />
+      </KdInput>
+    </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="内容错误示例"
+        tips="辅助文本"
+        :value="value"
+        error
+        clearable
+        @input="onInput"
+        @clear="onClear"
+      >
+        <KdIcon type="search" slot="prefix" />
+      </KdInput>
+    </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="只读示例"
+        tips="辅助文本"
+        value="只读示例"
+        readonly
+        @input="onInput"
+        @clear="onClear"
+      >
+        <KdLoading slot="suffix" />
       </KdInput>
     </View>
     <View style="padding: 16px">
@@ -42,80 +85,32 @@
     </View>
     <View style="padding: 16px">
       <KdInput
-        placeholder="请输入文本"
+        placeholder="禁用示例"
         tips="辅助文本"
         :value="value"
+        clearable
+        disabled
         @input="onInput"
         @clear="onClear"
       >
-        <KdIcon type="info" slot="prefix" />
-        <KdIcon type="warning" slot="suffix" />
+        <KdIcon type="search" slot="prefix" />
       </KdInput>
     </View>
-    <!-- <View style="padding: 16px">
+    <View style="padding: 16px">
       <KdInput
-        placeholder="请输入文本"
+        placeholder="白底输入框"
         tips="辅助文本"
         :value="value"
-        size="l"
         clearable
-        @input="onInput"
-        @clear="onClear"
-      />
-    </View>
-    <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        value="禁用输入框"
-        size="l"
-        disabled
-        @input="onInput"
-        @clear="onClear"
-      />
-    </View>
-    <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        value="只读输入框"
-        size="l"
-        readonly
-        @input="onInput"
-        @clear="onClear"
-      />
-    </View>
-    <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        :value="value"
+        rounded
         white
         @input="onInput"
         @clear="onClear"
-      />
+      >
+        <KdIcon type="search" slot="prefix" />
+      </KdInput>
     </View>
-    <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        :value="value"
-        white
-        @input="onInput"
-        @clear="onClear"
-      />
-    </View>
-    <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        :value="value"
-        white
-        disabled
-        @input="onInput"
-        @clear="onClear"
-      />
-    </View> -->
+    <View style="height: 30px"></View>
   </KdPage>
 </template>
 
@@ -123,6 +118,7 @@
 import KdPage from '@/components/page.vue'
 import KdIcon from '@/components/icon.vue'
 import KdInput from '@/components/input.vue'
+import KdLoading from '@/components/loading.vue'
 import { ref } from '@minivue/core'
 
 const value = ref('')
