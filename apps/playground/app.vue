@@ -27,7 +27,8 @@
     "pages/message-bar/message-bar",
     "pages/bdage/bdage",
     "pages/skeleton/skeleton",
-    "pages/input/input"
+    "pages/input/input",
+    "pages/avatar/avatar"
   ],
   "subpackages": [
     {
