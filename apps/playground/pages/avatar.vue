@@ -18,14 +18,52 @@
         <KdAvatar :src="src" size="2xl" circle />
       </View>
       <View style="padding-top: 16px">
-        <KdAvatarGroup :srcs="srcs" :max-count="3" />
-        <KdAvatarGroup :srcs="srcs" :max-count="3" size="m" style="margin-left: 16px" />
-        <KdAvatarGroup :srcs="srcs" :max-count="3" size="l" style="margin-left: 16px" />
+        <KdAvatarGroup :data="srcs" />
+        <KdAvatarGroup :data="srcs" size="m" style="margin-left: 10px" />
+        <KdAvatarGroup :data="srcs" size="l" style="margin-left: 10px" />
       </View>
       <View style="padding-top: 16px">
-        <KdAvatarGroup :srcs="srcs" :max-count="3" show-more />
-        <KdAvatarGroup :srcs="srcs" :max-count="3" size="m" show-more style="margin-left: 16px" />
-        <KdAvatarGroup :srcs="srcs" :max-count="3" size="l" show-more style="margin-left: 16px" />
+        <KdAvatarGroup :data="srcs" :count="99" />
+        <KdAvatarGroup :data="srcs" :count="99" size="m" style="margin-left: 10px" />
+        <KdAvatarGroup :data="srcs" :count="99" size="l" style="margin-left: 10px" />
+      </View>
+      <View style="padding-top: 16px">
+        <KdAvatarGroup :data="srcs" :count="99" more />
+        <KdAvatarGroup :data="srcs" :count="99" size="m" more style="margin-left: 10px" />
+        <KdAvatarGroup :data="srcs" :count="99" size="l" more style="margin-left: 10px" />
+      </View>
+      <View style="display: flex; padding-top: 16px">
+        <KdAvatarGroup :data="srcs1" group />
+        <KdAvatarGroup :data="srcs2" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs3" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs4" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs5" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs6" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs7" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs8" group style="margin-left: 5px" />
+        <KdAvatarGroup :data="srcs9" group style="margin-left: 5px" />
+      </View>
+      <View style="display: flex; padding-top: 16px">
+        <KdAvatarGroup :data="srcs1" size="l" group />
+        <KdAvatarGroup :data="srcs2" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs3" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs4" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs5" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs6" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs7" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs8" size="l" group style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs9" size="l" group style="margin-left: 2px" />
+      </View>
+      <View style="display: flex; padding-top: 16px">
+        <KdAvatarGroup :data="srcs1" size="l" group circle />
+        <KdAvatarGroup :data="srcs2" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs3" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs4" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs5" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs6" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs7" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs8" size="l" group circle style="margin-left: 2px" />
+        <KdAvatarGroup :data="srcs9" size="l" group circle style="margin-left: 2px" />
       </View>
     </View>
   </KdPage>
@@ -41,20 +79,77 @@ const srcs = [
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs1 = ['https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png']
+
+const srcs2 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs3 = [
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
   'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
 ]
-// https://www.imagehub.cc/image/17.IGOs7S
-// https://www.imagehub.cc/image/24.IGOjlL
-// https://www.imagehub.cc/image/18.IGOckt
-// https://www.imagehub.cc/image/27.IGO8jB
-// https://www.imagehub.cc/image/7.IGOJoq
-// https://www.imagehub.cc/image/4.IGOUCU
-// https://www.imagehub.cc/image/29.IGOiG0
-// https://www.imagehub.cc/image/19.IGOkvz
-// https://www.imagehub.cc/image/12.IGOyYj
-// https://www.imagehub.cc/image/22.IGOQOg
+
+const srcs4 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs5 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs6 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs7 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs8 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
+
+const srcs9 = [
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+  'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png',
+]
 </script>
 
 <style>

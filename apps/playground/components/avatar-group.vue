@@ -1,44 +1,58 @@
 <template>
-  <View :class="classes">
-    <KdAvatar v-for="url in urls" :key="url" :src="url" />
+  <View :class="classes" :style="style">
+    <KdAvatar v-for="url in data" :key="url" :src="url" />
     <View class="kd-avatar-group__more" v-if="showCount">
-      <KdIcon v-if="showMore" :size="moreSize" type="more" />
-      <Block v-else>{{ maxCountValue }}</Block>
+      <KdIcon v-if="more" :size="iconSize" type="more" />
+      <Block v-else>{{ countValue }}</Block>
     </View>
   </View>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends boolean">
 import KdIcon from './icon.vue'
 import KdAvatar from './avatar.vue'
 import { computed } from '@minivue/core'
 import { classObjectToString } from './utils'
 
 interface Props {
-  srcs: string[]
-  size?: 's' | 'm' | 'l'
-  type?: 'normal' | 'group'
-  maxCount?: number
-  showMore?: boolean
+  data: string[]
+  group?: T
+  size?: T extends true ? 'm' | 'l' : 's' | 'm' | 'l'
+  circle?: T extends true ? boolean : false
+  count?: number
+  more?: boolean
 }
 
 defineOptions({
   name: 'KdAvatarGroup',
 })
 
-const { srcs = [], size = 's', maxCount } = defineProps<Props>()
+const { data = [], size = 'm', count = 0, group, circle } = defineProps<Props>()
 const sizes = { s: 12, m: 16, l: 20 }
-const urls = computed(() => (maxCount ? srcs.slice(0, maxCount) : srcs))
-const count = computed(() => srcs.length)
-const maxCountValue = computed(() => (count.value > 99 ? 99 : count.value))
-const moreSize = computed(() => sizes[size])
-const showCount = computed(() => count.value > urls.value.length)
-const classes = computed(() => classObjectToString(`kd-avatar-group kd-avatar-group--${size}`))
+const dataCount = computed(() => count || data.length)
+const countValue = computed(() => (dataCount.value > 99 ? 99 : dataCount.value))
+const iconSize = computed(() => sizes[size])
+const showCount = computed(() => !group && dataCount.value > data.length)
+const classes = computed(() =>
+  classObjectToString(`kd-avatar-group kd-avatar-group--${size}`, {
+    'kd-avatar-group--group': group,
+    'kd-avatar-group--circle': group && circle,
+  }),
+)
+const style = computed(() => {
+  const size = dataCount.value > 4 ? '33.33%' : dataCount.value > 1 ? '50%' : '100%'
+  return `--size: ${size}`
+})
 </script>
 
 <style>
 .kd-avatar-group {
   display: inline-flex;
+  flex-shrink: 0;
+}
+
+.kd-avatar-group--circle {
+  border-radius: 50% !important;
 }
 
 .kd-avatar-group__more {
@@ -51,6 +65,14 @@ const classes = computed(() => classObjectToString(`kd-avatar-group kd-avatar-gr
 
 .kd-avatar-group__more .kd-icon {
   color: var(--kd-color-icon-primary);
+}
+
+.kd-avatar-group--group .kd-avatar {
+  width: var(--size) !important;
+  height: var(--size) !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 .kd-avatar-group .kd-avatar,
@@ -84,14 +106,32 @@ const classes = computed(() => classObjectToString(`kd-avatar-group kd-avatar-gr
   border-width: 2px;
 }
 
+.kd-avatar-group--l .kd-avatar ~ .kd-avatar,
+.kd-avatar-group--l .kd-avatar-group__more {
+  margin-left: -8px;
+}
+
 .kd-avatar-group .kd-avatar ~ .kd-avatar,
 .kd-avatar-group .kd-avatar-group__more {
   margin-left: -5px;
 }
 
-.kd-avatar-group--l .kd-avatar ~ .kd-avatar,
-.kd-avatar-group--l .kd-avatar-group__more {
-  margin-left: -8px;
+.kd-avatar-group--group {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.kd-avatar-group--group.kd-avatar-group--m {
+  width: 28px;
+  height: 28px;
+}
+
+.kd-avatar-group--group.kd-avatar-group--l {
+  width: 36px;
+  height: 36px;
 }
 </style>
 
