@@ -116,9 +116,10 @@ const style = computed(() => {
   margin-left: -5px;
 }
 
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
 .kd-avatar-group--group {
   flex-wrap: wrap;
-  align-items: center;
+  align-content: center;
   justify-content: center;
   overflow: hidden;
   border-radius: 4px;
