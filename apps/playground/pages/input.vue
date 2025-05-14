@@ -110,6 +110,32 @@
         <KdIcon type="search" slot="prefix" />
       </KdInput>
     </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="大尺寸"
+        size="l"
+        tips="辅助文本"
+        :value="value"
+        clearable
+        @input="onInput"
+        @clear="onClear"
+      >
+        <KdIcon type="search" slot="prefix" />
+      </KdInput>
+    </View>
+    <View style="padding: 16px">
+      <KdInput
+        placeholder="超大尺寸"
+        size="xl"
+        tips="辅助文本"
+        :value="value"
+        clearable
+        @input="onInput"
+        @clear="onClear"
+      >
+        <KdIcon type="search" slot="prefix" />
+      </KdInput>
+    </View>
     <View style="height: 30px"></View>
   </KdPage>
 </template>
