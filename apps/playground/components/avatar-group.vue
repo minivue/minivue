@@ -40,8 +40,10 @@ const classes = computed(() =>
   }),
 )
 const style = computed(() => {
-  const size = dataCount.value > 4 ? '33.33%' : dataCount.value > 1 ? '50%' : '100%'
-  return `--size: ${size}`
+  const countValue = dataCount.value
+  const size = countValue > 4 ? '33.33%' : countValue > 1 ? '50%' : '100%'
+  const cut = countValue > 4 ? 2 : countValue > 1 ? 1 : 0
+  return `--size: calc(${size} - ${cut}px);`
 })
 </script>
 
@@ -119,6 +121,7 @@ const style = computed(() => {
 /* stylelint-disable declaration-block-no-redundant-longhand-properties */
 .kd-avatar-group--group {
   flex-wrap: wrap;
+  gap: 1px;
   align-content: center;
   justify-content: center;
   overflow: hidden;
