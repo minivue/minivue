@@ -27,6 +27,9 @@
         文本输入框组件
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/avatar/avatar')"> 头像组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/tabbar/tabbar')">
+        标签栏组件
+      </KdButton>
     </View>
   </KdPage>
 </template>

@@ -149,6 +149,8 @@ const classes = computed(() =>
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .kd-button--primary {

@@ -28,7 +28,8 @@
     "pages/bdage/bdage",
     "pages/skeleton/skeleton",
     "pages/input/input",
-    "pages/avatar/avatar"
+    "pages/avatar/avatar",
+    "pages/tabbar/tabbar"
   ],
   "subpackages": [
     {
@@ -50,7 +51,7 @@
   },
   "themeLocation": "theme.json",
   "darkmode": true,
-  "resizable": false,
+  "resizable": true,
   "frameset": false,
   "renderer": "skyline",
   "componentFramework": "glass-easel",

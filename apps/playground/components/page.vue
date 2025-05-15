@@ -15,6 +15,7 @@
     <ScrollView class="kd-page__content" scroll-y using-sticky>
       <slot />
     </ScrollView>
+    <slot name="bottom" />
     <RootPortal>
       <View :class="rootClasses">
         <View class="kd-toast-area" :style="navbarStyle">
