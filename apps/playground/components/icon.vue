@@ -45,7 +45,7 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
   justify-content: center;
   font-family: kdesign;
   font-style: normal;
-  font-weight: lighter;
+  font-weight: 100;
   line-height: 1;
 }
 

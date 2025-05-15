@@ -100,29 +100,6 @@ const srcs9 = Array(9).fill(src)
 .p-avatar__single .kd-avatar {
   margin-right: 16px;
 }
-
-/* stylelint-disable declaration-block-no-redundant-longhand-properties */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  align-content: center;
-  justify-content: center;
-  width: 300px;
-  height: 300px;
-  background-color: #000;
-}
-
-.grid-item {
-  aspect-ratio: 1 / 1;
-  background-color: #fff;
-}
-
-.grid-item image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 </style>
 
 <config lang="json">
