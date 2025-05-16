@@ -3,7 +3,12 @@
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <View v-if="!onlyIcon" class="kd-button__content">
-      <Text overflow="ellipsis"><slot /></Text>
+      <Text
+        overflow="ellipsis"
+        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
+      >
+        <slot />
+      </Text>
       <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
     </View>
   </Button>
