@@ -263,7 +263,7 @@ function transformAttributes(
       }
     }
   })
-  if (isComponentRoot) {
+  if (isComponentRoot && tagName !== 'slot') {
     const hasClass =
       newAttrs['class'] ||
       newAttrs[':class'] ||

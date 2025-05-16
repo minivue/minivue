@@ -18,7 +18,7 @@
     <slot name="bottom" />
     <RootPortal>
       <View :class="rootClasses">
-        <View class="kd-toast-area" :style="navbarStyle">
+        <View v-if="toasts" class="kd-toast-area" :style="navbarStyle">
           <KdToast
             v-for="toast in toasts"
             :key="toast.id"

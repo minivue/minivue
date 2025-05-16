@@ -289,6 +289,10 @@ const classes = computed(() =>
   margin-bottom: 2px;
 }
 
+.kd-button--vertical .kd-button__content {
+  width: 100%;
+}
+
 .kd-button--vertical.kd-button--dropdown {
   padding: 8px 2px 4px 4px !important;
 }
