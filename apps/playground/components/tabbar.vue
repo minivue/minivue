@@ -1,28 +1,32 @@
 <template>
-  <View class="kd-tabbar">
-    <View class="kd-tabbar__wrapper">
-      <KdButton type="light" icon="menu" vertical>文本1</KdButton>
-      <KdButton type="light" icon="menu" vertical>文本</KdButton>
-      <KdButton type="light" icon="menu" vertical>文本</KdButton>
-      <KdButton type="light" icon="menu" vertical>Template findin</KdButton>
-      <KdButton type="light" icon="menu" vertical>文本</KdButton>
+  <KdMatchMedia @match="onScreenMatch" :max-width="500">
+    <View :class="classes">
+      <View class="kd-tabbar__wrapper">
+        <KdButton type="light" icon="menu" :vertical="vertical">文本1</KdButton>
+        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
+        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
+        <KdButton type="light" icon="menu" :vertical="vertical">Template findin</KdButton>
+        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
+      </View>
     </View>
-  </View>
+  </KdMatchMedia>
 </template>
 
 <script setup lang="ts">
-import { onPageResize } from '@minivue/core'
+import { ref, computed } from '@minivue/core'
+import { classObjectToString } from './utils'
 import KdButton from './button.vue'
+import KdMatchMedia from './match-media.vue'
 
-console.log('tabbar tabbar .................')
-// if (ctx) {
-//   const observer = ctx.createMediaQueryObserver()
-//   console.log('observer', observer)
-// }
+const vertical = ref(true)
 
-onPageResize((e) => {
-  console.log('onPageResize', e)
-})
+const classes = computed(() =>
+  classObjectToString('kd-tabbar', {
+    'kd-tabbar--vertical': vertical.value,
+  }),
+)
+
+const onScreenMatch = (e: boolean) => (vertical.value = e)
 </script>
 
 <style>
@@ -41,7 +45,7 @@ onPageResize((e) => {
   align-items: flex-start;
   align-self: stretch;
   justify-content: center;
-  height: 64px;
+  height: 54px;
   padding: 4px;
 }
 
@@ -49,4 +53,14 @@ onPageResize((e) => {
   flex: 1;
   min-height: 100%;
 }
+
+.kd-tabbar--vertical .kd-tabbar__wrapper {
+  height: 64px;
+}
 </style>
+
+<config lang="json">
+{
+  "component": true
+}
+</config>

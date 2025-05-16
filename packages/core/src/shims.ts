@@ -166,6 +166,7 @@ interface ButtonProps extends BaseProps {
     | 'feedback'
     | 'chooseAvatar'
     | 'agreePrivacyAuthorization'
+    | ''
   /**
    * 指定按钮按下去的样式类。当 hover-class="none" 时，没有点击态效果
    */

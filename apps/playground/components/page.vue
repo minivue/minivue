@@ -12,7 +12,7 @@
       <slot slot="right" name="navbar_right" />
     </KdNavbar>
     <slot name="top" />
-    <ScrollView class="kd-page__content" scroll-y using-sticky>
+    <ScrollView class="kd-page__content" scroll-y>
       <slot />
     </ScrollView>
     <slot name="bottom" />
