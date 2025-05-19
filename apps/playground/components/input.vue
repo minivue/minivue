@@ -6,7 +6,7 @@
     <View class="kd-input__inner">
       <Input
         class="kd-input__text"
-        :value="value"
+        :value="value || ''"
         :type="type"
         :password="password"
         :placeholder="placeholder"
