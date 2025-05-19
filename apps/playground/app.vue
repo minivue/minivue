@@ -11,6 +11,26 @@
 .kd-icon--menu::before {
   content: '\e7a8';
 }
+
+.kd-icon--dialog::before {
+  content: '\e6e8';
+}
+
+.kd-icon--all::before {
+  content: '\e6e9';
+}
+
+.kd-icon--url::before {
+  content: '\e6e5';
+}
+
+.kd-icon--note::before {
+  content: '\e6e6';
+}
+
+.kd-icon--pic::before {
+  content: '\e6e7';
+}
 </style>
 
 <config lang="json">

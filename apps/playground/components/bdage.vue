@@ -53,7 +53,6 @@ const classes = computed(() =>
   width: auto;
   min-width: 20px;
   height: 20px;
-  padding: 0 5px;
   padding: 4px;
 }
 

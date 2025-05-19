@@ -2,23 +2,52 @@
   <KdMatchMedia @match="onScreenMatch" :max-width="500">
     <View :class="classes">
       <View class="kd-tabbar__wrapper">
-        <KdButton type="light" icon="menu" :vertical="vertical">文本1</KdButton>
-        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
-        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
-        <KdButton type="light" icon="menu" :vertical="vertical">Template findin</KdButton>
-        <KdButton type="light" icon="menu" :vertical="vertical">文本</KdButton>
+        <KdButton
+          v-for="item in items"
+          type="light"
+          :icon="item.icon"
+          :vertical="vertical"
+          :key="item.key"
+          :highlight="item.key === activeKey"
+          @tap="onTap(item.key)"
+        >
+          {{ item.text }}
+        </KdButton>
       </View>
     </View>
   </KdMatchMedia>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from '@minivue/core'
+import { ref, computed, watch } from '@minivue/core'
 import { classObjectToString } from './utils'
 import KdButton from './button.vue'
 import KdMatchMedia from './match-media.vue'
 
+interface Item {
+  key: string
+  icon?: string
+  text: string
+}
+
+interface Props {
+  items?: Item[]
+  active?: string
+}
+
+interface Events {
+  change: [key: string]
+}
+
+defineOptions({
+  name: 'KdTabbar',
+})
+
+const { items = [], active } = defineProps<Props>()
+const emit = defineEmits<Events>()
+
 const vertical = ref(true)
+const activeKey = ref(active)
 
 const classes = computed(() =>
   classObjectToString('kd-tabbar', {
@@ -27,6 +56,18 @@ const classes = computed(() =>
 )
 
 const onScreenMatch = (e: boolean) => (vertical.value = e)
+
+const onTap = (key: string) => {
+  activeKey.value = key
+  emit('change', key)
+}
+
+watch(
+  () => active,
+  (newVal) => {
+    activeKey.value = newVal
+  },
+)
 </script>
 
 <style>
