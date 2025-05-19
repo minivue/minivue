@@ -30,6 +30,9 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/tabbar/tabbar')">
         标签栏组件
       </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/hover-toolbar/hover-toolbar')">
+        悬浮工具栏
+      </KdButton>
     </View>
   </KdPage>
 </template>

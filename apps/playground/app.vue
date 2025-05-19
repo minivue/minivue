@@ -49,7 +49,8 @@
     "pages/skeleton/skeleton",
     "pages/input/input",
     "pages/avatar/avatar",
-    "pages/tabbar/tabbar"
+    "pages/tabbar/tabbar",
+    "pages/hover-toolbar/hover-toolbar"
   ],
   "subpackages": [
     {
