@@ -281,6 +281,11 @@ function transformAttributes(
       newAttrs['style'] = '{{externalStyle}}'
     }
   }
+
+  if (newAttrs['wx:for-item'] && newAttrs['wx:for-item'] === newAttrs['wx:key']) {
+    newAttrs['wx:key'] = '*this'
+  }
+
   return Object.entries(newAttrs)
     .map(([key, value]) =>
       value

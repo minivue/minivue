@@ -1,5 +1,5 @@
 <template>
-  <Image :class="classes" :src="src" mode="aspectFit" />
+  <Image v-if="src" :class="classes" :src="src" mode="aspectFit" />
 </template>
 
 <script setup lang="ts">

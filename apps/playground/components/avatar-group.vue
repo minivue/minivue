@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" :style="style">
+  <View v-if="data" :class="classes" :style="style">
     <KdAvatar v-for="url in data" :key="url" :src="url" />
     <View class="kd-avatar-group__more" v-if="showCount">
       <KdIcon v-if="more" :size="iconSize" type="more" />

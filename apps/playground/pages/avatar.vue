@@ -75,17 +75,18 @@ import KdAvatar from '@/components/avatar.vue'
 import KdAvatarGroup from '@/components/avatar-group.vue'
 
 const src = 'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png'
-const srcs = Array(3).fill(src)
+const getSrcs = () => `${src}?${Math.random()}`
+const srcs = Array(3).fill(0).map(getSrcs)
 
-const srcs1 = Array(1).fill(src)
-const srcs2 = Array(2).fill(src)
-const srcs3 = Array(3).fill(src)
-const srcs4 = Array(4).fill(src)
-const srcs5 = Array(5).fill(src)
-const srcs6 = Array(6).fill(src)
-const srcs7 = Array(7).fill(src)
-const srcs8 = Array(8).fill(src)
-const srcs9 = Array(9).fill(src)
+const srcs1 = Array(1).fill(0).map(getSrcs)
+const srcs2 = Array(2).fill(0).map(getSrcs)
+const srcs3 = Array(3).fill(0).map(getSrcs)
+const srcs4 = Array(4).fill(0).map(getSrcs)
+const srcs5 = Array(5).fill(0).map(getSrcs)
+const srcs6 = Array(6).fill(0).map(getSrcs)
+const srcs7 = Array(7).fill(0).map(getSrcs)
+const srcs8 = Array(8).fill(0).map(getSrcs)
+const srcs9 = Array(9).fill(0).map(getSrcs)
 </script>
 
 <style>
