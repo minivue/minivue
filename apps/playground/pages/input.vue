@@ -3,30 +3,22 @@
     <View style="padding: 16px">
       <KdInput
         placeholder="请输入文本"
-        :value="value"
         clearable
         focus
+        :value="value"
         @input="onInput"
         @clear="onClear"
       >
       </KdInput>
     </View>
     <View style="padding: 16px">
-      <KdInput
-        placeholder="请输入文本"
-        tips="辅助文本"
-        :value="value"
-        clearable
-        @input="onInput"
-        @clear="onClear"
-      >
+      <KdInput placeholder="请输入文本" tips="辅助文本" clearable @input="onInput" @clear="onClear">
       </KdInput>
     </View>
     <View style="padding: 16px">
       <KdInput
         placeholder="前置图标示例"
         tips="辅助文本"
-        :value="value"
         clearable
         @input="onInput"
         @clear="onClear"
@@ -35,13 +27,7 @@
       </KdInput>
     </View>
     <View style="padding: 16px">
-      <KdInput
-        placeholder="后置图标示例"
-        tips="辅助文本"
-        :value="value"
-        @input="onInput"
-        @clear="onClear"
-      >
+      <KdInput placeholder="后置图标示例" tips="辅助文本" @input="onInput" @clear="onClear">
         <KdIcon type="warning" slot="suffix" />
       </KdInput>
     </View>
@@ -49,7 +35,6 @@
       <KdInput
         placeholder="内容错误示例"
         tips="辅助文本"
-        :value="value"
         error
         clearable
         @input="onInput"
@@ -74,7 +59,6 @@
       <KdInput
         placeholder="请输入文本"
         tips="辅助文本"
-        :value="value"
         clearable
         rounded
         @input="onInput"
@@ -87,7 +71,6 @@
       <KdInput
         placeholder="禁用示例"
         tips="辅助文本"
-        :value="value"
         clearable
         disabled
         @input="onInput"
@@ -100,7 +83,6 @@
       <KdInput
         placeholder="白底输入框"
         tips="辅助文本"
-        :value="value"
         clearable
         rounded
         white
@@ -115,7 +97,6 @@
         placeholder="大尺寸"
         size="l"
         tips="辅助文本"
-        :value="value"
         clearable
         @input="onInput"
         @clear="onClear"
@@ -128,7 +109,6 @@
         placeholder="超大尺寸"
         size="xl"
         tips="辅助文本"
-        :value="value"
         clearable
         @input="onInput"
         @clear="onClear"
@@ -145,19 +125,23 @@ import KdPage from '@/components/page.vue'
 import KdIcon from '@/components/icon.vue'
 import KdInput from '@/components/input.vue'
 import KdLoading from '@/components/loading.vue'
-import { ref } from '@minivue/core'
+import { ref, onLoad } from '@minivue/core'
 
 const value = ref('')
 
 const onInput = (e: WechatMiniprogram.Input) => {
   console.log('onInput', e.detail.value)
-  value.value = e.detail.value
 }
 
 const onClear = () => {
   console.log('onClear')
-  value.value = ''
 }
+
+onLoad(() => {
+  setTimeout(() => {
+    value.value = '默认值'
+  }, 1000)
+})
 </script>
 
 <config lang="json">

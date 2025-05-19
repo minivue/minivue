@@ -88,7 +88,6 @@ const emit = defineEmits<Events>()
 const {
   size = 'm',
   type = 'text',
-  value = '',
   placeholder = '',
   confirmType = 'done',
   error,
@@ -100,6 +99,7 @@ const {
   maxlength = 140,
 } = defineProps<Props>()
 
+const innerValue = ref('')
 const innerFocus = ref(focus)
 
 const classes = computed(() =>
@@ -115,7 +115,7 @@ const classes = computed(() =>
 
 const clearStyle = computed(() =>
   styleObjectToString({
-    opacity: value ? 0.35 : 0,
+    opacity: innerValue.value ? 0.35 : 0,
   }),
 )
 
@@ -124,6 +124,7 @@ const onTap = () => {
 }
 
 const onInput = (e: WechatMiniprogram.Input) => {
+  innerValue.value = e.detail.value
   emit('input', e)
 }
 
@@ -138,6 +139,7 @@ const onBlur = (e: WechatMiniprogram.InputBlur) => {
 }
 
 const onClearTap = () => {
+  innerValue.value = ''
   emit('clear')
 }
 </script>
