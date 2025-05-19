@@ -59,7 +59,7 @@ export function callSetup(setup: Function, props: Record<string, string | undefi
     if (isFunction(value) && ctx) {
       ctx[key] = (e: any) => {
         const eventType = e.type
-        const args = e.mark[eventType]
+        const args = e.mark?.[eventType]
         const detail = e.detail
         if (args) {
           value(...args)

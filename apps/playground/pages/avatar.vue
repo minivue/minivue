@@ -74,8 +74,9 @@ import KdPage from '@/components/page.vue'
 import KdAvatar from '@/components/avatar.vue'
 import KdAvatarGroup from '@/components/avatar-group.vue'
 
+let i = 0
 const src = 'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png'
-const getSrcs = () => `${src}?${Math.random()}`
+const getSrcs = () => `${src}?${i++}`
 const srcs = Array(3).fill(0).map(getSrcs)
 
 const srcs1 = Array(1).fill(0).map(getSrcs)

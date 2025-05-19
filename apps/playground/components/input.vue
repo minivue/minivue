@@ -87,7 +87,10 @@ const emit = defineEmits<Events>()
 
 const {
   size = 'm',
-  value,
+  type = 'text',
+  value = '',
+  placeholder = '',
+  confirmType = 'done',
   error,
   focus,
   white,
