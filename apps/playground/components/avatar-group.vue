@@ -41,9 +41,9 @@ const classes = computed(() =>
 )
 const style = computed(() => {
   const countValue = dataCount.value
-  const size = countValue > 4 ? '33.33%' : countValue > 1 ? '50%' : '100%'
+  const size = countValue > 4 ? 3 : countValue > 1 ? 2 : 1
   const cut = countValue > 4 ? 2 : countValue > 1 ? 1 : 0
-  return `--size: calc(${size} - ${cut}px);`
+  return `--size: calc(100% / ${size} - ${cut}px / ${size});`
 })
 </script>
 
@@ -136,6 +136,12 @@ const style = computed(() => {
 .kd-avatar-group--group.kd-avatar-group--l {
   width: 36px;
   height: 36px;
+  border-radius: 6px;
+}
+
+.kd-avatar-group--group.kd-avatar-group--m .kd-avatar,
+.kd-avatar-group--group.kd-avatar-group--l .kd-avatar {
+  margin-left: 0;
 }
 </style>
 
