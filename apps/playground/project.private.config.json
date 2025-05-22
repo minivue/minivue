@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/popover/popover",
+          "pathName": "pages/popover/popover",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        }
+      ]
+    }
+  }
+}

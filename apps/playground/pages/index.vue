@@ -33,6 +33,9 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/hover-toolbar/hover-toolbar')">
         悬浮工具栏
       </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/popover/popover')">
+        弹窗层组件
+      </KdButton>
     </View>
   </KdPage>
 </template>
