@@ -66,10 +66,7 @@ export function vibrateShort() {
   wx.vibrateShort({ type: 'light' })
 }
 
-export function getRect(
-  ctx: ComponentInstance,
-  selector: string,
-): Promise<WechatMiniprogram.BoundingClientRectCallbackResult> {
+export function getRect(ctx: ComponentInstance, selector: string) {
   return new Promise<WechatMiniprogram.BoundingClientRectCallbackResult>((resolve) => {
     ctx.createSelectorQuery().select(selector).boundingClientRect(resolve).exec()
   })
@@ -220,6 +217,7 @@ export async function getPopoverRect(
   placement: Placement,
 ) {
   const { top, left, bottom, right, width, height } = await getRect(ctx, trigger)
+  console.warn(top, left, bottom, right, width, height)
   const { maxTop, maxRight, maxBottom, maxLeft } = getMaxBounds(top, left, bottom, right)
   const bestPlacement = await getBestPlacement(
     ctx,

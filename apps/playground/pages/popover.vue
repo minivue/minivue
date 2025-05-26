@@ -1,9 +1,11 @@
 <template>
   <KdPage title="气泡组件">
-    <KdPopover>
-      <KdButton>气泡</KdButton>
-      <View slot="content">hello world</View>
-    </KdPopover>
+    <View style="display: flex; align-items: center; justify-content: center; height: 100%">
+      <KdPopover>
+        <KdButton>气泡</KdButton>
+        <View slot="content">hello world</View>
+      </KdPopover>
+    </View>
   </KdPage>
 </template>
 
