@@ -11,6 +11,10 @@
       /* 进度百分比 */
     }
 
+    body {
+      margin: 0;
+    }
+
     .progress-circle {
       width: 40px;
       height: 40px;
@@ -25,97 +29,92 @@
     }
 
     .popover {
-      max-width: 200px;
+      max-width: 100px;
       background-color: #fff;
       border: 1px solid #ccc;
       padding: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      line-height: 22px;
+      position: fixed;
+      transition: all 0.3s ease;
     }
   </style>
 </head>
 
 <body>
-  <button class="trigger" style="margin: 200px;">test</button>
-  <div class="popover">抱歉，我无法直接生成图片。您可以尝试使用 Python 的图像处理库（如 Pillow 或
-    Matplotlib）来生成图片。如果需要，我可以为您提供相关代码示例。请告诉我您的具体需求！</div>
+  <button class="trigger" style="margin: 200px; width: 40px; height: 22px">test</button>
+  <div class="popover">
+    抱歉，我无法直接生成图片。您可以尝试使用 Python 的图像处理库
+  </div>
   <script>
-    function getPopoverPosition(trigger, popover, placement = 'bottom') {
-      const t = trigger.getBoundingClientRect();
-      const p = { width: popover.offsetWidth, height: popover.offsetHeight };
-      const v = { width: window.innerWidth, height: window.innerHeight };
-      const gap = 8; // 间距
+    function getPopoverPosition(trigger, popover, placement) {
+      const {
+        left: triggerLeft,
+        right: triggerRight,
+        bottom: triggerBottom,
+        top: triggerTop,
+        width: triggerWidth,
+        height: triggerHeight,
+      } = trigger.getBoundingClientRect()
+      const { width: popoverWidth, height: popoverHeight } = popover.getBoundingClientRect()
+
+      const v = { width: window.innerWidth, height: window.innerHeight }
+      const gap = 10 // 间距
+
+      // popover在上边的时候，popover的Y坐标是一样的
+      const popoverAllTopY = triggerTop - popoverHeight - gap
+      // popover在下边的时候，popover的Y坐标是一样的
+      const popoverAllBottomY = triggerBottom + gap
+      // popover在右边的时候，popover的X坐标是一样的
+      const popoverAllRightX = triggerRight + gap
+      // popover在左边的时候，popover的X坐标是一样的
+      const popoverAllLeftX = triggerLeft - popoverWidth - gap
+      // popover在上边和下边的时候，popover的X坐标是一样的
+      const popoverTopOrBottomX = triggerLeft + triggerWidth / 2 - popoverWidth / 2
+      // popover在左边边和右边的时候，popover的Y坐标是一样的
+      const popoverRightOrLeftY = triggerTop + triggerHeight / 2 - popoverHeight / 2
+      // popover在上右和下右的时候，popover的X坐标是一样的
+      const popoverTopRightOrBottomRightX = triggerRight - popoverWidth
 
       // 12个位置的计算公式
       const positions = {
-        top: [t.left + t.width / 2 - p.width / 2, t.top - p.height - gap],
-        topLeft: [t.left, t.top - p.height - gap],
-        topRight: [t.right - p.width, t.top - p.height - gap],
-        right: [t.right + gap, t.top + t.height / 2 - p.height / 2],
-        rightTop: [t.right + gap, t.top],
-        rightBottom: [t.right + gap, t.bottom - p.height],
-        bottom: [t.left + t.width / 2 - p.width / 2, t.bottom + gap],
-        bottomLeft: [t.left, t.bottom + gap],
-        bottomRight: [t.right - p.width, t.bottom + gap],
-        left: [t.left - p.width - gap, t.top + t.height / 2 - p.height / 2],
-        leftTop: [t.left - p.width - gap, t.top],
-        leftBottom: [t.left - p.width - gap, t.bottom - p.height]
-      };
-
-      // 检查位置是否在视窗内
-      const isInViewport = (x, y) => x >= 0 && y >= 0 && x + p.width <= v.width && y + p.height <= v.height;
-
-      // 计算位置得分(越高越好)
-      const getScore = (x, y) => {
-        const visible = Math.max(0, Math.min(x + p.width, v.width) - Math.max(x, 0)) *
-          Math.max(0, Math.min(y + p.height, v.height) - Math.max(y, 0));
-        const centerDistance = Math.abs(x + p.width / 2 - v.width / 2) + Math.abs(y + p.height / 2 - v.height / 2);
-        return visible * 1000 - centerDistance;
-      };
-
-      // 优先使用指定位置
-      const [preferredX, preferredY] = positions[placement] || positions.bottom;
-      if (isInViewport(preferredX, preferredY)) {
-        return { left: preferredX, top: preferredY, placement };
+        top: [popoverTopOrBottomX, popoverAllTopY],
+        topLeft: [triggerLeft, popoverAllTopY],
+        topRight: [popoverTopRightOrBottomRightX, popoverAllTopY],
+        right: [popoverAllRightX, popoverRightOrLeftY],
+        rightTop: [popoverAllRightX, triggerTop],
+        rightBottom: [popoverAllRightX, triggerBottom - popoverHeight],
+        bottom: [popoverTopOrBottomX, popoverAllBottomY],
+        bottomLeft: [triggerLeft, popoverAllBottomY],
+        bottomRight: [popoverTopRightOrBottomRightX, popoverAllBottomY],
+        left: [popoverAllLeftX, popoverRightOrLeftY],
+        leftTop: [popoverAllLeftX, triggerTop],
+        leftBottom: [popoverAllLeftX, triggerBottom - popoverHeight],
       }
 
-      // 智能选择最优位置
-      let bestPos = null;
-      let bestScore = -1;
-
-      for (const [pos, [x, y]] of Object.entries(positions)) {
-        const score = getScore(x, y);
-        if (score > bestScore) {
-          bestScore = score;
-          bestPos = { left: x, top: y, placement: pos };
-        }
-      }
-
-      // 边界修正
-      if (bestPos) {
-        bestPos.left = Math.max(0, Math.min(bestPos.left, v.width - p.width));
-        bestPos.top = Math.max(0, Math.min(bestPos.top, v.height - p.height));
-      }
-
-      return bestPos || { left: 0, top: 0, placement: 'fallback' };
+      return positions[placement]
     }
 
     // 使用示例
-    const triggerEl = document.querySelector('.trigger');
-    const popoverEl = document.querySelector('.popover');
-
-    triggerEl.addEventListener('click', () => {
-      const pos = getPopoverPosition(triggerEl, popoverEl, 'bottom');
-
-      Object.assign(popoverEl.style, {
-        position: 'fixed',
-        left: pos.left + 'px',
-        top: pos.top + 'px',
-        zIndex: 1000,
-        display: 'block'
-      });
-
-      console.log(`Popover placed at: ${pos.placement}`);
-    });
+    const triggerEl = document.querySelector('.trigger')
+    const popoverEl = document.querySelector('.popover')
+    // const allPosition = ['topRight', 'top', 'topLeft', 'rightBottom', 'right', 'rightTop', 'bottomLeft', 'bottom', 'bottomRight', 'leftTop', 'left', 'leftBottom']
+    // async function test() {
+    //   for (let i = 0; i < allPosition.length; i++) {
+    //     await new Promise(resolve => setTimeout(resolve, 200))
+    //     const [x, y] = getPopoverPosition(triggerEl, popoverEl, allPosition[i])
+    //     Object.assign(popoverEl.style, {
+    //       left: x + 'px',
+    //       top: y + 'px',
+    //     })
+    //   }
+    // }
+    // test()
+    const [x, y] = getPopoverPosition(triggerEl, popoverEl, 'top')
+    Object.assign(popoverEl.style, {
+      left: x + 'px',
+      top: y + 'px',
+    })
   </script>
 </body>
 
