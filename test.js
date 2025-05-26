@@ -42,3 +42,69 @@ const positions = {
   leftTop: [popoverAllLeftX, triggerTop],
   leftBottom: [popoverAllLeftX, triggerBottom - popoverHeight],
 }
+
+// 调整位置的函数
+function adjustPosition(preferredPosition) {
+  let [x, y] = positions[preferredPosition]
+  let finalPosition = preferredPosition
+
+  // 垂直位置调整（上下切换）
+  if (preferredPosition.startsWith('top')) {
+    // 检查上方空间是否足够
+    if (popoverAllTopY < 0) {
+      // 上方空间不足，切换到对应的bottom位置
+      if (preferredPosition === 'top') finalPosition = 'bottom'
+      else if (preferredPosition === 'topLeft') finalPosition = 'bottomLeft'
+      else if (preferredPosition === 'topRight') finalPosition = 'bottomRight'
+    }
+  } else if (preferredPosition.startsWith('bottom')) {
+    // 检查下方空间是否足够
+    if (popoverAllBottomY + popoverHeight > viewportHeight) {
+      // 下方空间不足，切换到对应的top位置
+      if (finalPosition === 'bottom') finalPosition = 'top'
+      else if (finalPosition === 'bottomLeft') finalPosition = 'topLeft'
+      else if (finalPosition === 'bottomRight') finalPosition = 'topRight'
+    }
+  }
+
+  // 水平位置调整（左右切换）
+  if (preferredPosition.startsWith('left')) {
+    // 检查左边空间是否足够
+    if (popoverAllLeftX < 0) {
+      if (preferredPosition === 'left') finalPosition = 'right'
+      else if (preferredPosition === 'leftTop') finalPosition = 'rightTop'
+      else if (preferredPosition === 'leftBottom') finalPosition = 'rightBottom'
+    }
+  } else if (preferredPosition.startsWith('right')) {
+    // 检查右边空间是否足够
+    if (popoverAllRightX + popoverWidth > viewportWidth) {
+      if (finalPosition === 'right') finalPosition = 'left'
+      else if (finalPosition === 'rightTop') finalPosition = 'leftTop'
+      else if (finalPosition === 'rightBottom') finalPosition = 'leftBottom'
+    }
+  }
+
+  // 获取调整后的坐标
+  ;[x, y] = positions[finalPosition]
+
+  // 边界约束调整
+  if (finalPosition.includes('top') || finalPosition.includes('bottom')) {
+    // 水平边界约束
+    if (x < 0) {
+      x = 0
+    } else if (x + popoverWidth > viewportWidth) {
+      x = viewportWidth - popoverWidth
+    }
+  }
+
+  if (finalPosition.includes('left') || finalPosition.includes('right')) {
+    // 垂直边界约束
+    if (y < 0) {
+      y = 0
+    } else if (y + popoverHeight > viewportHeight) {
+      y = viewportHeight - popoverHeight
+    }
+  }
+
+  return [x, y, finalPosition]
+}
