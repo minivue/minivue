@@ -10,8 +10,22 @@
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ref, computed, onAttached, ComponentInstance } from '@minivue/core'
-import { getAppBaseInfo, getPopoverRect, styleObjectToString, onThemeChange } from './utils'
+import {
+  ref,
+  watch,
+  computed,
+  onAttached,
+  onDetached,
+  getCurrentInstance,
+  ComponentInstance,
+} from '@minivue/core'
+import {
+  getAppBaseInfo,
+  getPopoverRect,
+  styleObjectToString,
+  onThemeChange,
+  offThemeChange,
+} from './utils'
 
 type Placement =
   | 'top'
@@ -57,18 +71,27 @@ const classes = computed(() => `kd-popover ${themes.value}`)
 // const show = ref(false)
 const ctx = getCurrentInstance<ComponentInstance>()
 
+const setPlacement = async () => {
+  const [x, y] = await getPopoverRect(ctx, '.kd-popover-trigger', '.kd-popover', placement)
+  top.value = y
+  left.value = x
+}
+
+const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
+
 const onTap = () => {
   // show.value = !show.value
 }
 
-onThemeChange((res) => {
-  theme.value = res.theme
+watch(() => placement, setPlacement)
+
+onAttached(() => {
+  onThemeChange(setTheme)
+  setPlacement()
 })
 
-onAttached(async () => {
-  const [x, y] = await getPopoverRect(ctx, '.kd-popover-trigger', '.kd-popover', placement)
-  top.value = y
-  left.value = x
+onDetached(() => {
+  offThemeChange(setTheme)
 })
 </script>
 
@@ -80,20 +103,20 @@ onAttached(async () => {
 .kd-popover {
   position: fixed;
   box-sizing: border-box;
-  display: flex;
-  gap: 8px;
   align-items: center;
   min-width: 70px;
   max-width: 320px;
   min-height: 46px;
   max-height: 68px;
   padding: 12px 16px;
+  overflow: auto;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
   color: var(--kd-color-inverse-base);
   background: var(--kd-color-mask-heavy);
   border-radius: 12px;
   backdrop-filter: blur(5px);
+  transition: all 0.2s ease-in-out;
 }
 </style>
 

@@ -44,6 +44,10 @@ export function onThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback)
   wx.onThemeChange(listener)
 }
 
+export function offThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback) {
+  wx.offThemeChange(listener)
+}
+
 export function navigateBack(options?: WechatMiniprogram.NavigateBackOption) {
   wx.navigateBack(options)
 }
