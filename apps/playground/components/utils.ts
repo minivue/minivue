@@ -58,6 +58,11 @@ export function getPage() {
   return page
 }
 
+export function getPageCtx() {
+  const page = getPage()
+  return page.$page as ComponentInstance
+}
+
 export function getRelationNodes(ctx: ComponentInstance, path: string) {
   return ctx.getRelationNodes(path)
 }
@@ -70,17 +75,6 @@ export function getRect(ctx: ComponentInstance, selector: string) {
   return new Promise<WechatMiniprogram.BoundingClientRectCallbackResult>((resolve) => {
     ctx.createSelectorQuery().select(selector).boundingClientRect(resolve).exec()
   })
-}
-
-/** 获取最大边界信息 */
-function getMaxBounds(top: number, left: number, bottom: number, right: number) {
-  const { windowWidth, windowHeight } = getWindowInfo()
-  return {
-    maxTop: top,
-    maxRight: windowWidth - right,
-    maxBottom: windowHeight - bottom,
-    maxLeft: left,
-  }
 }
 
 type Placement =
@@ -97,144 +91,107 @@ type Placement =
   | 'leftTop'
   | 'leftBottom'
 
-interface PlacementInfo {
-  top: number
-  left: number
-}
-
-/** 获取最近显示位置 */
-async function getBestPlacement(
-  ctx: ComponentInstance,
-  triggerWidth: number,
-  triggerHeight: number,
-  maxTop: number,
-  maxRight: number,
-  maxBottom: number,
-  maxLeft: number,
-  placement: Placement,
-  popover: string,
-) {
-  const { width, height } = await getRect(ctx, popover)
-
-  if (placement.startsWith('left') && width > maxLeft && width < maxRight) {
-    placement = placement.replace('left', 'right') as Placement
-  } else if (placement.startsWith('right') && width > maxRight && width < maxLeft) {
-    placement = placement.replace('right', 'left') as Placement
-  } else if (placement.startsWith('top') && height > maxTop && height < maxBottom) {
-    placement = placement.replace('top', 'bottom') as Placement
-  } else if (placement.startsWith('bottom') && height > maxBottom && height < maxTop) {
-    placement = placement.replace('bottom', 'top') as Placement
-  }
-
-  if (
-    placement.includes('Left') &&
-    width > maxRight + triggerWidth &&
-    width < maxLeft + triggerWidth
-  ) {
-    placement = placement.replace('Left', 'Right') as Placement
-  } else if (
-    placement.includes('Right') &&
-    width > maxLeft + triggerWidth &&
-    width < maxRight + triggerWidth
-  ) {
-    placement = placement.replace('Right', 'Left') as Placement
-  } else if (placement === 'bottom' || placement === 'top') {
-    if (width / 2 > maxRight + triggerWidth / 2 && width / 2 < maxLeft + triggerWidth / 2) {
-      placement += 'Right'
-    } else if (width / 2 > maxLeft + triggerWidth / 2 && width / 2 < maxRight + triggerWidth / 2) {
-      placement += 'Left'
-    }
-  } else if (placement === 'left' || placement === 'right') {
-    if (height / 2 > maxTop + triggerHeight / 2 && width / 2 < maxBottom + triggerHeight / 2) {
-      placement += 'Top'
-    } else if (
-      width / 2 > maxBottom + triggerHeight / 2 &&
-      width / 2 < maxTop + triggerHeight / 2
-    ) {
-      placement += 'Bottom'
-    }
-  }
-  return placement as Placement
-}
-
-async function getPlacements(top: number, left: number, width: number, height: number) {
-  const placement = {} as Record<Placement, PlacementInfo>
-  placement.top = {
-    top,
-    left: left + width / 2,
-  }
-  placement.topLeft = {
-    top,
-    left: left,
-  }
-  placement.topRight = {
-    top,
-    left: left + width,
-  }
-  placement.right = {
-    top: top + height / 2,
-    left: left + width,
-  }
-  placement.rightTop = {
-    top: top,
-    left: left + width,
-  }
-  placement.rightBottom = {
-    top: top + height,
-    left: left + width,
-  }
-  placement.bottom = {
-    top: top + height,
-    left: left + width / 2,
-  }
-  placement.bottomRight = {
-    top: top + height,
-    left: left + width,
-  }
-  placement.bottomLeft = {
-    top: top + height,
-    left: left,
-  }
-  placement.left = {
-    top: top + height / 2,
-    left: left,
-  }
-  placement.leftTop = {
-    top: top,
-    left: left,
-  }
-  placement.leftBottom = {
-    top: top + height,
-    left: left,
-  }
-  return placement
-}
-
+/**
+ * 获取弹出元素的坐标
+ * @description 根据触发元素和弹出元素的选择器，计算弹出元素的位置，并考虑边界约束。
+ * @param ctx 组件实例
+ * @param trigger 触发元素选择器
+ * @param popover 弹出元素选择器
+ * @param placement  弹出位置
+ * @returns 一个包含弹出元素位置的数组 [x, y]，表示弹出元素的左上角坐标。
+ * @example
+ * ```ts
+ * const [x, y] = await getPopoverRect(this, '.trigger', '.popover', 'bottom');
+ * this.popoverStyle = `left: ${x}px; top: ${y}px;`;
+ * ```
+ */
 export async function getPopoverRect(
   ctx: ComponentInstance,
   trigger: string,
   popover: string,
   placement: Placement,
 ) {
-  const { top, left, bottom, right, width, height } = await getRect(ctx, trigger)
-  console.warn(top, left, bottom, right, width, height)
-  const { maxTop, maxRight, maxBottom, maxLeft } = getMaxBounds(top, left, bottom, right)
-  const bestPlacement = await getBestPlacement(
-    ctx,
-    width,
-    height,
-    maxTop,
-    maxRight,
-    maxBottom,
-    maxLeft,
-    placement,
-    popover,
-  )
-  const placements = await getPlacements(top, left, width, height)
-  const bestPlacementInfo = placements[bestPlacement]
-  return {
-    placement: bestPlacement,
-    top: bestPlacementInfo.top,
-    left: bestPlacementInfo.left,
+  const {
+    left: triggerLeft,
+    right: triggerRight,
+    bottom: triggerBottom,
+    top: triggerTop,
+    width: triggerWidth,
+    height: triggerHeight,
+  } = await getRect(ctx, trigger)
+
+  const { width: popoverWidth, height: popoverHeight } = await getRect(ctx, popover)
+  const { windowWidth: viewportWidth, windowHeight: viewportHeight } = getWindowInfo()
+
+  const gap = 10 // 间距
+  const isStartWith = (str: string, prefix: string) => str.startsWith(prefix)
+  const isTopPosition = (p: string) => isStartWith(p, 'top')
+  const isBottomPosition = (p: string) => isStartWith(p, 'bottom')
+  const isLeftPosition = (p: string) => isStartWith(p, 'left')
+  const isRightPosition = (p: string) => isStartWith(p, 'right')
+
+  // popover在上边的时候，popover的Y坐标是一样的
+  const popoverAllTopY = triggerTop - popoverHeight - gap
+  // popover在下边的时候，popover的Y坐标是一样的
+  const popoverAllBottomY = triggerBottom + gap
+  // popover在右边的时候，popover的X坐标是一样的
+  const popoverAllRightX = triggerRight + gap
+  // popover在左边的时候，popover的X坐标是一样的
+  const popoverAllLeftX = triggerLeft - popoverWidth - gap
+  // popover在上边和下边的时候，popover的X坐标是一样的
+  const popoverTopOrBottomX = triggerLeft + triggerWidth / 2 - popoverWidth / 2
+  // popover在左边边和右边的时候，popover的Y坐标是一样的
+  const popoverRightOrLeftY = triggerTop + triggerHeight / 2 - popoverHeight / 2
+  // popover在上右和下右的时候，popover的X坐标是一样的
+  const popoverTopRightOrBottomRightX = triggerRight - popoverWidth
+  // popover在右下和左下的时候，popover的Y坐标是一样的
+  const popoverRightBottomOrleftBottomY = triggerBottom - popoverHeight
+
+  // 12个位置
+  const placements = {
+    top: [popoverTopOrBottomX, popoverAllTopY],
+    topLeft: [triggerLeft, popoverAllTopY],
+    topRight: [popoverTopRightOrBottomRightX, popoverAllTopY],
+    right: [popoverAllRightX, popoverRightOrLeftY],
+    rightTop: [popoverAllRightX, triggerTop],
+    rightBottom: [popoverAllRightX, popoverRightBottomOrleftBottomY],
+    bottom: [popoverTopOrBottomX, popoverAllBottomY],
+    bottomLeft: [triggerLeft, popoverAllBottomY],
+    bottomRight: [popoverTopRightOrBottomRightX, popoverAllBottomY],
+    left: [popoverAllLeftX, popoverRightOrLeftY],
+    leftTop: [popoverAllLeftX, triggerTop],
+    leftBottom: [popoverAllLeftX, popoverRightBottomOrleftBottomY],
   }
+
+  // 触碰到边界时，则需要往反方向弹出（上下、左右）
+  const isTopEnough = popoverAllTopY >= 0
+  const isBottomEnough = popoverAllBottomY + popoverHeight <= viewportHeight
+  const isLeftEnough = popoverAllLeftX >= 0
+  const isRightEnough = popoverAllRightX + popoverWidth <= viewportWidth
+
+  if (isTopPosition(placement) && !isTopEnough) {
+    placement = placement.replace('top', 'bottom') as Placement
+  } else if (isBottomPosition(placement) && !isBottomEnough) {
+    placement = placement.replace('bottom', 'top') as Placement
+  } else if (isLeftPosition(placement) && !isLeftEnough) {
+    placement = placement.replace('left', 'right') as Placement
+  } else if (isRightPosition(placement) && !isRightEnough) {
+    placement = placement.replace('right', 'left') as Placement
+  }
+
+  // 边界约束调整
+  // 边界约束调整
+  let [x, y] = placements[placement]
+
+  // 通用边界约束函数
+  const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(value, max))
+
+  // 根据位置类型进行边界约束
+  if (isTopPosition(placement) || isBottomPosition(placement)) {
+    x = clamp(x, 0, viewportWidth - popoverWidth)
+  } else {
+    y = clamp(y, 0, viewportHeight - popoverHeight)
+  }
+
+  return [x, y]
 }

@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from '@minivue/core'
+import { computed, ref, getCurrentInstance } from '@minivue/core'
 import { clone, getAppBaseInfo, getPage, onThemeChange } from './utils'
 
 import KdToast from './toast.vue'
@@ -94,6 +94,8 @@ const navbarHeight = ref(0)
 
 const navbarStyle = computed(() => `margin-top: ${navbarHeight.value}px`)
 
+const ctx = getCurrentInstance()
+
 const onNavbarAction = (action: string) => emit('action', action)
 
 const onNavbarAttached = (height: number) => (navbarHeight.value = height)
@@ -105,6 +107,8 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
   }
   toast.onHide?.()
 }
+
+page.$page = ctx
 
 page.$showToast = (options: KdToastOptions<boolean>) => {
   options = clone(options)
