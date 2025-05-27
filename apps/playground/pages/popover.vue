@@ -3,9 +3,13 @@
     <View style="display: flex; align-items: center; justify-content: center; height: 100%">
       <KdPopover :placement="placement">
         <KdButton>气泡</KdButton>
-        <View slot="content"
-          >工具提示工具提示工具提示工具提示工具提示工具提示工具提示工具提示工具提示工具提示工具提示工具提示</View
-        >
+        <View class="content" slot="content">
+          <View class="text">
+            <Text overflow="ellipsis" :max-lines="2">
+              asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
+            </Text>
+          </View>
+        </View>
       </KdPopover>
     </View>
   </KdPage>
@@ -51,6 +55,32 @@ const placement = ref<Placement>('bottom')
 //   placement.value = allPosition[index++ % allPosition.length] as Placement
 // }, 200)
 </script>
+
+<style>
+.content {
+  min-width: 70px;
+  max-width: 320px;
+  min-height: 46px;
+  max-height: 68px;
+  padding: 12px 16px;
+  font-size: var(--kd-font-size-base);
+  line-height: var(--kd-font-line-height-base);
+  color: var(--kd-color-text-white);
+  background: var(--kd-color-mask-heavy);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+}
+
+.content .text {
+  box-sizing: border-box;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+</style>
 
 <config lang="json">
 {

@@ -51,6 +51,7 @@
     "pages/avatar/avatar",
     "pages/tabbar/tabbar",
     "pages/hover-toolbar/hover-toolbar",
+    "pages/tooltip/tooltip",
     "pages/popover/popover"
   ],
   "subpackages": [

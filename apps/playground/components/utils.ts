@@ -101,7 +101,8 @@ type Placement =
  * @param ctx 组件实例
  * @param trigger 触发元素选择器
  * @param popover 弹出元素选择器
- * @param placement  弹出位置
+ * @param placement 弹出位置
+ * @param gap 弹出元素与触发元素之间的间距
  * @returns 一个包含弹出元素位置的数组 [x, y]，表示弹出元素的左上角坐标。
  * @example
  * ```ts
@@ -114,6 +115,7 @@ export async function getPopoverRect(
   trigger: string,
   popover: string,
   placement: Placement,
+  gap = 0, // 间距
 ) {
   const {
     left: triggerLeft,
@@ -126,8 +128,6 @@ export async function getPopoverRect(
 
   const { width: popoverWidth, height: popoverHeight } = await getRect(ctx, popover)
   const { windowWidth: viewportWidth, windowHeight: viewportHeight } = getWindowInfo()
-
-  const gap = 10 // 间距
   const isStartWith = (str: string, prefix: string) => str.startsWith(prefix)
   const isTopPosition = (p: string) => isStartWith(p, 'top')
   const isBottomPosition = (p: string) => isStartWith(p, 'bottom')

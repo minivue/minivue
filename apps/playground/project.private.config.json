@@ -3,13 +3,16 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/popover/popover",
-          "pathName": "pages/popover/popover",
+          "name": "pages/tooltip/tooltip",
+          "pathName": "pages/tooltip/tooltip",
           "query": "",
           "scene": null,
           "launchMode": "default"
         }
       ]
     }
+  },
+  "setting": {
+    "skylineRenderEnable": true
   }
 }
