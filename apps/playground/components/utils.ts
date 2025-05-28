@@ -95,6 +95,22 @@ type Placement =
   | 'leftTop'
   | 'leftBottom'
 
+export async function getPageContainerRect() {
+  const rect = await getRect(getPageCtx(), '.kd-page__content')
+  if (!rect) {
+    const { windowHeight, windowWidth } = getWindowInfo()
+    return {
+      left: 0,
+      top: 0,
+      bottom: windowHeight,
+      right: windowWidth,
+      width: windowWidth,
+      height: windowHeight,
+    } as WechatMiniprogram.BoundingClientRectCallbackResult
+  }
+  return rect
+}
+
 /**
  * 获取弹出元素的坐标
  * @description 根据触发元素和弹出元素的选择器，计算弹出元素的位置，并考虑边界约束。
@@ -118,6 +134,12 @@ export async function getPopoverRect(
   gap = 0, // 间距
 ) {
   const {
+    top: viewportTop,
+    left: viewportLeft,
+    right: viewportRight,
+    bottom: viewportBottom,
+  } = await getPageContainerRect()
+  const {
     left: triggerLeft,
     right: triggerRight,
     bottom: triggerBottom,
@@ -125,9 +147,8 @@ export async function getPopoverRect(
     width: triggerWidth,
     height: triggerHeight,
   } = await getRect(ctx, trigger)
-
   const { width: popoverWidth, height: popoverHeight } = await getRect(ctx, popover)
-  const { windowWidth: viewportWidth, windowHeight: viewportHeight } = getWindowInfo()
+
   const isStartWith = (str: string, prefix: string) => str.startsWith(prefix)
   const isTopPosition = (p: string) => isStartWith(p, 'top')
   const isBottomPosition = (p: string) => isStartWith(p, 'bottom')
@@ -168,10 +189,10 @@ export async function getPopoverRect(
   }
 
   // 触碰到边界时，则需要往反方向弹出（上下、左右）
-  const isTopEnough = popoverAllTopY >= 0
-  const isBottomEnough = popoverAllBottomY + popoverHeight <= viewportHeight
-  const isLeftEnough = popoverAllLeftX >= 0
-  const isRightEnough = popoverAllRightX + popoverWidth <= viewportWidth
+  const isTopEnough = popoverAllTopY >= viewportTop
+  const isBottomEnough = popoverAllBottomY + popoverHeight <= viewportBottom
+  const isLeftEnough = popoverAllLeftX >= viewportLeft
+  const isRightEnough = popoverAllRightX + popoverWidth <= viewportRight
 
   if (isTopPosition(placement) && !isTopEnough) {
     placement = placement.replace('top', 'bottom') as Placement
@@ -192,9 +213,9 @@ export async function getPopoverRect(
 
   // 根据位置类型进行边界约束
   if (isTopPosition(placement) || isBottomPosition(placement)) {
-    x = clamp(x, 0, viewportWidth - popoverWidth)
+    x = clamp(x, viewportLeft, viewportRight - popoverWidth)
   } else {
-    y = clamp(y, 0, viewportHeight - popoverHeight)
+    y = clamp(y, viewportTop, viewportBottom - popoverHeight)
   }
 
   return [x, y]

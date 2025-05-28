@@ -3,6 +3,7 @@
     <slot />
   </View>
   <RootPortal v-if="mounted">
+    <View class="kd-popover-mask" @tap="onClose"></View>
     <View :class="classes" :style="style">
       <slot name="content" />
     </View>
@@ -51,11 +52,17 @@ interface Props {
   placement?: Placement
 }
 
+interface Events {
+  show: []
+  hide: []
+}
+
 defineOptions({
   name: 'KdPopover',
 })
 
 const { placement = 'bottom', gap = 0 } = defineProps<Props>()
+const emit = defineEmits<Events>()
 
 const ctx = getCurrentInstance<ComponentInstance>()
 
@@ -94,7 +101,19 @@ const onTap = async () => {
   show.value = true
 }
 
+const onClose = () => {
+  show.value = false
+  mounted.value = false
+}
+
 watch(() => placement, setPlacement)
+watch(show, () => {
+  if (show.value) {
+    emit('show')
+  } else {
+    emit('hide')
+  }
+})
 
 onAttached(() => onThemeChange(setTheme))
 
@@ -105,6 +124,14 @@ onDetached(() => offThemeChange(setTheme))
 .kd-popover-trigger {
   position: relative;
   display: inline-flex;
+}
+
+.kd-popover-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .kd-popover {

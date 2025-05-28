@@ -1,8 +1,11 @@
 <template>
   <KdPage title="气泡组件">
-    <KdTooltip text="这是一个气泡提示">
+    <View>
+      <KdTooltip text="这是一个气泡提示" placement="top">
+        <KdButton>气泡</KdButton>
+      </KdTooltip>
       <KdButton>气泡</KdButton>
-    </KdTooltip>
+    </View>
   </KdPage>
 </template>
 
