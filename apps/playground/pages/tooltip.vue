@@ -1,10 +1,11 @@
 <template>
   <KdPage title="气泡组件">
-    <View>
-      <KdTooltip text="这是一个气泡提示" placement="top">
+    <View
+      style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%"
+    >
+      <KdTooltip text="这是一个气泡提示" placement="bottomLeft">
         <KdButton>气泡</KdButton>
       </KdTooltip>
-      <KdButton>气泡</KdButton>
     </View>
   </KdPage>
 </template>

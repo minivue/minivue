@@ -111,6 +111,10 @@ export async function getPageContainerRect() {
   return rect
 }
 
+export function camelCaseToBem(camelCase: string) {
+  return camelCase.replace(/[A-Z]/g, '-$&').toLowerCase()
+}
+
 /**
  * 获取弹出元素的坐标
  * @description 根据触发元素和弹出元素的选择器，计算弹出元素的位置，并考虑边界约束。
@@ -126,7 +130,7 @@ export async function getPageContainerRect() {
  * this.popoverStyle = `left: ${x}px; top: ${y}px;`;
  * ```
  */
-export async function getPopoverRect(
+export async function getPopoverPosition(
   ctx: ComponentInstance,
   trigger: string,
   popover: string,
@@ -218,5 +222,5 @@ export async function getPopoverRect(
     y = clamp(y, viewportTop, viewportBottom - popoverHeight)
   }
 
-  return [x, y]
+  return [x, y, placement] as const
 }

@@ -3,7 +3,7 @@
     <slot />
   </View>
   <RootPortal v-if="mounted">
-    <View class="kd-popover-mask" @tap="onClose"></View>
+    <View class="kd-popover-mask" :style="maskStyle" @tap="onClose"></View>
     <View :class="classes" :style="style">
       <slot name="content" />
     </View>
@@ -20,13 +20,18 @@ import {
   getCurrentInstance,
   ComponentInstance,
 } from '@minivue/core'
+
 import {
+  getRect,
   getAppBaseInfo,
-  getPopoverRect,
-  styleObjectToString,
+  getPopoverPosition,
   onThemeChange,
   offThemeChange,
   classObjectToString,
+  getPageContainerRect,
+  getWindowInfo,
+  styleObjectToString,
+  camelCaseToBem,
 } from './utils'
 
 type Placement =
@@ -67,36 +72,54 @@ const emit = defineEmits<Events>()
 const ctx = getCurrentInstance<ComponentInstance>()
 
 const appBaseInfo = getAppBaseInfo()
-const top = ref(0)
-const left = ref(0)
 const show = ref(false)
 const mounted = ref(false)
+const style = ref('')
+const maskStyle = ref('')
 const theme = ref(appBaseInfo.theme)
 const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
-
-const style = computed(() =>
-  styleObjectToString({
-    top: `${top.value}px`,
-    left: `${left.value}px`,
-  }),
-)
+const finalPlacement = ref(placement)
 
 const classes = computed(() =>
-  classObjectToString(`kd-popover ${themes.value}`, {
-    'kd-popover--show': show.value,
-  }),
+  classObjectToString(
+    `${themes.value} kd-popover kd-popover--${camelCaseToBem(finalPlacement.value)}`,
+    {
+      'kd-popover--show': show.value,
+    },
+  ),
 )
 
+const setMaskStyle = async () => {
+  const { windowWidth, windowHeight } = getWindowInfo()
+  const { top, left, right, bottom } = await getPageContainerRect()
+  maskStyle.value = `top:${top}px;left:${left}px;right:${windowWidth - right}px;bottom:${windowHeight - bottom}px;`
+}
+
 const setPlacement = async () => {
-  const [x, y] = await getPopoverRect(ctx, '.kd-popover-trigger', '.kd-popover', placement, gap)
-  top.value = y
-  left.value = x
+  const { top, left, bottom, right } = await getRect(ctx, '.kd-popover-trigger')
+  const [x, y, bestPlacement] = await getPopoverPosition(
+    ctx,
+    '.kd-popover-trigger',
+    '.kd-popover',
+    placement,
+    gap,
+  )
+  finalPlacement.value = bestPlacement
+  style.value = styleObjectToString({
+    top: `${y}px`,
+    left: `${x}px`,
+    '--target-top': `${top}px`,
+    '--target-left': `${left}px`,
+    '--target-right': `${right}px`,
+    '--target-bottom': `${bottom}px`,
+  })
 }
 
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 
 const onTap = async () => {
   mounted.value = true
+  setMaskStyle()
   await setPlacement()
   show.value = true
 }
@@ -128,15 +151,10 @@ onDetached(() => offThemeChange(setTheme))
 
 .kd-popover-mask {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .kd-popover {
   position: fixed;
-  overflow: hidden;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
     'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
