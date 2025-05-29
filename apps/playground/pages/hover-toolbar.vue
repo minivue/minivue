@@ -45,10 +45,10 @@ const items = [
     icon: 'dialog',
     text: '分享',
   },
-  {
-    icon: 'dialog',
-    text: '添加附注',
-  },
+  // {
+  //   icon: 'dialog',
+  //   text: '添加附注',
+  // },
 ]
 </script>
 

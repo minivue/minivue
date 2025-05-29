@@ -28,8 +28,7 @@ defineProps<Props>()
 <style>
 .kd-hover-toolbar {
   display: flex;
-  flex-flow: column wrap;
-  flex-direction: row;
+  flex-wrap: wrap;
   gap: 4px;
   align-items: flex-start;
   max-width: 328px;
@@ -43,6 +42,7 @@ defineProps<Props>()
   flex-shrink: 0;
   width: 60px !important;
   height: 64px !important;
+  margin: 0;
   color: var(--kd-color-text-white);
 }
 </style>

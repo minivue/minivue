@@ -166,6 +166,7 @@ onDetached(() => offThemeChange(setTheme))
 
 .kd-popover {
   position: fixed;
+  display: flex;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
     'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;

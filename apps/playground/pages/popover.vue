@@ -1,10 +1,10 @@
 <template>
   <KdPage title="弹出层组件">
     <KdPopover
-      placement="bottom"
+      placement="top"
       reference="touch"
       trigger="longpress"
-      style="display: flex; align-items: center; justify-content: center; height: 100%"
+      style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%"
     >
       <View> 长按任何地方 </View>
       <KdHoverToolbar :items="items" slot="content" />
@@ -53,10 +53,6 @@ const items = [
   {
     icon: 'dialog',
     text: '分享',
-  },
-  {
-    icon: 'dialog',
-    text: '添加附注',
   },
 ]
 </script>
