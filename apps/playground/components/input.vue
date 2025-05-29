@@ -12,13 +12,16 @@
         :placeholder="placeholder"
         :disabled="disabled"
         :maxlength="maxlength"
-        :cursor-spacing="cursorSpacing"
+        :cursor-spacing="cursorSpacing || 18"
+        :adjust-position="true"
         :focus="innerFocus"
         :confirm-type="confirmType"
         cursor-color="#1E5FC7"
+        hold-keyboard
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
+        @keyboardheightchange="onKeyboardHeightChange"
       />
     </View>
     <View class="kd-input__suffix">
@@ -39,7 +42,7 @@
 <script setup lang="ts">
 import KdButton from './button.vue'
 import { computed, ref } from '@minivue/core'
-import { classObjectToString, styleObjectToString } from './utils'
+import { classObjectToString, setKeyboardHeight, styleObjectToString } from './utils'
 
 interface Props {
   /** 输入框的初始内容 */
@@ -134,6 +137,7 @@ const onFocus = (e: WechatMiniprogram.InputFocus) => {
 }
 
 const onBlur = (e: WechatMiniprogram.InputBlur) => {
+  setKeyboardHeight(0)
   innerFocus.value = false
   emit('blur', e)
 }
@@ -141,6 +145,10 @@ const onBlur = (e: WechatMiniprogram.InputBlur) => {
 const onClearTap = () => {
   innerValue.value = ''
   emit('clear')
+}
+
+const onKeyboardHeightChange = (e: WechatMiniprogram.CustomEvent) => {
+  setKeyboardHeight(e.detail.height)
 }
 </script>
 

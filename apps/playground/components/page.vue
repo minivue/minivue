@@ -16,6 +16,7 @@
       <slot />
     </ScrollView>
     <slot name="bottom" />
+    <View :style="keyboardHeight"></View>
     <RootPortal>
       <View :class="rootClasses">
         <View v-if="toasts" class="kd-toast-area" :style="navbarStyle">
@@ -92,6 +93,8 @@ const toasts = ref<KdToastOptions<boolean>[]>([])
 
 const navbarHeight = ref(0)
 
+const keyboardHeight = ref('')
+
 const navbarStyle = computed(() => `margin-top: ${navbarHeight.value}px`)
 
 const ctx = getCurrentInstance()
@@ -108,6 +111,20 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
     toasts.value.splice(index, 1)
   }
   toast.onHide?.()
+}
+
+onAttached(() => {
+  onThemeChange(setTheme)
+})
+
+onDetached(() => {
+  offThemeChange(setTheme)
+})
+
+if (ctx) {
+  ctx.setKeyboardHeight = (height: number) => {
+    keyboardHeight.value = `height: ${height}px;`
+  }
 }
 
 page.$page = ctx
@@ -139,14 +156,6 @@ page.$showToast = (options: KdToastOptions<boolean>) => {
 page.$hideToast = () => {
   toasts.value = []
 }
-
-onAttached(() => {
-  onThemeChange(setTheme)
-})
-
-onDetached(() => {
-  offThemeChange(setTheme)
-})
 </script>
 
 <style>

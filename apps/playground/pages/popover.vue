@@ -1,90 +1,69 @@
 <template>
-  <KdPage title="气泡组件">
-    <View style="display: flex; align-items: center; justify-content: center; height: 100%">
-      <KdPopover :placement="placement">
-        <KdButton>气泡</KdButton>
-        <View class="content" slot="content">
-          <View class="text">
-            <Text overflow="ellipsis" :max-lines="2">
-              asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-            </Text>
-          </View>
-        </View>
-      </KdPopover>
-    </View>
+  <KdPage title="弹出层组件">
+    <KdPopover
+      placement="bottom"
+      reference="touch"
+      trigger="longpress"
+      style="display: flex; align-items: center; justify-content: center; height: 100%"
+    >
+      <View> 长按任何地方 </View>
+      <KdHoverToolbar :items="items" slot="content" />
+    </KdPopover>
   </KdPage>
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
 import KdPopover from '@/components/popover.vue'
-import { ref } from '@minivue/core'
+import KdHoverToolbar from '@/components/hover-toolbar.vue'
 
-type Placement =
-  | 'top'
-  | 'topLeft'
-  | 'topRight'
-  | 'right'
-  | 'rightTop'
-  | 'rightBottom'
-  | 'bottom'
-  | 'bottomRight'
-  | 'bottomLeft'
-  | 'left'
-  | 'leftTop'
-  | 'leftBottom'
-
-const placement = ref<Placement>('bottom')
-// const allPosition = [
-//   'topRight',
-//   'top',
-//   'topLeft',
-//   'rightBottom',
-//   'right',
-//   'rightTop',
-//   'bottomLeft',
-//   'bottom',
-//   'bottomRight',
-//   'leftTop',
-//   'left',
-//   'leftBottom',
-// ]
-// let index = 0
-// setInterval(() => {
-//   placement.value = allPosition[index++ % allPosition.length] as Placement
-// }, 200)
+const items = [
+  {
+    icon: 'dialog',
+    text: '编辑',
+  },
+  {
+    icon: 'dialog',
+    text: '复制',
+  },
+  {
+    icon: 'dialog',
+    text: '高亮',
+  },
+  {
+    icon: 'dialog',
+    text: '下划线',
+  },
+  {
+    icon: 'dialog',
+    text: '删除批注',
+  },
+  {
+    icon: 'dialog',
+    text: '词典',
+  },
+  {
+    icon: 'dialog',
+    text: '查找',
+  },
+  {
+    icon: 'dialog',
+    text: '朗读',
+  },
+  {
+    icon: 'dialog',
+    text: '分享',
+  },
+  {
+    icon: 'dialog',
+    text: '添加附注',
+  },
+]
 </script>
-
-<style>
-.content {
-  min-width: 70px;
-  max-width: 320px;
-  min-height: 46px;
-  max-height: 68px;
-  padding: 12px 16px;
-  font-size: var(--kd-font-size-base);
-  line-height: var(--kd-font-line-height-base);
-  color: var(--kd-color-text-white);
-  background: var(--kd-color-mask-heavy);
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
-}
-
-.content .text {
-  box-sizing: border-box;
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-}
-</style>
 
 <config lang="json">
 {
-  "navigationBarTitleText": "气泡组件",
+  "navigationBarTitleText": "弹窗层组件",
   "disableScroll": true
 }
 </config>

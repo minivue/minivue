@@ -37,14 +37,12 @@
         <KdLabel style="display: flex"> <KdRadio :value="4" mark /> 选项4 </KdLabel>
       </KdRadioGroup>
     </View>
-    <View style="padding: 16px"> <KdInput v-model="value" />{{ value }} </View>
   </KdPage>
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdLabel from '@/components/label.vue'
-import KdInput from '@/components/input.vue'
 
 import KdSwitch from '@/components/switch.vue'
 import KdRadio from '@/components/radio.vue'
@@ -53,7 +51,6 @@ import KdCheckbox from '@/components/checkbox.vue'
 import KdCheckboxGroup from '@/components/checkbox-group.vue'
 import { ref } from '@minivue/core'
 
-const value = ref('哈哈')
 const checkList = ref<number[]>([1, 2])
 
 const onChange = (value: boolean) => {

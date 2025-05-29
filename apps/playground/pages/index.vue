@@ -37,7 +37,7 @@
         气泡组件
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/popover/popover')">
-        弹窗层组件
+        弹出层组件
       </KdButton>
     </View>
   </KdPage>

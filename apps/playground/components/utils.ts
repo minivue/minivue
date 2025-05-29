@@ -67,6 +67,11 @@ export function getPageCtx() {
   return page.$page as ComponentInstance
 }
 
+export function setKeyboardHeight(height: number) {
+  const ctx = getPageCtx()
+  ctx.setKeyboardHeight(height)
+}
+
 export function getRelationNodes(ctx: ComponentInstance, path: string) {
   return ctx.getRelationNodes(path)
 }

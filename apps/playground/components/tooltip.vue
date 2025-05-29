@@ -1,8 +1,8 @@
 <template>
   <KdPopover :placement="placement || 'bottom'" :gap="8">
     <slot />
+    <View class="kd-tooltip-arrow" slot="other"></View>
     <View class="kd-tooltip" slot="content">
-      <View class="kd-tooltip__arrow"></View>
       <View class="kd-tooltip__text">
         <Text overflow="ellipsis" :max-lines="2">{{ text }}</Text>
       </View>
@@ -67,7 +67,7 @@ defineProps<Props>()
   word-break: break-all;
 }
 
-.kd-tooltip__arrow {
+.kd-tooltip-arrow {
   position: fixed;
   width: 0;
   height: 0;
@@ -77,38 +77,38 @@ defineProps<Props>()
   opacity: 0;
 }
 
-.kd-popover--show .kd-tooltip__arrow {
+.kd-popover--show .kd-tooltip-arrow {
   opacity: 1;
 }
 
-.kd-popover--top .kd-tooltip__arrow,
-.kd-popover--top-left .kd-tooltip__arrow,
-.kd-popover--top-right .kd-tooltip__arrow {
+.kd-popover--top .kd-tooltip-arrow,
+.kd-popover--top-left .kd-tooltip-arrow,
+.kd-popover--top-right .kd-tooltip-arrow {
   top: calc(var(--target-top) - 4px);
   left: calc(var(--target-left) + (var(--target-right) - var(--target-left)) / 2);
   transform: translate(-50%, -100%) rotate(180deg);
 }
 
-.kd-popover--bottom .kd-tooltip__arrow,
-.kd-popover--bottom-left .kd-tooltip__arrow,
-.kd-popover--bottom-right .kd-tooltip__arrow {
+.kd-popover--bottom .kd-tooltip-arrow,
+.kd-popover--bottom-left .kd-tooltip-arrow,
+.kd-popover--bottom-right .kd-tooltip-arrow {
   top: calc(var(--target-bottom) + 4px);
   left: calc(var(--target-left) + (var(--target-right) - var(--target-left)) / 2);
   transform: translate(-50%, 0);
 }
 
-.kd-popover--left .kd-tooltip__arrow,
-.kd-popover--left-top .kd-tooltip__arrow,
-.kd-popover--left-bottom .kd-tooltip__arrow {
+.kd-popover--left .kd-tooltip-arrow,
+.kd-popover--left-top .kd-tooltip-arrow,
+.kd-popover--left-bottom .kd-tooltip-arrow {
   top: calc(var(--target-top) + (var(--target-bottom) - var(--target-top)) / 2);
   left: calc(var(--target-left) - 4px);
   transform: translate(-50%, 0) rotate(90deg);
   transform-origin: center 0;
 }
 
-.kd-popover--right .kd-tooltip__arrow,
-.kd-popover--right-top .kd-tooltip__arrow,
-.kd-popover--right-bottom .kd-tooltip__arrow {
+.kd-popover--right .kd-tooltip-arrow,
+.kd-popover--right-top .kd-tooltip-arrow,
+.kd-popover--right-bottom .kd-tooltip-arrow {
   top: calc(var(--target-top) + (var(--target-bottom) - var(--target-top)) / 2);
   left: calc(var(--target-right) + 4px);
   transform: translate(-50%, 0) rotate(-90deg);

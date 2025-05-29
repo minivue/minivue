@@ -6,6 +6,7 @@
     <View class="kd-popover-mask" :style="maskStyle" @tap="onClose"></View>
     <View :class="classes" :style="style">
       <slot name="content" />
+      <slot name="other" />
     </View>
   </RootPortal>
 </template>

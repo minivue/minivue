@@ -1,15 +1,8 @@
 <template>
   <View class="kd-hover-toolbar">
-    <KdButton type="light" icon="dialog" vertical>编辑</KdButton>
-    <KdButton type="light" icon="dialog" vertical>复制</KdButton>
-    <KdButton type="light" icon="dialog" vertical>高亮</KdButton>
-    <KdButton type="light" icon="dialog" vertical>下划线</KdButton>
-    <KdButton type="light" icon="dialog" vertical>删除批注</KdButton>
-    <KdButton type="light" icon="dialog" vertical>词典</KdButton>
-    <KdButton type="light" icon="dialog" vertical>查找</KdButton>
-    <KdButton type="light" icon="dialog" vertical>朗读</KdButton>
-    <KdButton type="light" icon="dialog" vertical>分享</KdButton>
-    <KdButton type="light" icon="dialog" vertical>添加附注</KdButton>
+    <KdButton v-for="item in items" :key="item.text" type="light" :icon="item.icon" vertical>
+      {{ item.text }}
+    </KdButton>
   </View>
 </template>
 
@@ -19,6 +12,17 @@ import KdButton from './button.vue'
 defineOptions({
   name: 'KdHoverToolbar',
 })
+
+interface Item {
+  icon: string
+  text: string
+}
+
+interface Props {
+  items?: Item[]
+}
+
+defineProps<Props>()
 </script>
 
 <style>
