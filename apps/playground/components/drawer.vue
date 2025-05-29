@@ -1,11 +1,17 @@
 <template>
-  <RootPortal>
+  <RootPortal v-if="show">
     <View :class="themes">
       <View class="kd-drawer-mask"></View>
-      <Swiper class="kd-drawer" :duration="200" :current="current" vertical>
-        <SwiperItem class="kd-drawer__item" @touchmove.stop="onNoop" skip-hidden-item-layout>
-        </SwiperItem>
-        <SwiperItem class="kd-drawer__item" style="background: red" skip-hidden-item-layout>
+      <Swiper
+        class="kd-drawer"
+        :duration="200"
+        :current="current"
+        vertical
+        @animationfinish="onHide"
+      >
+        <SwiperItem @touchmove.stop="onNoop" skip-hidden-item-layout> </SwiperItem>
+        <SwiperItem class="kd-drawer__item" skip-hidden-item-layout>
+          <View> 什么鬼 </View>
         </SwiperItem>
       </Swiper>
     </View>
@@ -13,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onAttached, onDetached } from '@minivue/core'
+import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange, offThemeChange } from './utils'
 
 defineOptions({
@@ -24,17 +30,32 @@ interface Props {}
 defineProps<Props>()
 
 const appBaseInfo = getAppBaseInfo()
-const current = ref(1)
+const current = ref(0)
 const theme = ref(appBaseInfo.theme)
 const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
 
+const show = ref(false)
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 
 const onNoop = () => {
   // noop
 }
+const onHide = (e: WechatMiniprogram.SwiperAnimationFinish) => {
+  console.log('onHide', e.detail.current)
+  // if (e.detail.current === 0) {
+  //   show.value = false
+  // }
+}
+
+watch(show, (val) => {
+  setTimeout(() => {
+    console.log('val', val)
+    current.value = val ? 1 : 0
+  }, 1000)
+})
 
 onAttached(() => {
+  show.value = true
   onThemeChange(setTheme)
 })
 
@@ -62,11 +83,13 @@ onDetached(() => {
   height: 300px;
   overflow: hidden;
   touch-action: pan-y;
+  border-radius: 12px 12px 0 0;
 }
 
 .kd-drawer__item {
-  position: relative;
-  height: 100%;
+  overflow: hidden;
+  background: var(--kd-color-background-middle);
+  border-radius: 12px 12px 0 0;
 }
 </style>
 
