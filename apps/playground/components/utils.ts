@@ -95,6 +95,11 @@ type Placement =
   | 'leftTop'
   | 'leftBottom'
 
+interface Coordinates {
+  x: number
+  y: number
+}
+
 export async function getPageContainerRect() {
   const rect = await getRect(getPageCtx(), '.kd-page__content')
   if (!rect) {
@@ -132,11 +137,27 @@ export function camelCaseToBem(camelCase: string) {
  */
 export async function getPopoverPosition(
   ctx: ComponentInstance,
-  trigger: string,
+  trigger: string | Coordinates,
   popover: string,
   placement: Placement,
   gap = 0, // 间距
 ) {
+  const getTriggerRect = async () => {
+    if (typeof trigger === 'string') {
+      return getRect(ctx, trigger)
+    } else {
+      const { x, y } = trigger
+      return {
+        left: x,
+        top: y,
+        right: x,
+        bottom: y,
+        width: 0,
+        height: 0,
+      }
+    }
+  }
+
   const {
     top: viewportTop,
     left: viewportLeft,
@@ -150,7 +171,7 @@ export async function getPopoverPosition(
     top: triggerTop,
     width: triggerWidth,
     height: triggerHeight,
-  } = await getRect(ctx, trigger)
+  } = await getTriggerRect()
   const { width: popoverWidth, height: popoverHeight } = await getRect(ctx, popover)
 
   const isStartWith = (str: string, prefix: string) => str.startsWith(prefix)

@@ -1,5 +1,5 @@
 <template>
-  <KdPopover :placement="placement || 'bottom'" :gap="8" @show="onShow" @hide="onHide">
+  <KdPopover :placement="placement || 'bottom'" :gap="8">
     <slot />
     <View class="kd-tooltip" slot="content">
       <View class="kd-tooltip__arrow"></View>
@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from '@minivue/core'
 import KdPopover from './popover.vue'
 
 type Placement =
@@ -40,11 +39,6 @@ defineOptions({
 })
 
 defineProps<Props>()
-
-const show = ref(false)
-
-const onShow = () => (show.value = true)
-const onHide = () => (show.value = false)
 </script>
 
 <style>

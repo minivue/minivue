@@ -1,5 +1,5 @@
 <template>
-  <View class="kd-popover-trigger" @tap="onTap">
+  <View class="kd-popover-trigger" @tap="onTap" @longpress="onTap">
     <slot />
   </View>
   <RootPortal v-if="mounted">
@@ -52,9 +52,11 @@ interface Props {
   /** 位置偏移 */
   gap?: number
   /** 相对参考物 */
-  reference?: 'anchor' | 'pointer'
+  reference?: 'anchor' | 'touch'
   /** 位置 */
   placement?: Placement
+  /** 触发事件 */
+  trigger?: 'tap' | 'longpress'
 }
 
 interface Events {
@@ -66,7 +68,12 @@ defineOptions({
   name: 'KdPopover',
 })
 
-const { placement = 'bottom', gap = 0 } = defineProps<Props>()
+const {
+  placement = 'bottom',
+  gap = 0,
+  reference = 'anchor',
+  trigger = 'tap',
+} = defineProps<Props>()
 const emit = defineEmits<Events>()
 
 const ctx = getCurrentInstance<ComponentInstance>()
@@ -95,11 +102,11 @@ const setMaskStyle = async () => {
   maskStyle.value = `top:${top}px;left:${left}px;right:${windowWidth - right}px;bottom:${windowHeight - bottom}px;`
 }
 
-const setPlacement = async () => {
+const setPlacement = async (coordinates: { x: number; y: number } | undefined) => {
   const { top, left, bottom, right } = await getRect(ctx, '.kd-popover-trigger')
   const [x, y, bestPlacement] = await getPopoverPosition(
     ctx,
-    '.kd-popover-trigger',
+    coordinates || '.kd-popover-trigger',
     '.kd-popover',
     placement,
     gap,
@@ -117,10 +124,13 @@ const setPlacement = async () => {
 
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 
-const onTap = async () => {
+const onTap = async (e: WechatMiniprogram.CustomEvent) => {
+  if (e.type !== trigger) {
+    return
+  }
   mounted.value = true
   setMaskStyle()
-  await setPlacement()
+  await setPlacement(reference === 'touch' ? (e.detail as { x: number; y: number }) : undefined)
   show.value = true
 }
 
