@@ -3,8 +3,8 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/tooltip/tooltip",
-          "pathName": "pages/tooltip/tooltip",
+          "name": "pages/drawer/drawer",
+          "pathName": "pages/drawer/drawer",
           "query": "",
           "scene": null,
           "launchMode": "default"

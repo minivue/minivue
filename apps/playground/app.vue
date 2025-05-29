@@ -52,7 +52,8 @@
     "pages/tabbar/tabbar",
     "pages/hover-toolbar/hover-toolbar",
     "pages/tooltip/tooltip",
-    "pages/popover/popover"
+    "pages/popover/popover",
+    "pages/drawer/drawer"
   ],
   "subpackages": [
     {
