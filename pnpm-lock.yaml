@@ -80,7 +80,7 @@ importers:
         version: 22.13.13
       miniprogram-api-typings:
         specifier: latest
-        version: 4.0.5
+        version: 4.0.7
       typescript:
         specifier: latest
         version: 5.8.2
@@ -1531,6 +1531,9 @@ packages:
 
   miniprogram-api-typings@4.0.5:
     resolution: {integrity: sha512-34pYYg4pwjsE752x/zs7QYLL0x0UGBL/IxTuVRRIXbFcv1msDRCWGyZK5KpsDm2P78Fdaw+B80B8R1qbvX6YhQ==}
+
+  miniprogram-api-typings@4.0.7:
+    resolution: {integrity: sha512-sUxqpA1+JxnDWYjO6ihiLWNJl94WzjlhnDpozfBeC+w8Mpejjsc8JuxyC3Xisimj/gp5OYaJ7nd4fM6wepzhEQ==}
 
   mlly@1.7.4:
     resolution: {integrity: sha512-qmdSIPC4bDJXgZTCR7XosJiNKySV7O215tsPtDN9iEO/7q/76b/ijtgRu/+epFXSJhijtTCCGp3DWS549P3xKw==}
@@ -3389,6 +3392,8 @@ snapshots:
   minipass@7.1.2: {}
 
   miniprogram-api-typings@4.0.5: {}
+
+  miniprogram-api-typings@4.0.7: {}
 
   mlly@1.7.4:
     dependencies:

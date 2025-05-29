@@ -59,7 +59,7 @@ function onTap(url: string) {
 
 .p-index .kd-button {
   width: 100% !important;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>
 
