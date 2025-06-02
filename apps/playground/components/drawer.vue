@@ -1,15 +1,15 @@
 <template>
-  <RootPortal v-if="show">
-    <View :class="themes">
-      <View class="kd-drawer-mask"></View>
+  <RootPortal>
+    <View v-if="show" :class="classes">
+      <View class="kd-drawer__mask"></View>
       <Swiper
-        class="kd-drawer"
+        class="kd-drawer__box"
         :duration="200"
         :current="current"
         vertical
         @animationfinish="onHide"
       >
-        <SwiperItem @touchmove.stop="onNoop" skip-hidden-item-layout> </SwiperItem>
+        <SwiperItem skip-hidden-item-layout> </SwiperItem>
         <SwiperItem class="kd-drawer__item" skip-hidden-item-layout>
           <View> 什么鬼 </View>
         </SwiperItem>
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
-import { getAppBaseInfo, onThemeChange, offThemeChange } from './utils'
+import { getAppBaseInfo, onThemeChange, offThemeChange, classObjectToString } from './utils'
 
 defineOptions({
   name: 'KdDrawer',
@@ -32,14 +32,14 @@ defineProps<Props>()
 const appBaseInfo = getAppBaseInfo()
 const current = ref(0)
 const theme = ref(appBaseInfo.theme)
-const themes = computed(() => `kd-theme--default kd-theme--${theme.value}`)
+const classes = computed(() =>
+  classObjectToString(`kd-drawer kd-theme--default kd-theme--${theme.value}`, {
+    'kd-drawer--show': show.value,
+  }),
+)
 
 const show = ref(false)
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
-
-const onNoop = () => {
-  // noop
-}
 const onHide = (e: WechatMiniprogram.SwiperAnimationFinish) => {
   console.log('onHide', e.detail.current)
   // if (e.detail.current === 0) {
@@ -48,14 +48,10 @@ const onHide = (e: WechatMiniprogram.SwiperAnimationFinish) => {
 }
 
 watch(show, (val) => {
-  setTimeout(() => {
-    console.log('val', val)
-    current.value = val ? 1 : 0
-  }, 1000)
+  current.value = val ? 1 : 0
 })
 
 onAttached(() => {
-  show.value = true
   onThemeChange(setTheme)
 })
 
@@ -65,7 +61,15 @@ onDetached(() => {
 </script>
 
 <style>
-.kd-drawer-mask {
+/* .kd-drawer {
+  display: none;
+}
+
+.kd-drawer--show {
+  display: block;
+} */
+
+.kd-drawer__mask {
   position: fixed;
   top: 0;
   left: 0;
@@ -74,7 +78,7 @@ onDetached(() => {
   background-color: var(--kd-color-mask-regular);
 }
 
-.kd-drawer {
+.kd-drawer__box {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -87,9 +91,19 @@ onDetached(() => {
 }
 
 .kd-drawer__item {
-  overflow: hidden;
+  position: relative;
   background: var(--kd-color-background-middle);
   border-radius: 12px 12px 0 0;
+}
+
+.kd-drawer__item::before {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background: var(--kd-color-background-middle);
 }
 </style>
 
