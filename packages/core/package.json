@@ -14,12 +14,12 @@
     }
   },
   "dependencies": {
-    "@vue/reactivity": "^3.5.14",
-    "vue": "^3.5.14"
+    "@vue/reactivity": "^3.5.16",
+    "vue": "^3.5.16"
   },
   "devDependencies": {
     "@types/node": "latest",
-    "esbuild": "0.25.4",
+    "esbuild": "0.25.5",
     "typescript": "latest",
     "miniprogram-api-typings": "latest"
   },
