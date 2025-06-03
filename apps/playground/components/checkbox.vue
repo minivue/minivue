@@ -42,34 +42,34 @@ interface Events {
 
 const emit = defineEmits<Events>()
 
-const props = defineProps<Props>()
+const { checked, disabled, indeterminate, master } = defineProps<Props>()
 
-const innerChecked = ref(props.checked)
+const innerChecked = ref(checked)
 
 const ctx = getCurrentInstance<ComponentInstance & { parent: ComponentInstance }>()
 
 const classes = computed(() =>
   classObjectToString('kd-checkbox', {
     'kd-checkbox--checked': innerChecked.value,
-    'kd-checkbox--disabled': props.disabled,
-    'kd-checkbox--indeterminate': props.indeterminate,
+    'kd-checkbox--disabled': disabled,
+    'kd-checkbox--indeterminate': indeterminate,
   }),
 )
 
 const onTap = () => {
-  if (props.disabled) {
+  if (disabled) {
     return
   }
   const parent = ctx?.parent
-  if (props.master) {
-    innerChecked.value = !innerChecked.value && !props.indeterminate
+  if (master) {
+    innerChecked.value = !innerChecked.value && !indeterminate
   } else {
     innerChecked.value = !innerChecked.value
   }
   emit('change', innerChecked.value)
   if (parent) {
     const checkboxs = getRelationNodes(parent, '../checkbox/checkbox')
-    if (props.master) {
+    if (master) {
       checkboxs.forEach((checkbox) => {
         const props = checkbox.__props__ as Props
         if (!props.disabled) {
@@ -89,7 +89,7 @@ const onTap = () => {
 }
 
 watch(
-  () => props.checked,
+  () => checked,
   (newValue) => {
     innerChecked.value = newValue
   },

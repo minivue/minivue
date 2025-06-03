@@ -49,6 +49,11 @@ type Placement =
   | 'leftTop'
   | 'leftBottom'
 
+interface Coordinates {
+  x: number
+  y: number
+}
+
 interface Props {
   /** 位置偏移 */
   gap?: number
@@ -103,7 +108,7 @@ const setMaskStyle = async () => {
   maskStyle.value = `top:${top}px;left:${left}px;right:${windowWidth - right}px;bottom:${windowHeight - bottom}px;`
 }
 
-const setPlacement = async (coordinates: { x: number; y: number } | undefined) => {
+const setPlacement = async (coordinates?: Coordinates) => {
   const { top, left, bottom, right } = await getRect(ctx, '.kd-popover-trigger')
   const [x, y, bestPlacement] = await getPopoverPosition(
     ctx,
@@ -140,9 +145,8 @@ const onClose = () => {
   mounted.value = false
 }
 
-watch(() => placement, setPlacement)
-watch(show, () => {
-  if (show.value) {
+watch(show, (val) => {
+  if (val) {
     emit('show')
   } else {
     emit('hide')
