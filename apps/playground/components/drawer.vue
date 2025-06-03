@@ -1,17 +1,18 @@
 <template>
   <RootPortal>
-    <View v-if="show" :class="classes">
+    <View :class="classes">
       <View class="kd-drawer__mask"></View>
       <Swiper
         class="kd-drawer__panel"
         :duration="200"
         :current="current"
         vertical
-        @animationfinish="onHide"
+        @change="onChange"
+        @animationfinish="onAnimationFinish"
       >
-        <SwiperItem skip-hidden-item-layout> </SwiperItem>
+        <SwiperItem skip-hidden-item-layout />
         <SwiperItem class="kd-drawer__item" skip-hidden-item-layout>
-          <View> 什么鬼 </View>
+          <slot />
         </SwiperItem>
       </Swiper>
     </View>
@@ -26,60 +27,87 @@ defineOptions({
   name: 'KdDrawer',
 })
 
-interface Props {}
-defineProps<Props>()
+interface Events {
+  /** 状态改变 */
+  change: [value: boolean]
+}
+
+interface Props {
+  /** 是否显示 */
+  show?: boolean
+}
+
+const emit = defineEmits<Events>()
+const { show } = defineProps<Props>()
 
 const appBaseInfo = getAppBaseInfo()
 const current = ref(0)
 const theme = ref(appBaseInfo.theme)
+const innerShow = ref(show)
 const classes = computed(() =>
   classObjectToString(`kd-drawer kd-theme--default kd-theme--${theme.value}`, {
-    'kd-drawer--show': show.value,
+    'kd-drawer--show': innerShow.value,
   }),
 )
 
-const show = ref(false)
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
-const onHide = (e: WechatMiniprogram.SwiperAnimationFinish) => {
-  console.log('onHide', e.detail.current)
-  // if (e.detail.current === 0) {
-  //   show.value = false
-  // }
+const onAnimationFinish = (e: WechatMiniprogram.SwiperAnimationFinish) => {
+  if (e.detail.current === 0 && current.value === 0) {
+    innerShow.value = false
+  }
 }
 
-watch(show, (val) => {
+const onChange = (e: WechatMiniprogram.SwiperChange) => {
+  current.value = e.detail.current
+}
+
+watch(innerShow, (val) => {
+  emit('change', val)
   current.value = val ? 1 : 0
 })
 
-onAttached(() => {
-  onThemeChange(setTheme)
-})
+watch(
+  () => show,
+  (val) => {
+    innerShow.value = val
+  },
+)
 
-onDetached(() => {
-  offThemeChange(setTheme)
-})
+onAttached(() => onThemeChange(setTheme))
+
+onDetached(() => offThemeChange(setTheme))
 </script>
 
 <style>
-/* .kd-drawer {
-  display: none;
+.kd-drawer {
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .kd-drawer--show {
-  display: block;
-} */
+  top: 0;
+}
 
 .kd-drawer__mask {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: var(--kd-color-mask-regular);
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.kd-drawer--show .kd-drawer__mask {
+  opacity: 1;
 }
 
 .kd-drawer__panel {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   display: flex;

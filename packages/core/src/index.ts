@@ -22,7 +22,6 @@ export {
   toRaw,
   effect,
   stop,
-  watch,
   getCurrentWatcher,
   onWatcherCleanup,
   ReactiveEffect,
@@ -31,6 +30,9 @@ export {
   getCurrentScope,
   onScopeDispose,
 } from '@vue/reactivity'
+
+export { watch, watchEffect, watchPostEffect, watchSyncEffect } from './watch'
+export { nextTick } from './scheduler'
 
 export * from './app'
 export * from './page'
