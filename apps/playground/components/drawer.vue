@@ -1,7 +1,7 @@
 <template>
   <RootPortal>
     <View :class="classes">
-      <View class="kd-drawer__mask"></View>
+      <View class="kd-drawer__mask" @tap="onClose"></View>
       <Swiper
         class="kd-drawer__panel"
         :duration="200"
@@ -11,8 +11,10 @@
         @animationfinish="onAnimationFinish"
       >
         <SwiperItem skip-hidden-item-layout />
-        <SwiperItem class="kd-drawer__item" skip-hidden-item-layout>
-          <slot />
+        <SwiperItem class="kd-drawer__box" skip-hidden-item-layout>
+          <ScrollView class="kd-drawer__view" scroll-y enable-passive :bounces="false">
+            <slot />
+          </ScrollView>
         </SwiperItem>
       </Swiper>
     </View>
@@ -23,9 +25,7 @@
 import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange, offThemeChange, classObjectToString } from './utils'
 
-defineOptions({
-  name: 'KdDrawer',
-})
+type Placement = 'top' | 'right' | 'bottom' | 'left'
 
 interface Events {
   /** 状态改变 */
@@ -35,30 +35,44 @@ interface Events {
 interface Props {
   /** 是否显示 */
   show?: boolean
+  /** 位置 */
+  placement?: Placement
 }
 
+defineOptions({
+  name: 'KdDrawer',
+})
+
 const emit = defineEmits<Events>()
-const { show } = defineProps<Props>()
+const { show, placement = 'bottom' } = defineProps<Props>()
 
 const appBaseInfo = getAppBaseInfo()
 const current = ref(0)
 const theme = ref(appBaseInfo.theme)
 const innerShow = ref(show)
 const classes = computed(() =>
-  classObjectToString(`kd-drawer kd-theme--default kd-theme--${theme.value}`, {
-    'kd-drawer--show': innerShow.value,
-  }),
+  classObjectToString(
+    'kd-drawer',
+    `kd-drawer--${placement}`,
+    'kd-theme--default',
+    `kd-theme--${theme.value}`,
+    {
+      'kd-drawer--show': innerShow.value,
+    },
+  ),
 )
 
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
-const onAnimationFinish = (e: WechatMiniprogram.SwiperAnimationFinish) => {
-  if (e.detail.current === 0 && current.value === 0) {
-    innerShow.value = false
-  }
+const onAnimationFinish = () => {
+  innerShow.value = current.value !== 0
 }
 
 const onChange = (e: WechatMiniprogram.SwiperChange) => {
   current.value = e.detail.current
+}
+
+const onClose = () => {
+  current.value = 0
 }
 
 watch(innerShow, (val) => {
@@ -118,13 +132,13 @@ onDetached(() => offThemeChange(setTheme))
   border-radius: 12px 12px 0 0;
 }
 
-.kd-drawer__item {
+.kd-drawer__box {
   position: relative;
   background: var(--kd-color-background-middle);
   border-radius: 12px 12px 0 0;
 }
 
-.kd-drawer__item::before {
+.kd-drawer__box::before {
   position: absolute;
   top: 100%;
   left: 0;
@@ -132,6 +146,11 @@ onDetached(() => offThemeChange(setTheme))
   height: 100%;
   content: '';
   background: var(--kd-color-background-middle);
+}
+
+.kd-drawer__view {
+  width: 100%;
+  height: 100%;
 }
 </style>
 

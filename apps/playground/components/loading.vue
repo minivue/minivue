@@ -27,7 +27,7 @@ interface Props {
 const { size = 'm', mode = 'light', text, vertical } = defineProps<Props>()
 
 const classes = computed(() =>
-  classObjectToString(`kd-loading kd-loading--${size} kd-loading--${mode}`, {
+  classObjectToString('kd-loading', `kd-loading--${size}`, `kd-loading--${mode}`, {
     'kd-loading--vertical': vertical,
     'kd-loading--horizontal': !vertical,
   }),

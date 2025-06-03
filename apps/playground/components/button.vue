@@ -109,17 +109,22 @@ const loadingSize = computed(() => (buttonSize.value === 'm' ? 's' : 'm'))
 const loadingMode = computed(() => (type === 'primary' ? 'dark' : 'light'))
 
 const classes = computed(() =>
-  classObjectToString(`kd-button kd-button--${buttonType.value} kd-button--${buttonSize.value}`, {
-    'kd-button--ai': ai,
-    'kd-button--active': active,
-    'kd-button--danger': danger,
-    'kd-button--loading': loading,
-    'kd-button--onlyicon': onlyIcon,
-    'kd-button--vertical': vertical,
-    'kd-button--disabled': disabled,
-    'kd-button--dropdown': dropdown,
-    'kd-button--highlight': highlight,
-  }),
+  classObjectToString(
+    'kd-button',
+    `kd-button--${buttonType.value}`,
+    `kd-button--${buttonSize.value}`,
+    {
+      'kd-button--ai': ai,
+      'kd-button--active': active,
+      'kd-button--danger': danger,
+      'kd-button--loading': loading,
+      'kd-button--onlyicon': onlyIcon,
+      'kd-button--vertical': vertical,
+      'kd-button--disabled': disabled,
+      'kd-button--dropdown': dropdown,
+      'kd-button--highlight': highlight,
+    },
+  ),
 )
 </script>
 
