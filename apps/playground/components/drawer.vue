@@ -3,7 +3,7 @@
     <View v-if="show" :class="classes">
       <View class="kd-drawer__mask"></View>
       <Swiper
-        class="kd-drawer__box"
+        class="kd-drawer__panel"
         :duration="200"
         :current="current"
         vertical
@@ -78,7 +78,7 @@ onDetached(() => {
   background-color: var(--kd-color-mask-regular);
 }
 
-.kd-drawer__box {
+.kd-drawer__panel {
   position: fixed;
   bottom: 0;
   left: 0;
