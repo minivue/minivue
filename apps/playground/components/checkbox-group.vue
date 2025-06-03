@@ -34,10 +34,11 @@ watch(
   () => value,
   (val) => {
     const checkboxes = getRelationNodes(ctx, '../checkbox/checkbox')
+    const allCount = checkboxes.filter((checkbox) => !checkbox.__props__.master).length
+    console.warn('[debug] checkbox group value change', allCount)
     checkboxes.forEach((checkbox) => {
       const props = checkbox.__props__
       if (props.master) {
-        const allCount = checkboxes.length - 1
         if (val.length > 0 && val.length < allCount) {
           props.indeterminate = true
           props.checked = false
@@ -45,6 +46,8 @@ watch(
           props.indeterminate = false
           props.checked = val.length === allCount
         }
+        // console.warn('[debug] checkbox group value change', val)
+        console.warn('[debug] master set: ', JSON.stringify(props))
       } else {
         props.checked = val.includes(props.value)
       }

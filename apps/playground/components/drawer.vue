@@ -69,6 +69,7 @@ watch(innerShow, (val) => {
 watch(
   () => show,
   (val) => {
+    console.warn('[debug] show change', val)
     innerShow.value = val
   },
 )

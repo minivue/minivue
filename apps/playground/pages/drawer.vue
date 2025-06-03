@@ -10,7 +10,7 @@ import KdPage from '@/components/page.vue'
 import KdDrawer from '@/components/drawer.vue'
 import { onAttached, ref } from '@minivue/core'
 
-const show = ref(true)
+const show = ref(false)
 
 onAttached(() => {
   show.value = true

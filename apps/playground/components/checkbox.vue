@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" @tap.stop="onChange"></View>
+  <View :class="classes" @tap.stop="onTap"></View>
 </template>
 
 <script setup lang="ts" generic="T extends any">
@@ -56,7 +56,7 @@ const classes = computed(() =>
   }),
 )
 
-const onChange = () => {
+const onTap = () => {
   if (disabled) {
     return
   }
@@ -87,6 +87,7 @@ const onChange = () => {
 watch(
   () => checked,
   (newValue) => {
+    console.warn('[debug] is master', master)
     innerChecked.value = newValue
   },
 )
