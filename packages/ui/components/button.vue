@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { getAppBaseInfo } from '@/utils/helper'
 import { computed } from '@minivue/core'
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
 defineOptions({
   name: 'KdButton',
 })
-console.log(getAppBaseInfo)
+
 const props = defineProps<Props>()
 const { type = 'secondary', size = 'm' } = props
 const buttonClass = computed(() => `kd-button kd-button--${type} kd-button--${size}`)

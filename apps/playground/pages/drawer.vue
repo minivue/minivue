@@ -8,12 +8,14 @@
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
 import KdDrawer from '@/components/drawer.vue'
-import { onAttached, ref } from '@minivue/core'
+import { onLoad, ref } from '@minivue/core'
 
 const show = ref(false)
 
-onAttached(() => {
-  show.value = true
+onLoad(() => {
+  setTimeout(() => {
+    show.value = true
+  }, 1000)
 })
 </script>
 

@@ -6,9 +6,9 @@ import type {
   WatchEffect,
   WatchHandle,
   WatchSource,
-  watch as baseWatch,
 } from '@vue/reactivity'
 import type { SchedulerJob } from './scheduler'
+import { watch as baseWatch } from '@vue/reactivity'
 import { SchedulerJobFlags, queueJob, queuePostFlushCb } from './scheduler'
 import { EMPTY_OBJ, extend, isFunction } from './utils'
 
