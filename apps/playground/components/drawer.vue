@@ -4,7 +4,7 @@
       <View class="kd-drawer__mask" @tap="onClose"></View>
       <Swiper
         class="kd-drawer__panel"
-        :duration="200"
+        :duration="250"
         :current="current || 0"
         vertical
         @change="onChange"
@@ -28,16 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  watch,
-  computed,
-  onAttached,
-  onDetached,
-  getCurrentInstance,
-  ComponentInstance,
-} from '@minivue/core'
+import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
 import { getAppBaseInfo, onThemeChange, offThemeChange, classObjectToString } from './utils'
+import { sharedValue } from '../../../packages/core/src/utils'
 
 type Placement = 'top' | 'right' | 'bottom' | 'left'
 
@@ -53,17 +46,19 @@ interface Props {
   placement?: Placement
 }
 
-const { shared } = wx.worklet
+interface ShareValue {
+  deltaY: { value: number }
+  scrollTop: { value: number }
+}
 
 defineOptions({
   name: 'KdDrawer',
   methods: {
-    onScroll(this: { scrollTop: { value: number } }, e: WechatMiniprogram.ScrollViewScroll) {
+    onScroll(this: ShareValue, e: WechatMiniprogram.ScrollViewScroll) {
       'worklet'
-
       this.scrollTop.value = e.detail.scrollTop
     },
-    shouldAcceptGesture(this: { deltaY: { value: number }; scrollTop: { value: number } }) {
+    shouldAcceptGesture(this: ShareValue) {
       'worklet'
       const deltaY = this.deltaY.value
       const scrollTop = this.scrollTop.value
@@ -72,10 +67,16 @@ defineOptions({
       }
       return true
     },
-    shouldResponse(this: { deltaY: { value: number } }, e: { deltaY: number }) {
+    shouldResponse(this: ShareValue, e: { deltaY: number }) {
       'worklet'
       this.deltaY.value = e.deltaY
       return true
+    },
+  },
+  lifetimes: {
+    created(this: ShareValue) {
+      this.deltaY = sharedValue(0)
+      this.scrollTop = sharedValue(0)
     },
   },
 })
@@ -98,7 +99,6 @@ const classes = computed(() =>
   ),
 )
 
-const ctx = getCurrentInstance<ComponentInstance>()
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 const onAnimationFinish = () => {
   innerShow.value = current.value !== 0
@@ -124,11 +124,7 @@ watch(
   },
 )
 
-onAttached(() => {
-  ctx.deltaY = shared(0)
-  ctx.scrollTop = shared(0)
-  onThemeChange(setTheme)
-})
+onAttached(() => onThemeChange(setTheme))
 
 onDetached(() => offThemeChange(setTheme))
 </script>
@@ -175,6 +171,7 @@ onDetached(() => offThemeChange(setTheme))
 
 .kd-drawer__box {
   position: relative;
+  overflow: visible;
   background: var(--kd-color-background-middle);
   border-radius: 12px 12px 0 0;
 }
