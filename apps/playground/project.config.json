@@ -9,8 +9,8 @@
   "projectname": "WPS 灵犀",
   "setting": {
     "urlCheck": true,
-    "es6": false,
-    "enhance": false,
+    "es6": true,
+    "enhance": true,
     "postcss": false,
     "skylineRenderEnable": true,
     "preloadBackgroundData": false,
@@ -49,7 +49,8 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "condition": false,
-    "swc": false
+    "swc": false,
+    "compileWorklet": false
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

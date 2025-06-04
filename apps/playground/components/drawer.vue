@@ -5,16 +5,22 @@
       <Swiper
         class="kd-drawer__panel"
         :duration="200"
-        :current="current"
+        :current="current || 0"
         vertical
         @change="onChange"
         @animationfinish="onAnimationFinish"
       >
-        <SwiperItem skip-hidden-item-layout />
-        <SwiperItem class="kd-drawer__box" skip-hidden-item-layout>
-          <ScrollView class="kd-drawer__view" scroll-y enable-passive :bounces="false">
-            <slot />
-          </ScrollView>
+        <SwiperItem />
+        <SwiperItem class="kd-drawer__box">
+          <VerticalDragGestureHandler
+            native-view="scroll-view"
+            worklet:should-accept-gesture="shouldAcceptGesture"
+            worklet:should-response-on-move="shouldResponse"
+          >
+            <ScrollView class="kd-drawer__view" scroll-y worklet:onscrollupdate="onScroll">
+              <slot />
+            </ScrollView>
+          </VerticalDragGestureHandler>
         </SwiperItem>
       </Swiper>
     </View>
@@ -22,7 +28,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
+import {
+  ref,
+  watch,
+  computed,
+  onAttached,
+  onDetached,
+  getCurrentInstance,
+  ComponentInstance,
+} from '@minivue/core'
 import { getAppBaseInfo, onThemeChange, offThemeChange, classObjectToString } from './utils'
 
 type Placement = 'top' | 'right' | 'bottom' | 'left'
@@ -39,13 +53,35 @@ interface Props {
   placement?: Placement
 }
 
+const { shared } = wx.worklet
+
 defineOptions({
   name: 'KdDrawer',
+  methods: {
+    onScroll(this: { scrollTop: { value: number } }, e: WechatMiniprogram.ScrollViewScroll) {
+      'worklet'
+
+      this.scrollTop.value = e.detail.scrollTop
+    },
+    shouldAcceptGesture(this: { deltaY: { value: number }; scrollTop: { value: number } }) {
+      'worklet'
+      const deltaY = this.deltaY.value
+      const scrollTop = this.scrollTop.value
+      if (deltaY > 0 && scrollTop <= 0) {
+        return false
+      }
+      return true
+    },
+    shouldResponse(this: { deltaY: { value: number } }, e: { deltaY: number }) {
+      'worklet'
+      this.deltaY.value = e.deltaY
+      return true
+    },
+  },
 })
 
 const emit = defineEmits<Events>()
 const { show, placement = 'bottom' } = defineProps<Props>()
-
 const appBaseInfo = getAppBaseInfo()
 const current = ref(0)
 const theme = ref(appBaseInfo.theme)
@@ -62,6 +98,7 @@ const classes = computed(() =>
   ),
 )
 
+const ctx = getCurrentInstance<ComponentInstance>()
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 const onAnimationFinish = () => {
   innerShow.value = current.value !== 0
@@ -87,7 +124,11 @@ watch(
   },
 )
 
-onAttached(() => onThemeChange(setTheme))
+onAttached(() => {
+  ctx.deltaY = shared(0)
+  ctx.scrollTop = shared(0)
+  onThemeChange(setTheme)
+})
 
 onDetached(() => offThemeChange(setTheme))
 </script>

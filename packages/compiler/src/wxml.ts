@@ -220,20 +220,22 @@ function transformAttributes(
               newAttrs[newKey] = `{{${value}}}`
             }
           } else if (key.startsWith('@')) {
-            const [eventName, modifier = 'bind'] = key.slice(1).split('.') // 移除 @
+            const [eventName, modifier = 'bind:'] = key.slice(1).split('.') // 移除 @
             const markKey = `mark:${eventName}`
             const funcMatch = value.match(/(\w+)\((.*)\)/)
             const funcName = funcMatch ? funcMatch[1] : value
             const funcArgsStr = funcMatch ? funcMatch[2] : ''
-            const newModifier = modifier
-              .replace('stop', 'catch')
-              .replace('prevent', 'catch')
-              .replace('self', 'bind')
-              .replace('capture', 'capture-bind')
-              .replace('once', 'bind')
-              .replace('passive', 'bind')
+            const newModifier = eventName.startsWith('worklet:')
+              ? ''
+              : modifier
+                  .replace('stop', 'catch')
+                  .replace('prevent', 'catch')
+                  .replace('self', 'bind')
+                  .replace('capture', 'capture-bind')
+                  .replace('once', 'bind')
+                  .replace('passive', 'bind')
             eventNames.push(funcName)
-            newAttrs[`${newModifier}:${eventName}`] = funcName.includes('.')
+            newAttrs[`${newModifier}${eventName}`] = funcName.includes('.')
               ? `{{${funcName}}}`
               : funcName
             if (funcArgsStr) {
