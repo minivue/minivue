@@ -12,18 +12,25 @@
         @change="onChange"
         @animationfinish="onAnimationFinish"
       >
-        <SwiperItem />
-        <SwiperItem class="kd-drawer__box">
-          <VerticalDragGestureHandler
-            native-view="scroll-view"
-            worklet:should-accept-gesture="shouldAcceptGesture"
-            worklet:should-response-on-move="shouldResponse"
-          >
-            <ScrollView class="kd-drawer__view" scroll-y worklet:onscrollupdate="onScroll">
-              <View class="kd-drawer__content"><slot /></View>
-            </ScrollView>
-          </VerticalDragGestureHandler>
+        <SwiperItem v-if="isUp" />
+        <SwiperItem class="kd-drawer__swiper">
+          <View class="kd-drawer__box">
+            <View v-if="isDown" class="kd-drawer__safearea"></View>
+            <View class="kd-drawer__view">
+              <VerticalDragGestureHandler
+                native-view="scroll-view"
+                worklet:should-accept-gesture="shouldAcceptGesture"
+                worklet:should-response-on-move="shouldResponse"
+              >
+                <ScrollView class="kd-drawer__scroll" scroll-y worklet:onscrollupdate="onScroll">
+                  <View class="kd-drawer__content"><slot /></View>
+                </ScrollView>
+              </VerticalDragGestureHandler>
+            </View>
+            <View v-if="isUp" class="kd-drawer__safearea"></View>
+          </View>
         </SwiperItem>
+        <SwiperItem v-if="isDown" />
       </Swiper>
     </View>
   </RootPortal>
@@ -65,35 +72,47 @@ interface Props {
   placement?: Placement
 }
 
-interface ShareValue {
+interface Context {
   deltaY: { value: number }
   scrollTop: { value: number }
+  placement: { value: Placement }
+  properties: {
+    placement: Placement
+  }
 }
 
 defineOptions({
   name: 'KdDrawer',
   methods: {
-    onScroll(this: ShareValue, e: WechatMiniprogram.ScrollViewScroll) {
+    onScroll(this: Context, e: WechatMiniprogram.ScrollViewScroll) {
       'worklet'
       this.scrollTop.value = e.detail.scrollTop
     },
-    shouldAcceptGesture(this: ShareValue) {
+    shouldAcceptGesture(this: Context) {
       'worklet'
       const deltaY = this.deltaY.value
       const scrollTop = this.scrollTop.value
-      if (deltaY > 0 && scrollTop <= 0) {
-        return false
+      const placement = this.placement.value
+      if (placement === 'top' || placement === 'bottom') {
+        if (placement === 'bottom') {
+          if (deltaY > 0 && scrollTop <= 0) {
+            return false
+          }
+        } else if (deltaY < 0 && scrollTop >= 0) {
+          return false
+        }
       }
       return true
     },
-    shouldResponse(this: ShareValue, e: { deltaY: number }) {
+    shouldResponse(this: Context, e: { deltaY: number }) {
       'worklet'
       this.deltaY.value = e.deltaY
       return true
     },
   },
   lifetimes: {
-    created(this: ShareValue) {
+    attached(this: Context) {
+      this.placement = sharedValue(this.properties.placement)
       this.deltaY = sharedValue(0)
       this.scrollTop = sharedValue(0)
     },
@@ -104,7 +123,10 @@ const emit = defineEmits<Events>()
 const { show, height = 0, placement = 'bottom' } = defineProps<Props>()
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
-const current = ref(0)
+const isDown = computed(() => placement === 'top' || placement === 'left')
+const isUp = computed(() => placement === 'bottom' || placement === 'right')
+const initIndex = computed(() => (isUp.value ? 0 : 1))
+const current = ref(initIndex.value)
 const theme = ref(appBaseInfo.theme)
 const innerShow = ref(show)
 const innerHeight = ref(height || 100)
@@ -136,7 +158,7 @@ const setHeight = async () => {
 }
 
 const onAnimationFinish = () => {
-  innerShow.value = current.value !== 0
+  innerShow.value = current.value !== initIndex.value
 }
 
 const onChange = (e: WechatMiniprogram.SwiperChange) => {
@@ -149,12 +171,16 @@ const onShowChange = async (val: boolean) => {
 }
 
 const onClose = () => {
-  current.value = 0
+  current.value = initIndex.value
 }
 
 watch(innerShow, (val) => {
   emit('change', val)
-  current.value = val ? 1 : 0
+  if (placement === 'top' || placement === 'left') {
+    current.value = val ? 0 : 1
+  } else {
+    current.value = val ? 1 : 0
+  }
 })
 
 watch(() => show, onShowChange)
@@ -195,35 +221,101 @@ onDetached(() => offThemeChange(setTheme))
 
 .kd-drawer__panel {
   position: absolute;
+  display: flex;
+  overflow: hidden;
+}
+
+.kd-drawer--top .kd-drawer__panel {
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 0 12px 12px;
+}
+
+.kd-drawer--bottom .kd-drawer__panel {
   bottom: 0;
   left: 0;
-  display: flex;
   width: 100%;
-  overflow: hidden;
-  touch-action: pan-y;
   border-radius: 12px 12px 0 0;
 }
 
-.kd-drawer__box {
+.kd-drawer--left .kd-drawer__panel {
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.kd-drawer--right .kd-drawer__panel {
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.kd-drawer__swiper {
   position: relative;
   overflow: visible;
-  background: var(--kd-color-background-middle);
-  border-radius: 12px 12px 0 0;
 }
 
-.kd-drawer__box::before {
+.kd-drawer__swiper::before {
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
   content: '';
   background: var(--kd-color-background-middle);
 }
 
-.kd-drawer__view {
+.kd-drawer--top .kd-drawer__swiper::before {
+  transform: translateY(-100%);
+}
+
+.kd-drawer--bottom .kd-drawer__swiper::before {
+  transform: translateY(100%);
+}
+
+.kd-drawer__box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  background: var(--kd-color-background-middle);
+}
+
+.kd-drawer--top .kd-drawer__box {
+  border-radius: 0 0 12px 12px;
+}
+
+.kd-drawer--bottom .kd-drawer__box {
+  border-radius: 12px 12px 0 0;
+}
+
+.kd-drawer__view {
+  position: relative;
+  flex: 1;
+}
+
+.kd-drawer__scroll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.kd-drawer__safearea {
+  flex-shrink: 0;
+}
+
+.kd-drawer--top .kd-drawer__safearea {
+  height: env(safe-area-inset-top);
+}
+
+.kd-drawer--bottom .kd-drawer__safearea {
+  height: env(safe-area-inset-bottom);
 }
 </style>
 
