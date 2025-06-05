@@ -57,7 +57,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
   newOptions.properties = props as WechatMiniprogram.Component.PropertyOption
   newOptions.lifetimes = {
     created(this: ComponentInstance) {
-      lifetimes?.created.call(this)
+      lifetimes.created?.call(this)
       const ctx = this
       const rawProps: Record<string, any> = {}
       propKeys.forEach((property) => {
@@ -71,7 +71,7 @@ export const defineComponent: DefineComponentFunction = (options) => {
       triggerHook(this, ON_CREATED)
     },
     attached(this: ComponentInstance) {
-      lifetimes?.attached.call(this)
+      lifetimes.attached?.call(this)
       const ctx = this
       setCurrentInstance(ctx)
       // @ts-ignore
@@ -80,19 +80,19 @@ export const defineComponent: DefineComponentFunction = (options) => {
       triggerHook(this, ON_ATTACHED)
     },
     ready(this: ComponentInstance) {
-      lifetimes?.ready.call(this)
+      lifetimes.ready?.call(this)
       triggerHook(this, ON_READY)
     },
     moved(this: ComponentInstance) {
-      lifetimes?.moved.call(this)
+      lifetimes.moved?.call(this)
       triggerHook(this, ON_MOVED)
     },
     detached(this: ComponentInstance) {
-      lifetimes?.detached.call(this)
+      lifetimes.detached?.call(this)
       triggerHook(this, ON_DETACHED)
     },
     error(this: ComponentInstance, error) {
-      lifetimes?.error.call(this)
+      lifetimes.error?.call(this)
       triggerHook(this, ON_ERROR, error)
     },
   }
