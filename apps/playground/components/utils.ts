@@ -125,6 +125,10 @@ export function camelCaseToBem(camelCase: string) {
   return camelCase.replace(/[A-Z]/g, '-$&').toLowerCase()
 }
 
+export function delay(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time))
+}
+
 /**
  * 获取弹出元素的坐标
  * @description 根据触发元素和弹出元素的选择器，计算弹出元素的位置，并考虑边界约束。

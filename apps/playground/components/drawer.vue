@@ -4,7 +4,7 @@
       <View class="kd-drawer__mask" @tap="onClose"></View>
       <Swiper
         class="kd-drawer__panel"
-        vertical
+        :vertical="isVertical"
         :style="styles"
         :duration="250"
         :current="current || 0"
@@ -15,7 +15,7 @@
         <SwiperItem v-if="isUp" />
         <SwiperItem class="kd-drawer__swiper">
           <View class="kd-drawer__box">
-            <View v-if="isDown" class="kd-drawer__safearea"></View>
+            <View v-if="isDown || !isVertical" class="kd-drawer__safearea"></View>
             <View class="kd-drawer__view">
               <VerticalDragGestureHandler
                 native-view="scroll-view"
@@ -27,7 +27,7 @@
                 </ScrollView>
               </VerticalDragGestureHandler>
             </View>
-            <View v-if="isUp" class="kd-drawer__safearea"></View>
+            <View v-if="isUp || !isVertical" class="kd-drawer__safearea"></View>
           </View>
         </SwiperItem>
         <SwiperItem v-if="isDown" />
@@ -53,6 +53,7 @@ import {
   classObjectToString,
   getRect,
   styleObjectToString,
+  delay,
 } from './utils'
 import { sharedValue } from '../../../packages/core/src/utils'
 
@@ -68,13 +69,19 @@ interface Props {
   show?: boolean
   /** 高度(不设置则自动设置高度) */
   height?: number
+  /** 宽度(不设置默认200，其只有placement为left或right的时候才生效)  */
+  width?: number
+  /** 最大高度(不设置默认600) */
+  maxHeight?: number
   /** 位置 */
   placement?: Placement
 }
 
 interface Context {
+  height: { value: number }
   deltaY: { value: number }
-  scrollTop: { value: number }
+  isReachTop: { value: boolean }
+  isReachBottom: { value: boolean }
   placement: { value: Placement }
   properties: {
     placement: Placement
@@ -86,19 +93,22 @@ defineOptions({
   methods: {
     onScroll(this: Context, e: WechatMiniprogram.ScrollViewScroll) {
       'worklet'
-      this.scrollTop.value = e.detail.scrollTop
+      const { scrollTop, scrollHeight } = e.detail
+      this.isReachTop.value = scrollTop <= 0
+      this.isReachBottom.value = scrollHeight - scrollTop <= this.height.value
     },
     shouldAcceptGesture(this: Context) {
       'worklet'
       const deltaY = this.deltaY.value
-      const scrollTop = this.scrollTop.value
+      const isReachTop = this.isReachTop.value
+      const isReachBottom = this.isReachBottom.value
       const placement = this.placement.value
       if (placement === 'top' || placement === 'bottom') {
         if (placement === 'bottom') {
-          if (deltaY > 0 && scrollTop <= 0) {
+          if (deltaY > 0 && isReachTop) {
             return false
           }
-        } else if (deltaY < 0 && scrollTop >= 0) {
+        } else if (deltaY < 0 && isReachBottom) {
           return false
         }
       }
@@ -112,19 +122,28 @@ defineOptions({
   },
   lifetimes: {
     attached(this: Context) {
+      this.height = sharedValue(0)
       this.placement = sharedValue(this.properties.placement)
       this.deltaY = sharedValue(0)
-      this.scrollTop = sharedValue(0)
+      this.isReachTop = sharedValue(true)
+      this.isReachBottom = sharedValue(false)
     },
   },
 })
 
 const emit = defineEmits<Events>()
-const { show, height = 0, placement = 'bottom' } = defineProps<Props>()
+const {
+  show,
+  height = 0,
+  width = 200,
+  maxHeight = 600,
+  placement = 'bottom',
+} = defineProps<Props>()
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
 const isDown = computed(() => placement === 'top' || placement === 'left')
 const isUp = computed(() => placement === 'bottom' || placement === 'right')
+const isVertical = computed(() => placement === 'bottom' || placement === 'top')
 const initIndex = computed(() => (isUp.value ? 0 : 1))
 const current = ref(initIndex.value)
 const theme = ref(appBaseInfo.theme)
@@ -132,7 +151,8 @@ const innerShow = ref(show)
 const innerHeight = ref(height || 100)
 const styles = computed(() =>
   styleObjectToString({
-    height: `${innerHeight.value}px`,
+    '--kd-drawer-width': `${width}px`,
+    '--kd-drawer-height': `${innerHeight.value}px`,
   }),
 )
 const classes = computed(() =>
@@ -152,8 +172,8 @@ const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 const setHeight = async () => {
   if (!height) {
     const rect = await getRect(ctx, '.kd-drawer__content')
-    innerHeight.value = rect.height
-    await new Promise((resolve) => setTimeout(resolve, 50))
+    innerHeight.value = Math.min(rect.height, maxHeight)
+    await delay(50)
   }
 }
 
@@ -174,9 +194,19 @@ const onClose = () => {
   current.value = initIndex.value
 }
 
+watch(
+  innerHeight,
+  (val) => {
+    ctx.height.value = val
+  },
+  {
+    immediate: true,
+  },
+)
+
 watch(innerShow, (val) => {
   emit('change', val)
-  if (placement === 'top' || placement === 'left') {
+  if (isDown.value) {
     current.value = val ? 0 : 1
   } else {
     current.value = val ? 1 : 0
@@ -229,6 +259,7 @@ onDetached(() => offThemeChange(setTheme))
   top: 0;
   left: 0;
   width: 100%;
+  height: calc(var(--kd-drawer-height) + env(safe-area-inset-top));
   border-radius: 0 0 12px 12px;
 }
 
@@ -236,19 +267,24 @@ onDetached(() => offThemeChange(setTheme))
   bottom: 0;
   left: 0;
   width: 100%;
+  height: calc(var(--kd-drawer-height) + env(safe-area-inset-bottom));
   border-radius: 12px 12px 0 0;
 }
 
 .kd-drawer--left .kd-drawer__panel {
   top: 0;
   left: 0;
+  width: var(--kd-drawer-width);
   height: 100%;
+  border-radius: 0 12px 12px 0;
 }
 
 .kd-drawer--right .kd-drawer__panel {
   top: 0;
   right: 0;
+  width: var(--kd-drawer-width);
   height: 100%;
+  border-radius: 12px 0 0 12px;
 }
 
 .kd-drawer__swiper {
@@ -275,6 +311,14 @@ onDetached(() => offThemeChange(setTheme))
   transform: translateY(100%);
 }
 
+.kd-drawer--left .kd-drawer__swiper::before {
+  transform: translateX(-100%);
+}
+
+.kd-drawer--right .kd-drawer__swiper::before {
+  transform: translateX(100%);
+}
+
 .kd-drawer__box {
   position: relative;
   display: flex;
@@ -291,6 +335,14 @@ onDetached(() => offThemeChange(setTheme))
 
 .kd-drawer--bottom .kd-drawer__box {
   border-radius: 12px 12px 0 0;
+}
+
+.kd-drawer--left .kd-drawer__box {
+  border-radius: 0 12px 12px 0;
+}
+
+.kd-drawer--right .kd-drawer__box {
+  border-radius: 12px 0 0 12px;
 }
 
 .kd-drawer__view {
@@ -315,6 +367,16 @@ onDetached(() => offThemeChange(setTheme))
 }
 
 .kd-drawer--bottom .kd-drawer__safearea {
+  height: env(safe-area-inset-bottom);
+}
+
+.kd-drawer--left .kd-drawer__safearea:first-child,
+.kd-drawer--right .kd-drawer__safearea:first-child {
+  height: env(safe-area-inset-top);
+}
+
+.kd-drawer--left .kd-drawer__safearea:last-child,
+.kd-drawer--right .kd-drawer__safearea:last-child {
   height: env(safe-area-inset-bottom);
 }
 </style>

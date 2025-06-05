@@ -36,10 +36,32 @@
     <View style="height: 100px; background-color: lightgray"></View>
   </KdDrawer>
   <KdDrawer :show="showLeft" placement="left" :width="300" @change="onChange">
-    <View> 左方面板 </View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
   </KdDrawer>
   <KdDrawer :show="showRight" placement="right" :width="300" @change="onChange">
-    <View> 有方面板 </View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
+    <View style="height: 100px; background-color: lightblue"></View>
+    <View style="height: 100px; background-color: lightcoral"></View>
+    <View style="height: 100px; background-color: lightcyan"></View>
+    <View style="height: 100px; background-color: lightgray"></View>
   </KdDrawer>
 </template>
 
