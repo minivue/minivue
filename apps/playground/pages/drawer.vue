@@ -105,10 +105,16 @@ const onChange = (val: boolean) => {
 
 <style>
 .p-drawer {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding: 16px;
+  overflow: hidden;
+}
+
+.p-drawer .kd-button {
+  width: 100%;
+  margin-bottom: 16px;
 }
 </style>
 
