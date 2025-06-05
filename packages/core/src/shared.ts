@@ -71,6 +71,9 @@ export function callSetup(setup: Function, props: Record<string, string | undefi
       }
       return
     }
+    if (value === ctx) {
+      return
+    }
     data[key] = deepToRaw(value)
     if (ctx) {
       deepWatch.call(ctx, key, value)

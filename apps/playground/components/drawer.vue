@@ -4,9 +4,11 @@
       <View class="kd-drawer__mask" @tap="onClose"></View>
       <Swiper
         class="kd-drawer__panel"
+        vertical
+        :style="styles"
         :duration="250"
         :current="current || 0"
-        vertical
+        :cache-extent="1"
         @change="onChange"
         @animationfinish="onAnimationFinish"
       >
@@ -18,7 +20,7 @@
             worklet:should-response-on-move="shouldResponse"
           >
             <ScrollView class="kd-drawer__view" scroll-y worklet:onscrollupdate="onScroll">
-              <slot />
+              <View class="kd-drawer__content"><slot /></View>
             </ScrollView>
           </VerticalDragGestureHandler>
         </SwiperItem>
@@ -28,8 +30,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onAttached, onDetached } from '@minivue/core'
-import { getAppBaseInfo, onThemeChange, offThemeChange, classObjectToString } from './utils'
+import {
+  ref,
+  watch,
+  computed,
+  onAttached,
+  onDetached,
+  getCurrentInstance,
+  ComponentInstance,
+} from '@minivue/core'
+import {
+  getAppBaseInfo,
+  onThemeChange,
+  offThemeChange,
+  classObjectToString,
+  getRect,
+  styleObjectToString,
+} from './utils'
 import { sharedValue } from '../../../packages/core/src/utils'
 
 type Placement = 'top' | 'right' | 'bottom' | 'left'
@@ -42,6 +59,8 @@ interface Events {
 interface Props {
   /** 是否显示 */
   show?: boolean
+  /** 高度(不设置则自动设置高度) */
+  height?: number
   /** 位置 */
   placement?: Placement
 }
@@ -82,11 +101,18 @@ defineOptions({
 })
 
 const emit = defineEmits<Events>()
-const { show, placement = 'bottom' } = defineProps<Props>()
+const { show, height = 0, placement = 'bottom' } = defineProps<Props>()
+const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
 const current = ref(0)
 const theme = ref(appBaseInfo.theme)
 const innerShow = ref(show)
+const innerHeight = ref(height || 100)
+const styles = computed(() =>
+  styleObjectToString({
+    height: `${innerHeight.value}px`,
+  }),
+)
 const classes = computed(() =>
   classObjectToString(
     'kd-drawer',
@@ -100,12 +126,26 @@ const classes = computed(() =>
 )
 
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
+
+const setHeight = async () => {
+  if (!height) {
+    const rect = await getRect(ctx, '.kd-drawer__content')
+    innerHeight.value = rect.height
+    await new Promise((resolve) => setTimeout(resolve, 50))
+  }
+}
+
 const onAnimationFinish = () => {
   innerShow.value = current.value !== 0
 }
 
 const onChange = (e: WechatMiniprogram.SwiperChange) => {
   current.value = e.detail.current
+}
+
+const onShowChange = async (val: boolean) => {
+  await setHeight()
+  innerShow.value = val
 }
 
 const onClose = () => {
@@ -117,12 +157,7 @@ watch(innerShow, (val) => {
   current.value = val ? 1 : 0
 })
 
-watch(
-  () => show,
-  (val) => {
-    innerShow.value = val
-  },
-)
+watch(() => show, onShowChange)
 
 onAttached(() => onThemeChange(setTheme))
 
@@ -132,14 +167,15 @@ onDetached(() => offThemeChange(setTheme))
 <style>
 .kd-drawer {
   position: fixed;
-  top: 100%;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  transform: translateY(100%);
 }
 
 .kd-drawer--show {
-  top: 0;
+  transform: translateY(0);
 }
 
 .kd-drawer__mask {
@@ -163,7 +199,6 @@ onDetached(() => offThemeChange(setTheme))
   left: 0;
   display: flex;
   width: 100%;
-  height: 300px;
   overflow: hidden;
   touch-action: pan-y;
   border-radius: 12px 12px 0 0;

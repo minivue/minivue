@@ -2,8 +2,8 @@
   <KdPage title="抽屉组件">
     <KdButton @tap="onTap">打开抽屉</KdButton>
   </KdPage>
-  <KdDrawer :show="show" @change="onChange">
-    <View style="display: flex; flex-direction: column"> 你好 </View>
+  <KdDrawer :show="show" :height="300" @change="onChange">
+    <View> 你好 </View>
   </KdDrawer>
 </template>
 
