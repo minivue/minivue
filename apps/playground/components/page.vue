@@ -38,6 +38,7 @@
       </View>
     </RootPortal>
   </View>
+  <KdActionsheet :show="showActionsheet" />
 </template>
 
 <script setup lang="ts">
@@ -46,6 +47,7 @@ import { clone, getAppBaseInfo, getPage, onThemeChange, offThemeChange } from '.
 
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
+import KdActionsheet from './actionsheet.vue'
 import { KdToastOptions } from '../type'
 
 defineOptions({
@@ -91,6 +93,8 @@ const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const toasts = ref<KdToastOptions<boolean>[]>([])
 
+const showActionsheet = ref(false)
+
 const navbarHeight = ref(0)
 
 const keyboardHeight = ref('')
@@ -114,6 +118,9 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
 }
 
 onAttached(() => {
+  setTimeout(() => {
+    showActionsheet.value = true
+  })
   onThemeChange(setTheme)
 })
 
