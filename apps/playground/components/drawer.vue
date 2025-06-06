@@ -22,7 +22,11 @@
                 worklet:should-accept-gesture="shouldAcceptGesture"
                 worklet:should-response-on-move="shouldResponse"
               >
-                <ScrollView class="kd-drawer__scroll" scroll-y worklet:onscrollupdate="onScroll">
+                <ScrollView
+                  class="kd-drawer__scroll"
+                  :scroll-y="scrollable"
+                  worklet:onscrollupdate="onScroll"
+                >
                   <View class="kd-drawer__content"><slot /></View>
                 </ScrollView>
               </VerticalDragGestureHandler>
@@ -75,6 +79,8 @@ interface Props {
   maxHeight?: number
   /** 位置 */
   placement?: Placement
+  /** 是否开启滚动(默认开启) */
+  scrollable?: boolean
 }
 
 interface Context {
@@ -138,6 +144,7 @@ const {
   width = 200,
   maxHeight = 600,
   placement = 'bottom',
+  scrollable = true,
 } = defineProps<Props>()
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()

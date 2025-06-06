@@ -1,13 +1,13 @@
 <template>
-  <KdDrawer :show="show">
+  <KdDrawer :show="show" :scrollable="false">
     <View class="kd-actionsheet">
       <View class="kd-actionsheet__title">推荐用简短标题</View>
       <KdDivider />
       <KdButton type="light" size="xl">操作按钮</KdButton>
       <KdDivider />
-      <KdButton type="light" size="xl">操作按钮</KdButton>
+      <KdButton type="light" size="xl" danger>操作按钮</KdButton>
       <KdDivider />
-      <KdButton type="light" size="xl">操作按钮</KdButton>
+      <KdButton type="light" size="xl" disabled>操作按钮</KdButton>
       <KdDivider />
       <View class="kd-actionsheet__split"></View>
       <KdButton type="light" size="xl">取消</KdButton>
@@ -60,6 +60,8 @@ defineProps<Props>()
 
 .kd-actionsheet .kd-button {
   width: 100% !important;
+  height: 56px;
+  padding: 16px;
   border-radius: 0;
 }
 </style>
