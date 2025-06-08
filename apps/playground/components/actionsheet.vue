@@ -9,6 +9,7 @@
         <KdButton
           type="light"
           size="xl"
+          :icon="item.icon"
           :danger="item.danger"
           :disabled="item.disabled"
           :open-type="item.openType"
