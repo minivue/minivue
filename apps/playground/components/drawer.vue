@@ -193,8 +193,12 @@ const onChange = (e: WechatMiniprogram.SwiperChange) => {
 }
 
 const onShowChange = async (val: boolean) => {
-  await setHeight()
-  innerShow.value = val
+  if (val) {
+    await setHeight()
+    innerShow.value = val
+  } else {
+    current.value = isDown.value ? 1 : 0
+  }
 }
 
 const onClose = () => {

@@ -1,35 +1,81 @@
 <template>
-  <KdDrawer :show="show" :scrollable="false">
+  <KdDrawer :show="innerShow" :scrollable="false" @change="onChange">
     <View class="kd-actionsheet">
-      <View class="kd-actionsheet__title">推荐用简短标题</View>
-      <KdDivider />
-      <KdButton type="light" size="xl">操作按钮</KdButton>
-      <KdDivider />
-      <KdButton type="light" size="xl" danger>操作按钮</KdButton>
-      <KdDivider />
-      <KdButton type="light" size="xl" disabled>操作按钮</KdButton>
-      <KdDivider />
+      <Block v-if="title">
+        <View class="kd-actionsheet__title">{{ title }}</View>
+        <KdDivider />
+      </Block>
+      <Block v-for="item in items" :key="item.action">
+        <KdButton
+          type="light"
+          size="xl"
+          :danger="item.danger"
+          :disabled="item.disabled"
+          :open-type="item.openType"
+          @tap="onTap(item.action)"
+        >
+          {{ item.text }}
+        </KdButton>
+        <KdDivider />
+      </Block>
       <View class="kd-actionsheet__split"></View>
-      <KdButton type="light" size="xl">取消</KdButton>
+      <KdButton type="light" size="xl" @tap="onCancelTap">取消</KdButton>
     </View>
   </KdDrawer>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from '@minivue/core'
 import KdDrawer from './drawer.vue'
 import KdButton from './button.vue'
 import KdDivider from './divider.vue'
+import { KdActionSheetItem } from '../type'
 
 defineOptions({
   name: 'KdActionsheet',
 })
 
+interface Events {
+  /** 状态改变 */
+  change: [value: boolean]
+  /** 点击行为 */
+  action: [action: string]
+  /** 点击取消 */
+  cancel: []
+}
+
 interface Props {
   show?: boolean
   title?: string
+  items?: KdActionSheetItem[]
 }
 
-defineProps<Props>()
+const emit = defineEmits<Events>()
+const { show } = defineProps<Props>()
+
+const innerShow = ref(show)
+
+const onTap = (action: string) => {
+  innerShow.value = false
+  emit('action', action)
+}
+
+const onChange = (val: boolean) => {
+  innerShow.value = val
+  emit('change', val)
+}
+
+const onCancelTap = () => {
+  innerShow.value = false
+  emit('cancel')
+}
+
+watch(
+  () => show,
+  () => {
+    innerShow.value = show
+  },
+)
 </script>
 
 <style>

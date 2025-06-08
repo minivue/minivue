@@ -40,6 +40,9 @@
         弹出层组件
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/drawer/drawer')"> 抽屉组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/actionsheet/actionsheet')">
+        操作菜单组件
+      </KdButton>
     </View>
   </KdPage>
 </template>

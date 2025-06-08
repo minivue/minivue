@@ -53,7 +53,8 @@
     "pages/hover-toolbar/hover-toolbar",
     "pages/tooltip/tooltip",
     "pages/popover/popover",
-    "pages/drawer/drawer"
+    "pages/drawer/drawer",
+    "pages/actionsheet/actionsheet"
   ],
   "subpackages": [
     {

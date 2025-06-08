@@ -1,5 +1,14 @@
 import { getPage } from '@/components/utils'
-import { KdToastOptions } from '@/type'
+import { KdToastOptions, KdActionSheetOptions } from '@/type'
+
+/**
+ * 显示操作菜单
+ * @param {KdActionSheetOptions} options actionSheet参数
+ */
+export function showActionSheet(options: KdActionSheetOptions) {
+  const page = getPage()
+  page.$showActionSheet(options)
+}
 
 /**
  * 显示消息提示框
