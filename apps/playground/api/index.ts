@@ -5,7 +5,7 @@ import { KdToastOptions, KdActionSheetOptions } from '@/type'
  * 显示操作菜单
  * @param {KdActionSheetOptions} options actionSheet参数
  */
-export function showActionSheet(options: KdActionSheetOptions) {
+export function showActionSheet<T extends string>(options: KdActionSheetOptions<T>) {
   const page = getPage()
   page.$showActionSheet(options)
 }

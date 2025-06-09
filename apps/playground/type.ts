@@ -1,6 +1,6 @@
-export interface KdActionSheetItem {
+export interface KdActionSheetItem<T extends string> {
   text: string
-  action: string
+  action: T
   icon?: string
   disabled?: boolean
   danger?: boolean
@@ -32,14 +32,14 @@ export interface KdActionSheetItem {
     | 'chooseAvatar'
     | 'agreePrivacyAuthorization'
 }
-export interface KdActionSheetOptions {
+export interface KdActionSheetOptions<T extends string> {
   /** 标题 */
   title?: string
-  items: KdActionSheetItem[]
+  items: KdActionSheetItem<T>[]
   /**
    * 点击操作按钮回调函数
    */
-  onAction: (action: string) => void
+  onAction: (action: T) => void
   /**
    * 点击取消按钮回调函数
    */
