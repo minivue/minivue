@@ -10,7 +10,7 @@ import KdIcon from './icon.vue'
 import { computed } from '@minivue/core'
 
 defineOptions({
-  name: 'KdButton',
+  name: 'KdLink',
 })
 
 interface Props {

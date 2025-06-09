@@ -48,7 +48,7 @@ interface Events {
 interface Props {
   show?: boolean
   title?: string
-  items?: KdActionSheetItem[]
+  items?: KdActionSheetItem<string>[]
 }
 
 const emit = defineEmits<Events>()

@@ -86,6 +86,10 @@ interface Events {
   clear: []
 }
 
+defineOptions({
+  name: 'KdInput',
+})
+
 const emit = defineEmits<Events>()
 
 const {

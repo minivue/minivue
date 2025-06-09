@@ -286,6 +286,9 @@ async function convertESMtoCommonJS(code: string) {
 }
 
 async function transformToWxs(code: string) {
+  if (!code) {
+    return ''
+  }
   const result = await transform(code, {
     jsc: {
       parser: {
@@ -339,6 +342,15 @@ export async function parseFile(filePath: string) {
     content = setDefaultScript(content)
   }
 
+  // <script type="wxs" lang="ts">
+  // function onScroll(e: any) {
+  //   console.log(e)
+  // }
+
+  // export const _ = {
+  //   onScroll,
+  // }
+  // </script>
   const wxs = await transformToWxs(wxsSource)
 
   rl.close()
