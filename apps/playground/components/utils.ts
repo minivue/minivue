@@ -86,6 +86,25 @@ export function getRect(ctx: ComponentInstance, selector: string) {
   })
 }
 
+// 获取元素相对于父元素的位置
+export async function getRelativeRect(
+  ctx: ComponentInstance,
+  childSelector: string,
+  parentSelector: string,
+) {
+  const res1 = await getRect(ctx, childSelector)
+  const res2 = await getRect(ctx, parentSelector)
+
+  return {
+    left: res1.left - res2.left,
+    top: res1.top - res2.top,
+    right: res2.right - res1.right,
+    bottom: res2.bottom - res1.bottom,
+    width: res1.width,
+    height: res1.height,
+  }
+}
+
 export function observeViewportIntersection(
   ctx: ComponentInstance,
   selector: string,

@@ -10,7 +10,7 @@
         :show-scrollbar="false"
         class="kd-tabs__nav-scroll"
       >
-        <View class="kd-tabs__nav-items">
+        <View class="kd-tabs__nav-items" id="parent">
           <View class="kd-tabs__nav-edge" id="left"></View>
           <View class="kd-tabs__nav-item kd-tabs__nav-item--active" @tap="onTap(1)">
             <Text>总结汇报</Text>
@@ -33,6 +33,7 @@
             <View class="kd-tabs__nav-indicator" id="indicator5"></View>
           </View>
           <View class="kd-tabs__nav-edge" id="right"></View>
+          <View class="kd-tabs__nav-indicator" :style="indicatorStyle"></View>
         </View>
       </ScrollView>
       <View v-if="showRight" class="kd-tabs__nav-right"></View>
@@ -41,8 +42,14 @@
 </template>
 
 <script setup lang="ts">
-import { ComponentInstance, getCurrentInstance, ref, onAttached } from '@minivue/core'
-import { getRect, getWindowInfo, observeViewportIntersection } from './utils'
+import { ComponentInstance, getCurrentInstance, ref, onAttached, computed } from '@minivue/core'
+import {
+  getRect,
+  getWindowInfo,
+  getRelativeRect,
+  styleObjectToString,
+  observeViewportIntersection,
+} from './utils'
 
 defineOptions({
   name: 'KdTabs',
@@ -51,11 +58,20 @@ defineOptions({
 const ctx = getCurrentInstance<ComponentInstance>()
 const showLeft = ref(false)
 const showRight = ref(false)
+const indicatorLeft = ref(0)
+const indicatorStyle = computed(() =>
+  styleObjectToString({
+    left: 0,
+    opacity: 1,
+    marginLeft: 0,
+    transform: `translateX(${indicatorLeft.value}px)`,
+  }),
+)
 
 const onTap = async (index: number) => {
   const indicator = `#indicator${index}`
-  const indicatorRect = await getRect(ctx, indicator)
-
+  const indicatorRect = await getRelativeRect(ctx, indicator, '#parent')
+  indicatorLeft.value = indicatorRect.left
   console.log('tap', indicatorRect)
 }
 
@@ -173,13 +189,11 @@ onAttached(init)
   width: 24px;
   height: 2px;
   margin-left: -12px;
+  pointer-events: none;
   background: var(--kd-color-line-public);
   border-radius: 1px;
   opacity: 0;
-}
-
-.kd-tabs__nav-item--active .kd-tabs__nav-indicator {
-  opacity: 1;
+  transition: transform 0.2s;
 }
 </style>
 
