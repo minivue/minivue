@@ -5,32 +5,32 @@
       <ScrollView
         id="view"
         scroll-x
+        enhanced
         enable-flex
         :show-scrollbar="false"
-        :min-drag-distance="0"
         class="kd-tabs__nav-scroll"
       >
         <View class="kd-tabs__nav-items">
           <View class="kd-tabs__nav-edge" id="left"></View>
-          <View class="kd-tabs__nav-item kd-tabs__nav-item--active">
+          <View class="kd-tabs__nav-item kd-tabs__nav-item--active" @tap="onTap(1)">
             <Text>总结汇报</Text>
-            <View class="kd-tabs__nav-indicator"></View>
+            <View class="kd-tabs__nav-indicator" id="indicator1"></View>
           </View>
-          <View class="kd-tabs__nav-item">
+          <View class="kd-tabs__nav-item" @tap="onTap(2)">
             <Text>教学课件</Text>
-            <View class="kd-tabs__nav-indicator"></View>
+            <View class="kd-tabs__nav-indicator" id="indicator2"></View>
           </View>
-          <View class="kd-tabs__nav-item">
+          <View class="kd-tabs__nav-item" @tap="onTap(3)">
             <Text>明细帐</Text>
-            <View class="kd-tabs__nav-indicator"></View>
+            <View class="kd-tabs__nav-indicator" id="indicator3"></View>
           </View>
-          <View class="kd-tabs__nav-item">
+          <View class="kd-tabs__nav-item" @tap="onTap(4)">
             <Text>房屋出租合同</Text>
-            <View class="kd-tabs__nav-indicator"></View>
+            <View class="kd-tabs__nav-indicator" id="indicator4"></View>
           </View>
-          <View class="kd-tabs__nav-item">
+          <View class="kd-tabs__nav-item" @tap="onTap(5)">
             <Text>其它乱七八糟</Text>
-            <View class="kd-tabs__nav-indicator"></View>
+            <View class="kd-tabs__nav-indicator" id="indicator5"></View>
           </View>
           <View class="kd-tabs__nav-edge" id="right"></View>
         </View>
@@ -51,6 +51,13 @@ defineOptions({
 const ctx = getCurrentInstance<ComponentInstance>()
 const showLeft = ref(false)
 const showRight = ref(false)
+
+const onTap = async (index: number) => {
+  const indicator = `#indicator${index}`
+  const indicatorRect = await getRect(ctx, indicator)
+
+  console.log('tap', indicatorRect)
+}
 
 const onReachLeft = (result: WechatMiniprogram.IntersectionObserverObserveCallbackResult) => {
   showLeft.value = !result.intersectionRatio
@@ -165,10 +172,10 @@ onAttached(init)
   left: 50%;
   width: 24px;
   height: 2px;
+  margin-left: -12px;
   background: var(--kd-color-line-public);
   border-radius: 1px;
   opacity: 0;
-  transform: translateX(-50%);
 }
 
 .kd-tabs__nav-item--active .kd-tabs__nav-indicator {
