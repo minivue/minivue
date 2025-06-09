@@ -5,7 +5,7 @@
         <View class="kd-actionsheet__title">{{ title }}</View>
         <KdDivider />
       </Block>
-      <Block v-for="item in items" :key="item.action">
+      <Block v-for="item in (items || [])" :key="item.action">
         <KdButton
           type="light"
           size="xl"

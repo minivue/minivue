@@ -43,6 +43,7 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/actionsheet/actionsheet')">
         操作菜单组件
       </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/tabs/tabs')"> 选项卡组件 </KdButton>
     </View>
   </KdPage>
 </template>

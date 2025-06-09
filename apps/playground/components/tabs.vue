@@ -1,21 +1,18 @@
 <template>
   <View class="kd-tabs">
     <View class="kd-tabs__nav">
-      <View class="kd-tabs__nav-left"></View>
+      <View v-if="showLeft" class="kd-tabs__nav-left"></View>
       <ScrollView
         id="view"
-        enhanced
         scroll-x
         enable-flex
-        enable-passive
-        upper-threshold="1"
-        lower-threshold="1"
         :show-scrollbar="false"
         :min-drag-distance="0"
         class="kd-tabs__nav-scroll"
       >
         <View class="kd-tabs__nav-items">
-          <View class="kd-tabs__nav-item kd-tabs__nav-item--active" id="start">
+          <View class="kd-tabs__nav-edge" id="left"></View>
+          <View class="kd-tabs__nav-item kd-tabs__nav-item--active">
             <Text>总结汇报</Text>
             <View class="kd-tabs__nav-indicator"></View>
           </View>
@@ -31,61 +28,49 @@
             <Text>房屋出租合同</Text>
             <View class="kd-tabs__nav-indicator"></View>
           </View>
-          <View class="kd-tabs__nav-item" id="end" style="background-color: red">
+          <View class="kd-tabs__nav-item">
             <Text>其它乱七八糟</Text>
             <View class="kd-tabs__nav-indicator"></View>
           </View>
+          <View class="kd-tabs__nav-edge" id="right"></View>
         </View>
       </ScrollView>
-      <View class="kd-tabs__nav-right"></View>
+      <View v-if="showRight" class="kd-tabs__nav-right"></View>
     </View>
   </View>
 </template>
 
-<script type="wxs" lang="ts">
-function onScroll(e: any, ownerInstance: any) {
-  const s = ownerInstance.getComputedStyle('.kd-tabs')
-  console.log('onScroll', JSON.stringify(s))
-  console.log('onScroll', JSON.stringify(e.detail))
-}
-
-function onToUpper() {
-  console.log('onToUpper')
-}
-
-function onToLower() {
-  console.log('onToLower')
-}
-
-export const _ = {
-  onScroll,
-  onToUpper,
-  onToLower,
-}
-</script>
-
 <script setup lang="ts">
-import { ComponentInstance, getCurrentInstance } from '@minivue/core'
+import { ComponentInstance, getCurrentInstance, ref, onAttached } from '@minivue/core'
+import { getRect, getWindowInfo, observeViewportIntersection } from './utils'
 
 defineOptions({
   name: 'KdTabs',
 })
 
 const ctx = getCurrentInstance<ComponentInstance>()
+const showLeft = ref(false)
+const showRight = ref(false)
 
-ctx
-  .createIntersectionObserver({})
-  .relativeToViewport({ left: -10, right: -10 })
-  .observe('#start', (res) => {
-    console.warn('start:', !!res.intersectionRatio)
-  })
+const onReachLeft = (result: WechatMiniprogram.IntersectionObserverObserveCallbackResult) => {
+  showLeft.value = !result.intersectionRatio
+}
 
-ctx
-  .createIntersectionObserver({})
-  .relativeToViewport({ left: -10, right: -10 })
-  .observe('#end', (res) => {
-    console.warn('end', !!res.intersectionRatio)
-  })
+const onReachRight = (result: WechatMiniprogram.IntersectionObserverObserveCallbackResult) => {
+  showRight.value = !result.intersectionRatio
+}
+
+const init = async () => {
+  const { windowWidth } = getWindowInfo()
+  const rect = await getRect(ctx, '#view')
+  const left = rect.left * -1
+  const right = (windowWidth - rect.right) * -1
+  const margin = { left, right }
+  observeViewportIntersection(ctx, '#left', margin, onReachLeft)
+  observeViewportIntersection(ctx, '#right', margin, onReachRight)
+}
+
+onAttached(init)
 </script>
 
 <style>
@@ -98,6 +83,21 @@ ctx
 .kd-tabs__nav {
   position: relative;
   height: 44px;
+}
+
+.kd-tabs__nav-edge {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+}
+
+.kd-tabs__nav-edge:first-child {
+  left: 0;
+}
+
+.kd-tabs__nav-edge:last-child {
+  right: 0;
 }
 
 .kd-tabs__nav-left,
@@ -129,8 +129,10 @@ ctx
 }
 
 .kd-tabs__nav-items {
+  position: relative;
   display: flex;
   flex-wrap: nowrap;
+  width: max-content;
   height: 100%;
 }
 

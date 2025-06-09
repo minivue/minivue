@@ -101,7 +101,7 @@ const rootClasses = computed(() => `kd-root ${themes.value}`)
 const toasts = ref<KdToastOptions<boolean>[]>([])
 
 const actionsheetTitle = ref('')
-const actionsheetItems = ref<KdActionSheetItem<string>[]>()
+const actionsheetItems = ref<KdActionSheetItem<string>[]>([])
 let actionsheetCallback: (action: string) => void = () => undefined
 let actionsheetCancel: () => void = () => undefined
 

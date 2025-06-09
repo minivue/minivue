@@ -86,6 +86,15 @@ export function getRect(ctx: ComponentInstance, selector: string) {
   })
 }
 
+export function observeViewportIntersection(
+  ctx: ComponentInstance,
+  selector: string,
+  margin: WechatMiniprogram.Margins,
+  callback: WechatMiniprogram.IntersectionObserverObserveCallback,
+) {
+  ctx.createIntersectionObserver({}).relativeToViewport(margin).observe(selector, callback)
+}
+
 type Placement =
   | 'top'
   | 'topLeft'
