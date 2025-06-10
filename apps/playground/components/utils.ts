@@ -3,6 +3,11 @@ import { CSSProperties } from 'vue'
 
 type ClassValue = string | number | boolean | undefined | null | Record<string, unknown>
 
+/**
+ * 将 class 参数转换为字符串。
+ * @param args class 参数，可以是字符串、数字、布尔值、undefined、null 或对象。
+ * @returns class 字符串。
+ */
 export function classObjectToString(...args: ClassValue[]): string {
   return args
     .flatMap((arg) => {
@@ -15,6 +20,11 @@ export function classObjectToString(...args: ClassValue[]): string {
     .join(' ')
 }
 
+/**
+ * 将样式对象转换为字符串。
+ * @param styleObj CSS 样式对象。
+ * @returns 样式字符串。
+ */
 export function styleObjectToString(styleObj: CSSProperties) {
   return Object.entries(styleObj)
     .map(([key, value]) => {
@@ -24,69 +34,142 @@ export function styleObjectToString(styleObj: CSSProperties) {
     .join(';')
 }
 
+/**
+ * 克隆一个对象。
+ * @param original 要克隆的原始对象。
+ * @returns 克隆后的新对象。
+ * @template T
+ */
 export function clone<T>(original: T): T {
   return JSON.parse(JSON.stringify(original))
 }
 
+/**
+ * 获取小程序基本信息。
+ * @returns 小程序基本信息。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getAppBaseInfo.html
+ */
 export function getAppBaseInfo() {
   return wx.getAppBaseInfo()
 }
 
+/**
+ * 获取窗口信息。
+ * @returns 窗口信息。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getWindowInfo.html
+ */
 export function getWindowInfo() {
   return wx.getWindowInfo()
 }
 
+/**
+ * 获取菜单按钮的布局位置信息。
+ * @returns 菜单按钮的布局位置信息。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/ui/menu/wx.getMenuButtonBoundingClientRect.html
+ */
 export function getMenuButtonBoundingClientRect() {
   return wx.getMenuButtonBoundingClientRect()
 }
 
+/**
+ * 监听系统主题变化事件。
+ * @param listener 系统主题变化事件的回调函数。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/base/app/app-event/wx.onThemeChange.html
+ */
 export function onThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback) {
   wx.onThemeChange(listener)
 }
 
+/**
+ * 取消监听系统主题变化事件。
+ * @param listener 系统主题变化事件的回调函数。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/base/app/app-event/wx.offThemeChange.html
+ */
 export function offThemeChange(listener: WechatMiniprogram.OnThemeChangeCallback) {
   wx.offThemeChange(listener)
 }
 
+/**
+ * 关闭当前页面，返回上一页面或多级页面。
+ * @param options 配置项。
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateBack.html
+ */
 export function navigateBack(options?: WechatMiniprogram.NavigateBackOption) {
   wx.navigateBack(options)
 }
 
+/**
+ * 获取当前页面栈。
+ * @returns 当前页面栈。
+ */
 export function getPages() {
   return getCurrentPages()
 }
 
+/**
+ * 获取当前页面实例。
+ * @returns 当前页面实例。
+ */
 export function getPage() {
   const pages = getPages()
   const page = pages[pages.length - 1]
   return page
 }
 
+/**
+ * 获取当前页面的组件实例。
+ * @returns 当前页面的组件实例。
+ */
 export function getPageCtx() {
   const page = getPage()
   return page.$page as ComponentInstance
 }
 
+/**
+ * 设置键盘高度。
+ * @param height 键盘高度。
+ */
 export function setKeyboardHeight(height: number) {
   const ctx = getPageCtx()
   ctx.setKeyboardHeight(height)
 }
 
+/**
+ * 根据路径获取关联节点。
+ * @param ctx 组件实例。
+ * @param path 关联节点路径。
+ * @returns 关联节点。
+ */
 export function getRelationNodes(ctx: ComponentInstance, path: string) {
   return ctx.getRelationNodes(path)
 }
 
+/**
+ * 使手机发生短促震动。
+ */
 export function vibrateShort() {
   wx.vibrateShort({ type: 'light' })
 }
 
+/**
+ * 获取节点布局位置信息。
+ * @param ctx 组件实例。
+ * @param selector 选择器。
+ * @returns 节点布局位置信息。
+ */
 export function getRect(ctx: ComponentInstance, selector: string) {
   return new Promise<WechatMiniprogram.BoundingClientRectCallbackResult>((resolve) => {
     ctx.createSelectorQuery().select(selector).boundingClientRect(resolve).exec()
   })
 }
 
-// 获取元素相对于父元素的位置
+/**
+ * 获取子元素相对于父元素的布局位置信息。
+ * @param ctx 组件实例。
+ * @param childSelector 子元素选择器。
+ * @param parentSelector 父元素选择器。
+ * @returns 子元素相对于父元素的布局位置信息。
+ */
 export async function getRelativeRect(
   ctx: ComponentInstance,
   childSelector: string,
@@ -105,6 +188,12 @@ export async function getRelativeRect(
   }
 }
 
+/**
+ * 将页面滚动到目标位置。
+ * @param ctx 组件实例。
+ * @param viewSelector 滚动视图的选择器。
+ * @param targetSelector 目标元素的选择器。
+ */
 export function scrollIntoView(
   ctx: ComponentInstance,
   viewSelector: string,
@@ -122,6 +211,13 @@ export function scrollIntoView(
     })
 }
 
+/**
+ * 监听元素与视口的相交状态。
+ * @param ctx 组件实例。
+ * @param selector 选择器。
+ * @param margin 用来扩展（或收缩）参照节点布局区域的边界。
+ * @param callback 相交状态改变时的回调函数。
+ */
 export function observeViewportIntersection(
   ctx: ComponentInstance,
   selector: string,
@@ -150,6 +246,10 @@ interface Coordinates {
   y: number
 }
 
+/**
+ * 获取页面容器的布局位置信息。
+ * @returns 页面容器的布局位置信息。
+ */
 export async function getPageContainerRect() {
   const rect = await getRect(getPageCtx(), '.kd-page__content')
   if (!rect) {
@@ -166,10 +266,20 @@ export async function getPageContainerRect() {
   return rect
 }
 
+/**
+ * 将驼峰命名转换为 BEM 风格的类名。
+ * @param camelCase 驼峰命名的字符串。
+ * @returns BEM 风格的类名。
+ */
 export function camelCaseToBem(camelCase: string) {
   return camelCase.replace(/[A-Z]/g, '-$&').toLowerCase()
 }
 
+/**
+ * 延迟指定时间。
+ * @param time 延迟时间，单位毫秒。
+ * @returns 一个 Promise 对象，在指定时间后 resolve。
+ */
 export function delay(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time))
 }
@@ -178,14 +288,14 @@ export function delay(time: number) {
  * 获取弹出元素的坐标
  * @description 根据触发元素和弹出元素的选择器，计算弹出元素的位置，并考虑边界约束。
  * @param ctx 组件实例
- * @param trigger 触发元素选择器
+ * @param trigger 触发元素选择器或坐标对象
  * @param popover 弹出元素选择器
  * @param placement 弹出位置
- * @param gap 弹出元素与触发元素之间的间距
+ * @param gap 弹出元素与触发元素之间的间距，默认为 0。
  * @returns 一个包含弹出元素位置的数组 [x, y]，表示弹出元素的左上角坐标。
  * @example
  * ```ts
- * const [x, y] = await getPopoverRect(this, '.trigger', '.popover', 'bottom');
+ * const [x, y] = await getPopoverPosition(this, '.trigger', '.popover', 'bottom');
  * this.popoverStyle = `left: ${x}px; top: ${y}px;`;
  * ```
  */

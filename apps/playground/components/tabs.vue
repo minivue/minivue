@@ -10,27 +10,19 @@
         :show-scrollbar="false"
         class="kd-tabs__nav-scroll"
       >
-        <View class="kd-tabs__nav-items" id="parent">
+        <View class="kd-tabs__nav-items" id="nav">
           <View class="kd-tabs__nav-edge" id="left" style="left: 0"></View>
-          <View class="kd-tabs__nav-item kd-tabs__nav-item--active" id="navitem0" @tap="onTap(0)">
-            <Text>总结汇报</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator0"></View>
-          </View>
-          <View class="kd-tabs__nav-item" id="navitem1" @tap="onTap(1)">
-            <Text>教学课件</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator1"></View>
-          </View>
-          <View class="kd-tabs__nav-item" id="navitem2" @tap="onTap(2)">
-            <Text>明细帐</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator2"></View>
-          </View>
-          <View class="kd-tabs__nav-item" id="navitem3" @tap="onTap(3)">
-            <Text>房屋出租合同</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator3"></View>
-          </View>
-          <View class="kd-tabs__nav-item" id="navitem4" @tap="onTap(4)">
-            <Text>其它乱七八糟</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator4"></View>
+          <View
+            v-for="(item, index) in tabs"
+            :id="'navitem' + index"
+            :key="item.key"
+            :class="
+              'kd-tabs__nav-item' + (index === innerCurrent ? ' kd-tabs__nav-item--active' : '')
+            "
+            @tap="onTap(index)"
+          >
+            <Text>{{ item.label }}</Text>
+            <View class="kd-tabs__nav-indicator" :id="'indicator' + index"></View>
           </View>
           <View class="kd-tabs__nav-edge" id="right" style="right: 0"></View>
           <View class="kd-tabs__nav-indicator" :style="indicatorStyle"></View>
@@ -38,21 +30,9 @@
       </ScrollView>
       <View v-if="showRight" class="kd-tabs__nav-right"></View>
     </View>
-    <Swiper style="flex: 1" :current="current" @change="onChange">
-      <SwiperItem class="kd-tabs__content">
-        <Text>总结汇报</Text>
-      </SwiperItem>
-      <SwiperItem class="kd-tabs__content">
-        <Text>教学课件</Text>
-      </SwiperItem>
-      <SwiperItem class="kd-tabs__content">
-        <Text>明细帐</Text>
-      </SwiperItem>
-      <SwiperItem class="kd-tabs__content">
-        <Text>房屋出租合同</Text>
-      </SwiperItem>
-      <SwiperItem class="kd-tabs__content">
-        <Text>其它乱七八糟</Text>
+    <Swiper style="flex: 1" :current="innerCurrent" @change="onChange">
+      <SwiperItem v-for="item in tabs" :key="item.key" class="kd-tabs__content">
+        <slot name="{{item.key}}" />
       </SwiperItem>
     </Swiper>
     <View class="kd-tabs__panel"> </View>
@@ -60,7 +40,14 @@
 </template>
 
 <script setup lang="ts">
-import { ComponentInstance, getCurrentInstance, ref, onAttached, computed } from '@minivue/core'
+import {
+  ComponentInstance,
+  getCurrentInstance,
+  ref,
+  onAttached,
+  computed,
+  watch,
+} from '@minivue/core'
 import {
   getRect,
   getWindowInfo,
@@ -70,15 +57,27 @@ import {
   scrollIntoView,
 } from './utils'
 
+interface TabItem {
+  key: string
+  label: string
+}
+
+interface Props {
+  current?: number
+  tabs: TabItem[]
+}
+
 defineOptions({
   name: 'KdTabs',
 })
 
+const { current = 0 } = defineProps<Props>()
+
 const ctx = getCurrentInstance<ComponentInstance>()
-const current = ref(0)
 const showLeft = ref(false)
 const showRight = ref(false)
 const indicatorLeft = ref(0)
+const innerCurrent = ref(current)
 const indicatorStyle = computed(() =>
   styleObjectToString({
     left: 0,
@@ -91,8 +90,8 @@ const indicatorStyle = computed(() =>
 const change = async (index: number) => {
   const indicator = `#indicator${index}`
   const navitem = `#navitem${index}`
-  const indicatorRect = await getRelativeRect(ctx, indicator, '#parent')
-  current.value = index
+  const indicatorRect = await getRelativeRect(ctx, indicator, '#nav')
+  innerCurrent.value = index
   indicatorLeft.value = indicatorRect.left
   scrollIntoView(ctx, '#view', navitem)
 }
@@ -101,8 +100,10 @@ const onTap = (index: number) => {
   change(index)
 }
 
-const onChange = (e: WechatMiniprogram.SwiperChange) => {
-  change(e.detail.current)
+const onChange = ({ detail: { source, current } }: WechatMiniprogram.SwiperChange) => {
+  if (source) {
+    change(current)
+  }
 }
 
 const onReachLeft = (result: WechatMiniprogram.IntersectionObserverObserveCallbackResult) => {
@@ -121,7 +122,13 @@ const init = async () => {
   const margin = { left, right }
   observeViewportIntersection(ctx, '#left', margin, onReachLeft)
   observeViewportIntersection(ctx, '#right', margin, onReachRight)
+  change(current)
 }
+
+watch(
+  () => current,
+  (val) => (innerCurrent.value = val),
+)
 
 onAttached(init)
 </script>
