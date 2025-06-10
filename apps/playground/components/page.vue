@@ -18,7 +18,7 @@
     <slot name="bottom" />
     <View :style="keyboardHeight"></View>
     <RootPortal>
-      <View :class="rootClasses">
+      <View :class="rootClasses" :style="'font-family:' + fontFamily">
         <View v-if="toasts" class="kd-toast-area" :style="navbarStyle">
           <KdToast
             v-for="toast in toasts"
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { computed, ref, getCurrentInstance, onAttached, onDetached } from '@minivue/core'
-import { clone, getAppBaseInfo, getPage, onThemeChange, offThemeChange } from './utils'
+import { fontFamily, clone, getAppBaseInfo, getPage, onThemeChange, offThemeChange } from './utils'
 
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
@@ -217,9 +217,6 @@ page.$hideToast = () => {
   align-items: center;
   width: 100%;
   height: 100%;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
-    'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   pointer-events: none;
 }
 

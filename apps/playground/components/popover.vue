@@ -33,6 +33,7 @@ import {
   getWindowInfo,
   styleObjectToString,
   camelCaseToBem,
+  fontFamily,
 } from './utils'
 
 type Placement =
@@ -119,6 +120,7 @@ const setPlacement = async (coordinates?: Coordinates) => {
   )
   finalPlacement.value = bestPlacement
   style.value = styleObjectToString({
+    fontFamily,
     top: `${y}px`,
     left: `${x}px`,
     '--target-top': `${top}px`,
@@ -171,9 +173,6 @@ onDetached(() => offThemeChange(setTheme))
 .kd-popover {
   position: fixed;
   display: flex;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
-    'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   pointer-events: none;
   opacity: 0;
 }

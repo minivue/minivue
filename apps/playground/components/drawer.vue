@@ -1,6 +1,6 @@
 <template>
   <RootPortal>
-    <View :class="classes">
+    <View :class="classes" :style="'font-family:' + fontFamily">
       <View class="kd-drawer__mask" @tap="onClose"></View>
       <Swiper
         class="kd-drawer__panel"
@@ -51,6 +51,7 @@ import {
   ComponentInstance,
 } from '@minivue/core'
 import {
+  fontFamily,
   getAppBaseInfo,
   onThemeChange,
   offThemeChange,
