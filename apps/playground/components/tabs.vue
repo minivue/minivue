@@ -11,33 +11,51 @@
         class="kd-tabs__nav-scroll"
       >
         <View class="kd-tabs__nav-items" id="parent">
-          <View class="kd-tabs__nav-edge" id="left"></View>
-          <View class="kd-tabs__nav-item kd-tabs__nav-item--active" @tap="onTap(1)">
+          <View class="kd-tabs__nav-edge" id="left" style="left: 0"></View>
+          <View class="kd-tabs__nav-item kd-tabs__nav-item--active" id="navitem0" @tap="onTap(0)">
             <Text>总结汇报</Text>
+            <View class="kd-tabs__nav-indicator" id="indicator0"></View>
+          </View>
+          <View class="kd-tabs__nav-item" id="navitem1" @tap="onTap(1)">
+            <Text>教学课件</Text>
             <View class="kd-tabs__nav-indicator" id="indicator1"></View>
           </View>
-          <View class="kd-tabs__nav-item" @tap="onTap(2)">
-            <Text>教学课件</Text>
+          <View class="kd-tabs__nav-item" id="navitem2" @tap="onTap(2)">
+            <Text>明细帐</Text>
             <View class="kd-tabs__nav-indicator" id="indicator2"></View>
           </View>
-          <View class="kd-tabs__nav-item" @tap="onTap(3)">
-            <Text>明细帐</Text>
+          <View class="kd-tabs__nav-item" id="navitem3" @tap="onTap(3)">
+            <Text>房屋出租合同</Text>
             <View class="kd-tabs__nav-indicator" id="indicator3"></View>
           </View>
-          <View class="kd-tabs__nav-item" @tap="onTap(4)">
-            <Text>房屋出租合同</Text>
+          <View class="kd-tabs__nav-item" id="navitem4" @tap="onTap(4)">
+            <Text>其它乱七八糟</Text>
             <View class="kd-tabs__nav-indicator" id="indicator4"></View>
           </View>
-          <View class="kd-tabs__nav-item" @tap="onTap(5)">
-            <Text>其它乱七八糟</Text>
-            <View class="kd-tabs__nav-indicator" id="indicator5"></View>
-          </View>
-          <View class="kd-tabs__nav-edge" id="right"></View>
+          <View class="kd-tabs__nav-edge" id="right" style="right: 0"></View>
           <View class="kd-tabs__nav-indicator" :style="indicatorStyle"></View>
         </View>
       </ScrollView>
       <View v-if="showRight" class="kd-tabs__nav-right"></View>
     </View>
+    <Swiper style="flex: 1" :current="current" @change="onChange">
+      <SwiperItem class="kd-tabs__content">
+        <Text>总结汇报</Text>
+      </SwiperItem>
+      <SwiperItem class="kd-tabs__content">
+        <Text>教学课件</Text>
+      </SwiperItem>
+      <SwiperItem class="kd-tabs__content">
+        <Text>明细帐</Text>
+      </SwiperItem>
+      <SwiperItem class="kd-tabs__content">
+        <Text>房屋出租合同</Text>
+      </SwiperItem>
+      <SwiperItem class="kd-tabs__content">
+        <Text>其它乱七八糟</Text>
+      </SwiperItem>
+    </Swiper>
+    <View class="kd-tabs__panel"> </View>
   </View>
 </template>
 
@@ -49,6 +67,7 @@ import {
   getRelativeRect,
   styleObjectToString,
   observeViewportIntersection,
+  scrollIntoView,
 } from './utils'
 
 defineOptions({
@@ -56,6 +75,7 @@ defineOptions({
 })
 
 const ctx = getCurrentInstance<ComponentInstance>()
+const current = ref(0)
 const showLeft = ref(false)
 const showRight = ref(false)
 const indicatorLeft = ref(0)
@@ -68,11 +88,21 @@ const indicatorStyle = computed(() =>
   }),
 )
 
-const onTap = async (index: number) => {
+const change = async (index: number) => {
   const indicator = `#indicator${index}`
+  const navitem = `#navitem${index}`
   const indicatorRect = await getRelativeRect(ctx, indicator, '#parent')
+  current.value = index
   indicatorLeft.value = indicatorRect.left
-  console.log('tap', indicatorRect)
+  scrollIntoView(ctx, '#view', navitem)
+}
+
+const onTap = (index: number) => {
+  change(index)
+}
+
+const onChange = (e: WechatMiniprogram.SwiperChange) => {
+  change(e.detail.current)
 }
 
 const onReachLeft = (result: WechatMiniprogram.IntersectionObserverObserveCallbackResult) => {
@@ -100,6 +130,7 @@ onAttached(init)
 .kd-tabs {
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 100%;
 }
 
@@ -113,14 +144,6 @@ onAttached(init)
   top: 0;
   width: 1px;
   height: 100%;
-}
-
-.kd-tabs__nav-edge:first-child {
-  left: 0;
-}
-
-.kd-tabs__nav-edge:last-child {
-  right: 0;
 }
 
 .kd-tabs__nav-left,
@@ -193,7 +216,7 @@ onAttached(init)
   background: var(--kd-color-line-public);
   border-radius: 1px;
   opacity: 0;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease-out;
 }
 </style>
 

@@ -105,6 +105,23 @@ export async function getRelativeRect(
   }
 }
 
+export function scrollIntoView(
+  ctx: ComponentInstance,
+  viewSelector: string,
+  targetSelector: string,
+) {
+  ctx
+    .createSelectorQuery()
+    .select(viewSelector)
+    .node()
+    .exec((res) => {
+      const scrollView = res[0].node
+      scrollView.scrollIntoView(targetSelector, {
+        alignment: 'nearest',
+      })
+    })
+}
+
 export function observeViewportIntersection(
   ctx: ComponentInstance,
   selector: string,
