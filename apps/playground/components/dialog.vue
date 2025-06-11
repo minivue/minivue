@@ -7,7 +7,7 @@
           <ScrollView scroll-y enhanced :bounces="false" :style="scrollStyle">
             <View class="kd-dialog__body" id="body">
               <View v-if="image" class="kd-dialog__image" :style="imageStyle">
-                <Image mode="widthFix" :src="image" webp @load="onImageLoad" />
+                <Image :src="image" mode="widthFix" webp @load="setStyle" />
               </View>
               <View class="kd-dialog__content">
                 <KdIcon v-if="icon" :type="icon" :size="iconSize" style="margin-bottom: 12px" />
@@ -71,22 +71,39 @@ defineOptions({
 })
 
 interface Props {
+  /** 图标，可选值为 'info', 'success', 'warning', 'error' 或自定义字符串 */
   icon?: 'info' | 'success' | 'warning' | 'error' | (string & {})
+  /** 图标大小 */
   iconSize?: 44
+  /** 对话框标题 */
   title?: string
+  /** 图片链接 */
   image?: string
+  /** 图片尺寸，可选值为 's', 'm' */
   imageSize?: 's' | 'm'
+  /** 图片宽度（最好设置，避免图片加载导致抖动） */
+  imageWidth?: number | string
+  /** 图片高度（最好设置，避免图片加载导致抖动） */
+  imageHeight?: number | string
+  /** 对话框内容 */
   content?: string
+  /** 是否显示关闭按钮 */
   showClose?: boolean
+  /** 是否显示取消按钮 */
   showCancel?: boolean
+  /** 取消按钮文字 */
   cancelText?: string
+  /** 确认按钮文字 */
   confirmText?: string
+  /** 确认按钮类型，可选值为 'danger' */
   confirmType?: 'danger'
 }
 
 const {
   iconSize = 44,
   imageSize = 's',
+  imageWidth,
+  imageHeight,
   showCancel = true,
   cancelText = '取消',
   confirmText = '确定',
@@ -98,7 +115,12 @@ const theme = ref(appBaseInfo.theme)
 const classes = computed(() => classObjectToString('kd-theme--default', `kd-theme--${theme.value}`))
 const safeAreaStyle = ref('')
 const scrollStyle = ref('')
-const imageStyle = computed(() => (imageSize === 's' ? 'margin: 24px 24px 0' : ''))
+const imageStyle = computed(() =>
+  styleObjectToString({
+    margin: imageSize === 's' ? '24px 24px 0' : '',
+    aspectRatio: imageWidth && imageHeight ? `${imageWidth}/${imageHeight}` : '',
+  }),
+)
 
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 
@@ -115,12 +137,7 @@ const getSafeArea = () => {
   }
 }
 
-const setScrollHeight = async () => {
-  const { height } = await getRect(ctx, '#body')
-  scrollStyle.value = `height: ${height}px`
-}
-
-const init = async () => {
+const setStyle = async () => {
   const bodyRect = await getRect(ctx, '#body')
   const footerRect = await getRect(ctx, '#footer')
   const { top, left, right, bottom, windowHeight } = getSafeArea()
@@ -136,13 +153,8 @@ const init = async () => {
   })
 }
 
-const onImageLoad = () => {
-  init()
-}
-
 onAttached(() => {
-  init()
-  setScrollHeight()
+  setStyle()
   onThemeChange(setTheme)
 })
 
@@ -236,7 +248,6 @@ onDetached(() => {
   font-size: var(--kd-font-size-middle);
   line-height: var(--kd-font-line-height-middle);
   color: var(--kd-color-text-secondary);
-  word-wrap: break-word;
 }
 
 .kd-dialog__footer {
