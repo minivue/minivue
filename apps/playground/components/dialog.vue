@@ -6,8 +6,8 @@
         <View class="kd-dialog">
           <ScrollView scroll-y enhanced :bounces="false" :style="scrollStyle">
             <View class="kd-dialog__body" id="body">
-              <View v-if="image" class="kd-dialog__image" :style="imageStyle">
-                <Image :src="image" mode="widthFix" webp @load="setStyle" />
+              <View v-if="image" class="kd-dialog__image" :style="imageBoxStyle">
+                <Image :src="image" mode="widthFix" webp :style="imageStyle" />
               </View>
               <View class="kd-dialog__content">
                 <KdIcon v-if="icon" :type="icon" :size="iconSize" style="margin-bottom: 12px" />
@@ -117,8 +117,13 @@ const safeAreaStyle = ref('')
 const scrollStyle = ref('')
 const imageStyle = computed(() =>
   styleObjectToString({
-    margin: imageSize === 's' ? '24px 24px 0' : '',
+    width: '100%',
     aspectRatio: imageWidth && imageHeight ? `${imageWidth}/${imageHeight}` : '',
+  }),
+)
+const imageBoxStyle = computed(() =>
+  styleObjectToString({
+    margin: imageSize === 's' ? '24px 24px 0' : '',
   }),
 )
 
