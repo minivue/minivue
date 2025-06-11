@@ -28,7 +28,6 @@ const classes = computed(() =>
 .kd-divider {
   display: flex;
   flex-shrink: 0;
-  align-self: stretch;
   height: 0.5px;
   background: var(--kd-color-line-light);
 }

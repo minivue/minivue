@@ -55,7 +55,8 @@
     "pages/popover/popover",
     "pages/drawer/drawer",
     "pages/actionsheet/actionsheet",
-    "pages/tabs/tabs"
+    "pages/tabs/tabs",
+    "pages/dialog/dialog"
   ],
   "subpackages": [
     {
