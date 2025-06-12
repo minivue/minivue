@@ -18,6 +18,7 @@ export default {
     'import-notation': null,
     'property-no-vendor-prefix': null,
     'font-family-no-missing-generic-family-keyword': null,
+    'declaration-block-no-redundant-longhand-properties': null,
     'selector-class-pattern': [
       '^[a-z]([-]?[a-z0-9]+)*(__[a-z0-9]([-]?[a-z0-9]+)*)?(--[a-z0-9]([-]?[a-z0-9]+)*)?$',
       {

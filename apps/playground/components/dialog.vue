@@ -7,7 +7,7 @@
           <ScrollView scroll-y enhanced :bounces="false" :style="scrollStyle">
             <View class="kd-dialog__body" id="body">
               <View v-if="image" class="kd-dialog__image" :style="imageBoxStyle">
-                <Image :src="image" mode="widthFix" webp :style="imageStyle" />
+                <Image :src="image" mode="widthFix" webp :style="imageStyle" @load="setStyle" />
               </View>
               <View class="kd-dialog__content">
                 <KdIcon v-if="icon" :type="icon" :size="iconSize" style="margin-bottom: 12px" />
@@ -246,6 +246,8 @@ onDetached(() => offThemeChange(setTheme))
 .kd-dialog-wrap {
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
   display: flex;
   align-items: center;
