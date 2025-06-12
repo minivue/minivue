@@ -1,11 +1,11 @@
 <template>
   <KdDrawer :show="innerShow" :scrollable="false" @change="onChange">
     <View class="kd-actionsheet">
-      <Block v-if="title">
-        <View class="kd-actionsheet__title">{{ title }}</View>
+      <Block v-if="innerTitle">
+        <View class="kd-actionsheet__title">{{ innerTitle }}</View>
         <KdDivider />
       </Block>
-      <Block v-for="item in items || []" :key="item.action">
+      <Block v-for="item in innerItems || []" :key="item.action">
         <KdButton
           type="light"
           size="xl"
@@ -30,8 +30,8 @@ import { ref, watch } from '@minivue/core'
 import KdDrawer from './drawer.vue'
 import KdButton from './button.vue'
 import KdDivider from './divider.vue'
-import { KdActionSheetItem } from '../type'
-
+import { KdActionSheetItem, KdActionSheetOptions } from '../type'
+import { getPage } from './utils'
 defineOptions({
   name: 'KdActionsheet',
 })
@@ -52,13 +52,18 @@ interface Props {
 }
 
 const emit = defineEmits<Events>()
-const { show } = defineProps<Props>()
+const { show, title, items } = defineProps<Props>()
 
 const innerShow = ref(show)
+const innerTitle = ref(title)
+const innerItems = ref(items)
+let actionsheetCallback: (action: string) => void = () => undefined
+let actionsheetCancel: () => void = () => undefined
 
 const onTap = (action: string) => {
   innerShow.value = false
   emit('action', action)
+  actionsheetCallback(action)
 }
 
 const onChange = (val: boolean) => {
@@ -69,6 +74,18 @@ const onChange = (val: boolean) => {
 const onCancelTap = () => {
   innerShow.value = false
   emit('cancel')
+  actionsheetCancel()
+}
+
+const exposeApi = () => {
+  const page = getPage()
+  page.$showActionSheet = (options: KdActionSheetOptions<string>) => {
+    actionsheetCallback = options.onAction || (() => undefined)
+    actionsheetCancel = options.onCancel || (() => undefined)
+    innerTitle.value = options.title || ''
+    innerItems.value = options.items || []
+    innerShow.value = true
+  }
 }
 
 watch(
@@ -77,6 +94,8 @@ watch(
     innerShow.value = show
   },
 )
+
+exposeApi()
 </script>
 
 <style>

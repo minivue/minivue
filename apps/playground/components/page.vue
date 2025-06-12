@@ -38,14 +38,7 @@
       </View>
     </RootPortal>
   </View>
-  <KdActionsheet
-    :show="showActionsheet"
-    :title="actionsheetTitle"
-    :items="actionsheetItems"
-    @cancel="onActionSheetCancel"
-    @action="onActionSheetAction"
-    @change="onActionSheetChange"
-  />
+  <KdActionsheet />
 </template>
 
 <script setup lang="ts">
@@ -55,7 +48,7 @@ import { fontFamily, clone, getAppBaseInfo, getPage, onThemeChange, offThemeChan
 import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
 import KdActionsheet from './actionsheet.vue'
-import { KdActionSheetItem, KdActionSheetOptions, KdToastOptions } from '../type'
+import { KdToastOptions } from '../type'
 
 defineOptions({
   name: 'KdPage',
@@ -100,13 +93,6 @@ const rootClasses = computed(() => `kd-root ${themes.value}`)
 
 const toasts = ref<KdToastOptions<boolean>[]>([])
 
-const actionsheetTitle = ref('')
-const actionsheetItems = ref<KdActionSheetItem<string>[]>([])
-let actionsheetCallback: (action: string) => void = () => undefined
-let actionsheetCancel: () => void = () => undefined
-
-const showActionsheet = ref(false)
-
 const navbarHeight = ref(0)
 
 const keyboardHeight = ref('')
@@ -129,18 +115,6 @@ const onToastHide = (toast: KdToastOptions<boolean>) => {
   toast.onHide?.()
 }
 
-const onActionSheetChange = (val: boolean) => {
-  showActionsheet.value = val
-}
-
-const onActionSheetAction = (action: string) => {
-  actionsheetCallback(action)
-}
-
-const onActionSheetCancel = () => {
-  actionsheetCancel()
-}
-
 onAttached(() => {
   onThemeChange(setTheme)
 })
@@ -156,14 +130,6 @@ if (ctx) {
 }
 
 page.$page = ctx
-
-page.$showActionSheet = (options: KdActionSheetOptions<string>) => {
-  actionsheetCallback = options.onAction || (() => undefined)
-  actionsheetCancel = options.onCancel || (() => undefined)
-  actionsheetTitle.value = options.title || ''
-  actionsheetItems.value = options.items || []
-  showActionsheet.value = true
-}
 
 page.$showToast = (options: KdToastOptions<boolean>) => {
   options = clone(options)
