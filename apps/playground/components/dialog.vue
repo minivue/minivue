@@ -1,5 +1,5 @@
 <template>
-  <RootPortal>
+  <RootPortal v-if="show">
     <View :class="classes" :style="'font-family:' + fontFamily">
       <View class="kd-dialog-mask"></View>
       <View class="kd-dialog-wrap" :style="safeAreaStyle">
@@ -22,7 +22,9 @@
           <KdDivider />
           <View class="kd-dialog__footer" id="footer">
             <Block v-if="showCancel">
-              <KdButton type="light" size="xl" highlight>{{ cancelText }}</KdButton>
+              <KdButton type="light" size="xl" highlight @tap="onCancelTap">
+                {{ cancelText }}
+              </KdButton>
               <KdDivider vertical style="height: 24px" />
             </Block>
             <KdButton
@@ -31,11 +33,19 @@
               highlight
               style="font-weight: bold"
               :danger="confirmType === 'danger'"
+              @tap="onConfirmTap"
             >
               {{ confirmText }}
             </KdButton>
           </View>
-          <KdButton v-if="showClose" class="kd-dialog__close" size="s" icon="close" only-icon />
+          <KdButton
+            v-if="showClose"
+            class="kd-dialog__close"
+            size="s"
+            icon="close"
+            only-icon
+            @tap="onCloseTap"
+          />
         </View>
       </View>
     </View>
@@ -47,18 +57,19 @@ import KdIcon from './icon.vue'
 import KdButton from './button.vue'
 import KdDivider from './divider.vue'
 import {
+  getRect,
   fontFamily,
   onThemeChange,
   getWindowInfo,
   offThemeChange,
   getAppBaseInfo,
+  styleObjectToString,
   classObjectToString,
   getMenuButtonBoundingClientRect,
-  styleObjectToString,
-  getRect,
 } from './utils'
 import {
   ref,
+  watch,
   computed,
   onAttached,
   onDetached,
@@ -66,11 +77,9 @@ import {
   ComponentInstance,
 } from '@minivue/core'
 
-defineOptions({
-  name: 'KdDialog',
-})
-
 interface Props {
+  /** 是否显示对话框 */
+  show?: boolean
   /** 图标，可选值为 'info', 'success', 'warning', 'error' 或自定义字符串 */
   icon?: 'info' | 'success' | 'warning' | 'error' | (string & {})
   /** 图标大小 */
@@ -99,7 +108,19 @@ interface Props {
   confirmType?: 'danger'
 }
 
+interface Events {
+  close: []
+  cancel: []
+  confirm: []
+  change: [value: boolean]
+}
+
+defineOptions({
+  name: 'KdDialog',
+})
+
 const {
+  show = false,
   iconSize = 44,
   imageSize = 's',
   imageWidth,
@@ -109,12 +130,20 @@ const {
   confirmText = '确定',
 } = defineProps<Props>()
 
+const emit = defineEmits<Events>()
+
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
 const theme = ref(appBaseInfo.theme)
-const classes = computed(() => classObjectToString('kd-theme--default', `kd-theme--${theme.value}`))
-const safeAreaStyle = ref('')
+const innerShow = ref(false)
 const scrollStyle = ref('')
+const safeAreaStyle = ref('')
+const classes = computed(() =>
+  classObjectToString('kd-theme--default', `kd-theme--${theme.value}`, {
+    'kd-dialog--show': innerShow.value,
+  }),
+)
+
 const imageStyle = computed(() =>
   styleObjectToString({
     width: '100%',
@@ -158,14 +187,44 @@ const setStyle = async () => {
   })
 }
 
-onAttached(() => {
-  setStyle()
-  onThemeChange(setTheme)
-})
+const onCloseTap = () => {
+  emit('close')
+  innerShow.value = false
+}
 
-onDetached(() => {
-  offThemeChange(setTheme)
-})
+const onCancelTap = () => {
+  emit('cancel')
+  innerShow.value = false
+}
+
+const onConfirmTap = () => {
+  emit('confirm')
+  innerShow.value = false
+}
+
+const onShowChange = async (show: boolean) => {
+  if (show) {
+    await setStyle()
+    innerShow.value = true
+  }
+}
+
+const onInnerShowChange = (show: boolean) => {
+  if (show) {
+    emit('change', show)
+  } else {
+    // 有200ms的动画延时
+    setTimeout(() => emit('change', show), 200)
+  }
+}
+
+watch(() => show, onShowChange)
+
+watch(innerShow, onInnerShowChange)
+
+onAttached(() => onThemeChange(setTheme))
+
+onDetached(() => offThemeChange(setTheme))
 </script>
 
 <style>
@@ -176,8 +235,12 @@ onDetached(() => {
   width: 100%;
   height: 100%;
   background-color: var(--kd-color-mask-regular);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.kd-dialog--show .kd-dialog-mask {
   opacity: 1;
-  transition: opacity 0.1s ease-in-out;
 }
 
 .kd-dialog-wrap {
@@ -198,22 +261,16 @@ onDetached(() => {
   overflow: hidden;
   background: var(--kd-color-background-middle);
   border-radius: 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
-.kd-dialog.show {
-  animation: 0.3s forwards kd-dialog-appear;
-}
-
-@keyframes kd-dialog-appear {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.kd-dialog--show .kd-dialog {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .kd-dialog__body {
