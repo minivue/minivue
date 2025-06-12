@@ -11,7 +11,7 @@
         />
         <KdIcon v-else :type="icon" :size="iconSize" />
       </View>
-      <View v-if="content" class="kd-toast__text"> {{ content }} </View>
+      <View v-if="content" class="kd-toast__text">{{ content }}</View>
       <View v-if="action" class="kd-toast__actions">
         <View class="kd-toast__action">
           <KdButton type="light" highlight @tap="onActionTap">{{ action }}</KdButton>

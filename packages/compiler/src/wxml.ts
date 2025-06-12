@@ -239,7 +239,7 @@ function transformAttributes(
               ? `{{${funcName}}}`
               : funcName
             if (funcArgsStr) {
-              newAttrs[markKey] = `{{[${funcArgsStr}]}}`
+              newAttrs[markKey] = `{{[${funcArgsStr.replace('$event', `'$$$$event$$$$'`)}]}}`
             }
           } else if (key === 'v-for') {
             const vForData = parseVFor(value)

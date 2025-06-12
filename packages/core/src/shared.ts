@@ -62,10 +62,14 @@ export function callSetup(setup: Function, props: Record<string, string | undefi
         const args = e.mark?.[eventType]
         const detail = e.detail
         if (args) {
-          value(...args)
+          // 自定义参数，比如在wxml里面的@click="handleClick(1, 2)"，那么args就是[1, 2]
+          // 如何需要默认事件，则是写成@click="handleClick($event, 1, 2)"
+          value(...args.map((a: any) => (a === '$$event$$' ? e : a)))
         } else if (detail && isArray(detail)) {
+          // 自定义事件参数，比如自定义事件emit('change', 1, 2)，那么detail就是[1, 2]
           value(...detail)
-        } else {
+        } else if (e) {
+          // 默认事件参数，比如在wxml里面的@click="handleClick"，那么就是这个
           value(e)
         }
       }
