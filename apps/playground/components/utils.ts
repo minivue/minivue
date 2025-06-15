@@ -129,6 +129,15 @@ export function getPageCtx() {
 }
 
 /**
+ * 获取导航栏高度。
+ * @returns 导航栏高度。
+ */
+export function getNavbarHeight() {
+  const page = getPage()
+  return (page.$navbarHeight || 0) as number
+}
+
+/**
  * 设置键盘高度。
  * @param height 键盘高度。
  */

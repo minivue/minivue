@@ -30,6 +30,7 @@ import {
   styleObjectToString,
   classObjectToString,
   getMenuButtonBoundingClientRect,
+  getPage,
 } from './utils'
 
 import KdButton from './button.vue'
@@ -67,6 +68,7 @@ const { windowWidth } = getWindowInfo()
 
 const { top, left, height } = getMenuButtonBoundingClientRect()
 
+const page = getPage()
 const offset = (44 - height) / 2
 const paddingTop = top - offset
 const totalHeight = 44 + paddingTop
@@ -100,6 +102,8 @@ const onActionTap = (action: string) => {
   }
   emit('action', action)
 }
+
+page.$navbarHeight = totalHeight
 
 onAttached(() => {
   emit('attached', totalHeight)

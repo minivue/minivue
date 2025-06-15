@@ -32,6 +32,7 @@ export interface KdActionSheetItem<T extends string> {
     | 'chooseAvatar'
     | 'agreePrivacyAuthorization'
 }
+
 export interface KdActionSheetOptions<T extends string> {
   /** 标题 */
   title?: string
@@ -45,7 +46,9 @@ export interface KdActionSheetOptions<T extends string> {
    */
   onCancel?: () => void
 }
+
 export interface KdToastOptions<T> {
+  /** 指定toast的id可以后续对某个toast属性进行修改，比如percentage */
   id?: string
   /** 是否hud显示 */
   hud?: T
