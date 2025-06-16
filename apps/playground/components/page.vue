@@ -71,7 +71,6 @@ page.$setKeyboardHeight = (height: number) => {
 }
 
 onAttached(() => onThemeChange(setTheme))
-
 onDetached(() => offThemeChange(setTheme))
 </script>
 

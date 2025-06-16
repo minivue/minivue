@@ -2,8 +2,8 @@
   <KdPage title="轻提示组件">
     <View class="p-toast">
       <KdButton
-        v-for="(example, index) in examples"
-        :key="index"
+        v-for="example in examples || []"
+        :key="example.title"
         @tap="onTap(example.options)"
         size="xl"
         type="primary"

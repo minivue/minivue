@@ -1,12 +1,9 @@
 <template>
   <RootPortal>
-    <View :class="rootClasses" :style="'font-family:' + fontFamily">
+    <View v-if="toasts" :class="rootClasses" :style="'font-family:' + fontFamily">
       <View class="kd-toast-area" :style="areaStyle">
-        <View class="kd-toast-wrapper" v-for="toast in toasts" :key="toast.id" :show="toast.id">
-          <View
-            :class="toast.classes + (toast.show ? ' kd-toast--show' : '')"
-            @transitionend="onTransitionEnd($event, toast)"
-          >
+        <View class="kd-toast-wrapper" v-for="toast in toasts" :key="toast.id">
+          <View :class="toast.classes + (toast.show ? ' kd-toast--show' : '')">
             <View v-if="toast.icon" class="kd-toast__icon">
               <KdLoading v-if="toast.icon === 'loading'" mode="dark" />
               <KdProgress
@@ -35,17 +32,8 @@
   </RootPortal>
 </template>
 
-<script type="wxs" lang="ts">
-export const _ = {
-  mounted(newValue: any, oldValue: any, ownerInstance: any, instance: any) {
-    const callMethod = instance.nv_callMethod || instance.callMethod
-    callMethod('onMounted', newValue)
-  },
-}
-</script>
-
 <script setup lang="ts">
-import { computed, reactive, ref } from '@minivue/core'
+import { computed, ref, watch } from '@minivue/core'
 import {
   clone,
   delay,
@@ -81,10 +69,23 @@ const toasts = ref<Toast[]>([])
 const areaStyle = computed(() => `margin-top: ${getNavbarHeight()}px`)
 const rootClasses = computed(() => `kd-toast-root kd-theme--default kd-theme--${theme.value}`)
 
-const hideToast = (toast: Toast) => {
-  const target = toasts.value.find((t) => t.id === toast.id)
-  if (target) {
-    target.show = false
+const hideToast = async (toast: Toast) => {
+  console.log('hideToast', toast.timer)
+  clearTimeout(toast.timer)
+  const index = toasts.value.findIndex((t) => t.id === toast.id)
+  if (index !== -1) {
+    toasts.value[index].show = false
+    await delay(2500)
+    toasts.value.splice(index, 1)
+  }
+  toast.onHide?.()
+}
+
+const showToast = (toast: Toast) => {
+  toast.show = true
+  const isAutoHide = toast.duration && !['progress', 'loading'].includes(toast.icon as string)
+  if (isAutoHide) {
+    toast.timer = setTimeout(() => hideToast(toast), toast.duration)
   }
 }
 
@@ -98,14 +99,8 @@ const onCloseTap = (toast: Toast) => {
   toast.onClose?.()
 }
 
-const onTransitionEnd = (e: WechatMiniprogram.CustomEvent, toast: Toast) => {
-  if (e.detail.propertyName === 'opacity' && !toast.show) {
-    const index = toasts.value.findIndex((t) => t.id === toast.id)
-    if (index !== -1) {
-      toasts.value.splice(index, 1)
-    }
-    toast.onHide?.()
-  }
+const onToastsChange = () => {
+  toasts.value.forEach((item) => item.show === undefined && showToast(item))
 }
 
 page.$showToast = async (options: KdToastOptions<boolean>) => {
@@ -130,10 +125,8 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
     'kd-toast--hudtext': hud && content,
     'kd-toast--full': action,
   })
-  const isAutoHide = duration && !['progress', 'loading'].includes(icon as string)
 
-  const newOptions = reactive(clone<Toast>(options))
-  newOptions.id = toastId
+  const newOptions = clone<Toast>(options)
   newOptions.classes = classes
   newOptions.iconSize = iconSize
   newOptions.duration = duration
@@ -163,19 +156,13 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
   if (innerToasts.length > 3) {
     innerToasts.pop() // 如果超过3个，移除最后一个
   }
-
-  await delay(30)
-  newOptions.show = true
-  if (isAutoHide) {
-    newOptions.timer = setTimeout(() => {
-      hideToast(newOptions)
-    }, duration)
-  }
 }
 
 page.$hideToast = () => {
   toasts.value = []
 }
+
+watch(toasts, onToastsChange, { flush: 'post', deep: true })
 </script>
 
 <style>
