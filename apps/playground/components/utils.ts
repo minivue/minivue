@@ -142,8 +142,8 @@ export function getNavbarHeight() {
  * @param height 键盘高度。
  */
 export function setKeyboardHeight(height: number) {
-  const ctx = getPageCtx()
-  ctx.setKeyboardHeight(height)
+  const page = getPage()
+  page.$setKeyboardHeight(height)
 }
 
 /**
@@ -285,6 +285,14 @@ export async function getPageContainerRect() {
  */
 export function camelCaseToBem(camelCase: string) {
   return camelCase.replace(/[A-Z]/g, '-$&').toLowerCase()
+}
+
+/**
+ * 在下一次页面布局完成后执行回调函数。
+ * @returns 一个 Promise 对象，在下次页面布局完成后 resolve。
+ */
+export function nextTick() {
+  return new Promise((resolve) => wx.nextTick(resolve))
 }
 
 /**

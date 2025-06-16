@@ -1,128 +1,205 @@
 <template>
-  <View class="kd-toast-wrapper">
-    <View :class="classes" @transitionend="onTransitionEnd">
-      <View v-if="icon" class="kd-toast__icon">
-        <KdLoading v-if="icon === 'loading'" mode="dark" />
-        <KdProgress
-          v-else-if="icon === 'progress'"
-          :size="iconSize"
-          mode="dark"
-          :percentage="percentage"
-        />
-        <KdIcon v-else :type="icon" :size="iconSize" />
-      </View>
-      <View v-if="content" class="kd-toast__text">{{ content }}</View>
-      <View v-if="action" class="kd-toast__actions">
-        <View class="kd-toast__action">
-          <KdButton type="light" highlight @tap="onActionTap">{{ action }}</KdButton>
-        </View>
-        <View v-if="closeable" class="kd-toast__close">
-          <KdButton icon="close" size="s" only-icon @tap="onCloseTap"></KdButton>
+  <RootPortal>
+    <View :class="rootClasses" :style="'font-family:' + fontFamily">
+      <View class="kd-toast-area" :style="areaStyle">
+        <View class="kd-toast-wrapper" v-for="toast in toasts" :key="toast.id" :show="toast.id">
+          <View
+            :class="toast.classes + (toast.show ? ' kd-toast--show' : '')"
+            @transitionend="onTransitionEnd($event, toast)"
+          >
+            <View v-if="toast.icon" class="kd-toast__icon">
+              <KdLoading v-if="toast.icon === 'loading'" mode="dark" />
+              <KdProgress
+                v-else-if="toast.icon === 'progress'"
+                :size="toast.iconSize"
+                mode="dark"
+                :percentage="toast.percentage"
+              />
+              <KdIcon v-else :type="toast.icon" :size="toast.iconSize" />
+            </View>
+            <View v-if="toast.content" class="kd-toast__text">{{ toast.content }}</View>
+            <View v-if="toast.action" class="kd-toast__actions">
+              <View class="kd-toast__action">
+                <KdButton type="light" highlight @tap="onActionTap(toast)">
+                  {{ toast.action }}
+                </KdButton>
+              </View>
+              <View v-if="toast.closeable" class="kd-toast__close">
+                <KdButton icon="close" size="s" only-icon @tap="onCloseTap(toast)"></KdButton>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     </View>
-  </View>
+  </RootPortal>
 </template>
 
-<script setup lang="ts" generic="T extends boolean">
-import { computed, onAttached, ref, watch } from '@minivue/core'
+<script type="wxs" lang="ts">
+export const _ = {
+  mounted(newValue: any, oldValue: any, ownerInstance: any, instance: any) {
+    const callMethod = instance.nv_callMethod || instance.callMethod
+    callMethod('onMounted', newValue)
+  },
+}
+</script>
+
+<script setup lang="ts">
+import { computed, reactive, ref } from '@minivue/core'
+import {
+  clone,
+  delay,
+  getPage,
+  fontFamily,
+  getAppBaseInfo,
+  getNavbarHeight,
+  classObjectToString,
+} from './utils'
+import { KdToastOptions } from '../type'
 import KdIcon from './icon.vue'
 import KdButton from './button.vue'
 import KdLoading from './loading.vue'
 import KdProgress from './progress.vue'
-import { classObjectToString } from './utils'
 
-interface Events {
-  hide: []
-  close: []
-  action: []
-}
-
-interface ToastProps {
-  /** 是否hud显示 */
-  hud?: T
-  /** 图标 */
-  icon?: T extends true
-    ? 'loading' | 'success' | 'error' | (string & {})
-    : 'info' | 'success' | 'warning' | 'error' | 'loading' | 'loading' | 'progress' | (string & {})
-  /** 操作文案 */
-  action?: string
-  /** 文本内容 */
-  content?: string
-  /** 显示时长 */
-  duration?: number
-  /** 是否显示关闭按钮 */
-  closeable?: boolean
-  /** 进度百分比 */
-  percentage?: number
+type Toast = KdToastOptions<boolean> & {
+  id?: string
+  show?: boolean
+  timer?: NodeJS.Timeout
+  classes?: string
+  iconSize?: number
+  isAutoHide?: boolean
 }
 
 defineOptions({
   name: 'KdToast',
 })
 
-let timer: NodeJS.Timeout
+const appBaseInfo = getAppBaseInfo()
+const theme = ref(appBaseInfo.theme)
+const page = getPage()
+const toasts = ref<Toast[]>([])
+const areaStyle = computed(() => `margin-top: ${getNavbarHeight()}px`)
+const rootClasses = computed(() => `kd-toast-root kd-theme--default kd-theme--${theme.value}`)
 
-const emit = defineEmits<Events>()
+const hideToast = (toast: Toast) => {
+  const target = toasts.value.find((t) => t.id === toast.id)
+  if (target) {
+    target.show = false
+  }
+}
 
-const { hud, icon, action, content, duration = 2500, closeable = true } = defineProps<ToastProps>()
+const onActionTap = (toast: Toast) => {
+  hideToast(toast)
+  toast.onAction?.()
+}
 
-const innerShow = ref(false)
+const onCloseTap = (toast: Toast) => {
+  hideToast(toast)
+  toast.onClose?.()
+}
 
-const iconSize = computed(() => (hud ? 48 : 22))
+const onTransitionEnd = (e: WechatMiniprogram.CustomEvent, toast: Toast) => {
+  if (e.detail.propertyName === 'opacity' && !toast.show) {
+    const index = toasts.value.findIndex((t) => t.id === toast.id)
+    if (index !== -1) {
+      toasts.value.splice(index, 1)
+    }
+    toast.onHide?.()
+  }
+}
 
-const isAutoHide = computed(() => duration > 0 && !['progress', 'loading'].includes(icon as string))
-
-const classes = computed(() =>
-  classObjectToString('kd-toast', {
+page.$showToast = async (options: KdToastOptions<boolean>) => {
+  const {
+    id,
+    hud,
+    icon,
+    followUp,
+    action,
+    content,
+    duration = 2500,
+    closeable = true,
+    onHide,
+    onClose,
+    onAction,
+  } = options
+  const toastId = id || Math.random().toString(36).slice(2)
+  const iconSize = hud ? 48 : 22
+  const innerToasts = toasts.value
+  const classes = classObjectToString('kd-toast', {
     'kd-toast--hud': hud,
     'kd-toast--hudtext': hud && content,
     'kd-toast--full': action,
-    'kd-toast--show': innerShow.value,
-  }),
-)
+  })
+  const isAutoHide = duration && !['progress', 'loading'].includes(icon as string)
 
-const hideToast = () => {
-  innerShow.value = false
-}
+  const newOptions = reactive(clone<Toast>(options))
+  newOptions.id = toastId
+  newOptions.classes = classes
+  newOptions.iconSize = iconSize
+  newOptions.duration = duration
+  newOptions.closeable = closeable
+  newOptions.onHide = onHide
+  newOptions.onClose = onClose
+  newOptions.onAction = onAction
 
-const showToast = () => {
-  clearTimeout(timer)
-  innerShow.value = true
-  if (isAutoHide.value) {
-    timer = setTimeout(hideToast, duration)
+  if (icon === 'progress') {
+    const targetToastIndex = toasts.value.findIndex((t) => t.id === toastId)
+    if (targetToastIndex > -1) {
+      innerToasts[targetToastIndex] = newOptions
+    } else {
+      innerToasts.unshift(newOptions)
+    }
+  } else if (followUp) {
+    const firstToast = innerToasts[0]
+    if (firstToast) {
+      clearTimeout(firstToast.timer)
+      newOptions.id = firstToast.id
+    }
+    innerToasts[0] = newOptions
+  } else {
+    innerToasts.unshift(newOptions)
+  }
+
+  if (innerToasts.length > 3) {
+    innerToasts.pop() // 如果超过3个，移除最后一个
+  }
+
+  await delay(30)
+  newOptions.show = true
+  if (isAutoHide) {
+    newOptions.timer = setTimeout(() => {
+      hideToast(newOptions)
+    }, duration)
   }
 }
 
-const onActionTap = () => {
-  hideToast()
-  emit('action')
+page.$hideToast = () => {
+  toasts.value = []
 }
-
-const onCloseTap = () => {
-  hideToast()
-  emit('close')
-}
-
-const onTransitionEnd = (e: WechatMiniprogram.CustomEvent) => {
-  if (e.detail.propertyName === 'opacity' && !innerShow.value) {
-    emit('hide')
-  }
-}
-
-watch([() => hud, () => icon, () => action, () => content, () => duration, () => closeable], () => {
-  clearTimeout(timer)
-  if (isAutoHide.value) {
-    timer = setTimeout(hideToast, duration)
-  }
-})
-
-onAttached(() => {
-  setTimeout(showToast, 30)
-})
 </script>
 
 <style>
+.kd-toast-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.kd-toast-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 62px;
+  pointer-events: none;
+}
+
 /* 加这次是为了防止kd-toast宽度益处问题 */
 .kd-toast-wrapper {
   box-sizing: border-box;
