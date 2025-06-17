@@ -55,6 +55,7 @@ type Toast = KdToastOptions<boolean> & {
   show?: boolean
   timer?: NodeJS.Timeout
   classes?: string
+  updated?: boolean
   iconSize?: number
   isAutoHide?: boolean
 }
@@ -75,7 +76,7 @@ const hideToast = async (toast: Toast) => {
   const index = toasts.value.findIndex((t) => t.id === toast.id)
   if (index !== -1) {
     toasts.value[index].show = false
-    await delay(250)
+    await delay(250) // 等待动画结束
     toasts.value.splice(index, 1)
   }
   toast.onHide?.()
@@ -100,7 +101,12 @@ const onCloseTap = (toast: Toast) => {
 }
 
 const onToastsChange = () => {
-  toasts.value.forEach((item) => (item.show === undefined || item.show) && showToast(item))
+  toasts.value.forEach((item) => {
+    if (item.updated || item.show === undefined) {
+      item.updated = false
+      showToast(item)
+    }
+  })
 }
 
 page.$showToast = async (options: KdToastOptions<boolean>) => {
@@ -108,9 +114,9 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
     id,
     hud,
     icon,
-    followUp,
     action,
     content,
+    followUp,
     duration = 2500,
     closeable = true,
     onHide,
@@ -137,8 +143,10 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
   newOptions.onAction = onAction
 
   if (icon === 'progress') {
+    console.log('newOptions: ', JSON.stringify(newOptions))
     const targetToastIndex = toasts.value.findIndex((t) => t.id === toastId)
     if (targetToastIndex > -1) {
+      newOptions.show = true
       innerToasts[targetToastIndex] = newOptions
     } else {
       innerToasts.unshift(newOptions)
@@ -146,6 +154,7 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
   } else if (followUp) {
     const firstToast = innerToasts[0]
     if (firstToast) {
+      newOptions.updated = true
       clearTimeout(firstToast.timer)
       newOptions.id = firstToast.id
       newOptions.show = firstToast.show

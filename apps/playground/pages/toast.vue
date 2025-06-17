@@ -183,14 +183,14 @@ const examples: {
 let interval: NodeJS.Timeout
 
 const onTap = (options: KdToastOptions<boolean>) => {
-  console.log('onTap: ', JSON.stringify(options))
-  showToast(options)
   if (options.icon === 'loading') {
     setTimeout(() => {
       hideToast()
     }, 2000)
-  }
-  if (options.icon === 'progress') {
+  } else if (options.icon === 'progress') {
+    clearInterval(interval)
+    options.percentage = 0
+    showToast(options)
     interval = setInterval(() => {
       options.percentage = options.percentage! + 10
       if (options.percentage! >= 100) {
@@ -200,6 +200,8 @@ const onTap = (options: KdToastOptions<boolean>) => {
         showToast(options)
       }
     }, 1000)
+  } else {
+    showToast(options)
   }
 }
 </script>

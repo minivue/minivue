@@ -78,11 +78,10 @@ let timer: NodeJS.Timeout
 const change = () => {
   clearTimeout(timer)
   const currentValue = current.value
-  if (currentValue < percentage) {
-    const step = Math.max((percentage - currentValue) / 100, 0.1)
-    current.value = parseFloat(Math.min(currentValue + step, 100).toFixed(2))
-    timer = setTimeout(change)
-  }
+  const step = Math.max(Math.abs(percentage - currentValue) / 100, 0.1)
+  const dir = percentage > currentValue ? 1 : -1
+  current.value = parseFloat(Math.min(currentValue + dir * step, 100).toFixed(2))
+  timer = setTimeout(change)
 }
 
 watch(() => percentage, change)
