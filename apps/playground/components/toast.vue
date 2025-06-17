@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from '@minivue/core'
 import {
+  getId,
   clone,
   delay,
   getPage,
@@ -70,12 +71,11 @@ const areaStyle = computed(() => `margin-top: ${getNavbarHeight()}px`)
 const rootClasses = computed(() => `kd-toast-root kd-theme--default kd-theme--${theme.value}`)
 
 const hideToast = async (toast: Toast) => {
-  console.log('hideToast', toast.timer)
   clearTimeout(toast.timer)
   const index = toasts.value.findIndex((t) => t.id === toast.id)
   if (index !== -1) {
     toasts.value[index].show = false
-    await delay(2500)
+    await delay(250)
     toasts.value.splice(index, 1)
   }
   toast.onHide?.()
@@ -100,7 +100,7 @@ const onCloseTap = (toast: Toast) => {
 }
 
 const onToastsChange = () => {
-  toasts.value.forEach((item) => item.show === undefined && showToast(item))
+  toasts.value.forEach((item) => (item.show === undefined || item.show) && showToast(item))
 }
 
 page.$showToast = async (options: KdToastOptions<boolean>) => {
@@ -117,7 +117,7 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
     onClose,
     onAction,
   } = options
-  const toastId = id || Math.random().toString(36).slice(2)
+  const toastId = id || getId()
   const iconSize = hud ? 48 : 22
   const innerToasts = toasts.value
   const classes = classObjectToString('kd-toast', {
@@ -127,6 +127,7 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
   })
 
   const newOptions = clone<Toast>(options)
+  newOptions.id = toastId
   newOptions.classes = classes
   newOptions.iconSize = iconSize
   newOptions.duration = duration
@@ -147,6 +148,7 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
     if (firstToast) {
       clearTimeout(firstToast.timer)
       newOptions.id = firstToast.id
+      newOptions.show = firstToast.show
     }
     innerToasts[0] = newOptions
   } else {

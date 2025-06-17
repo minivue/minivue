@@ -3,6 +3,12 @@ import { CSSProperties } from 'vue'
 
 type ClassValue = string | number | boolean | undefined | null | Record<string, unknown>
 
+let id = 0
+
+export function getId() {
+  return `key${id++}`
+}
+
 export const fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
     'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;`
 
