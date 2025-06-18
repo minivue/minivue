@@ -1,5 +1,10 @@
 <template>
-  <Button :class="classes" :open-type="openType || ''" hover-class="kd-button--pressed">
+  <Button
+    :class="classes"
+    :open-type="openType || ''"
+    hover-class="kd-button--pressed"
+    hover-stop-propagation
+  >
     <KdLoading v-if="loading" class="kd-icon" :size="loadingSize" :mode="loadingMode" />
     <KdIcon v-else-if="icon" :type="icon" :size="iconSize" />
     <View v-if="!onlyIcon" class="kd-button__content">
