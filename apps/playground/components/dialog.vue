@@ -113,7 +113,7 @@ interface Props {
   /** 确认按钮文字 */
   confirmText?: string
   /** 确认按钮类型，可选值为 'danger' */
-  confirmType?: 'danger'
+  confirmType?: 'danger' | ''
 }
 
 interface Events {
@@ -128,6 +128,13 @@ defineOptions({
 })
 
 const rawProps = withDefaults(defineProps<Props>(), {
+  icon: '',
+  title: '',
+  image: '',
+  imageWidth: 0,
+  imageHeight: 0,
+  confirmType: '',
+  content: '',
   show: false,
   iconSize: 44,
   imageSize: 's',
@@ -272,19 +279,19 @@ const exposeApi = () => {
     onCancel = options.onCancel || (() => undefined)
     onConfirm = options.onConfirm || (() => undefined)
     show.value = true
-    icon.value = options.icon
+    icon.value = options.icon || ''
     iconSize.value = options.iconSize || 44
-    title.value = options.title
-    image.value = options.image
+    title.value = options.title || ''
+    image.value = options.image || ''
     imageSize.value = options.imageSize || 's'
-    imageWidth.value = options.imageWidth
-    imageHeight.value = options.imageHeight
-    content.value = options.content
+    imageWidth.value = options.imageWidth || 0
+    imageHeight.value = options.imageHeight || 0
+    content.value = options.content || ''
     showClose.value = !!options.showClose
     showCancel.value = options.showCancel === undefined ? true : options.showCancel
     cancelText.value = options.cancelText || '取消'
     confirmText.value = options.confirmText || '确定'
-    confirmType.value = options.confirmType
+    confirmType.value = options.confirmType || ''
   }
 }
 

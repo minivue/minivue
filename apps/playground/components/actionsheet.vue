@@ -52,7 +52,7 @@ interface Props {
 }
 
 const emit = defineEmits<Events>()
-const { show, title, items } = defineProps<Props>()
+const { show, title = '', items = [] } = defineProps<Props>()
 
 const innerShow = ref(show)
 const innerTitle = ref(title)
