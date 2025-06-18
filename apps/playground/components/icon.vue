@@ -34,8 +34,8 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 @font-face {
   font-family: kdesign;
   src:
-    url('https://at.alicdn.com/t/c/font_4868388_3tv5498mf8d.woff2') format('woff2'),
-    url('https://at.alicdn.com/t/c/font_4868388_3tv5498mf8d.ttf') format('truetype');
+    url('https://at.alicdn.com/t/c/font_4868388_dqjst6zrav4.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_4868388_dqjst6zrav4.ttf') format('truetype');
 }
 
 .kd-icon {
@@ -103,6 +103,10 @@ const classes = computed(() => `kd-icon kd-icon--${type}`)
 
 .kd-icon--more::before {
   content: '\e612';
+}
+
+.kd-icon--arrow-right::before {
+  content: '\e613';
 }
 
 .kd-icon--warning::after {

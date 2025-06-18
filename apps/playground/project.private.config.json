@@ -3,8 +3,8 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/dialog/dialog",
-          "pathName": "pages/dialog/dialog",
+          "name": "pages/list-menu/list-menu",
+          "pathName": "pages/list-menu/list-menu",
           "query": "",
           "scene": null,
           "launchMode": "default"

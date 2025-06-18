@@ -45,6 +45,9 @@
       </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/tabs/tabs')"> 选项卡组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/dialog/dialog')"> 弹窗组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/list-menu/list-menu')">
+        列表菜单
+      </KdButton>
     </View>
   </KdPage>
 </template>
