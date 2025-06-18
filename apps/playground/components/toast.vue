@@ -143,7 +143,6 @@ page.$showToast = async (options: KdToastOptions<boolean>) => {
   newOptions.onAction = onAction
 
   if (icon === 'progress') {
-    console.log('newOptions: ', JSON.stringify(newOptions))
     const targetToastIndex = toasts.value.findIndex((t) => t.id === toastId)
     if (targetToastIndex > -1) {
       newOptions.show = true
