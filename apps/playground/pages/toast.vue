@@ -184,6 +184,7 @@ let interval: NodeJS.Timeout
 
 const onTap = (options: KdToastOptions<boolean>) => {
   if (options.icon === 'loading') {
+    showToast(options)
     setTimeout(() => {
       hideToast()
     }, 2000)
