@@ -86,12 +86,14 @@ const onMoreTap = () => {
 
 .kd-cell-group__append {
   display: flex;
+  flex-shrink: 0;
   gap: 2px;
   align-items: center;
   color: var(--kd-color-text-tertiary);
 }
 
 .kd-cell-group__desc {
+  flex-shrink: 0;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
 }
