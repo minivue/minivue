@@ -85,6 +85,8 @@ export interface KdToastOptions<T> {
 }
 
 export interface KdDialogOptions {
+  /** 自定义弹窗内容的插槽名称 */
+  slot?: string
   /** 图标，可选值为 'info', 'success', 'warning', 'error' 或自定义字符串 */
   icon?: 'info' | 'success' | 'warning' | 'error' | (string & {})
   /** 图标大小 */

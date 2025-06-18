@@ -13,7 +13,9 @@
     <View :style="keyboardHeight"></View>
   </View>
   <KdToast />
-  <KdDialog expose />
+  <KdDialog expose>
+    <slot wx:if="{{dialogSlot}}" name="{{dialogSlot}}" />
+  </KdDialog>
   <KdActionsheet />
 </template>
 
@@ -62,14 +64,16 @@ const page = getPage()
 const keyboardHeight = ref('')
 const theme = ref(appBaseInfo.theme)
 const classes = computed(() => `kd-page kd-theme--default kd-theme--${theme.value}`)
-
+const dialogSlot = ref('')
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
-
 const onNavbarAction = (action: string) => emit('action', action)
 
 page.$page = ctx
 page.$setKeyboardHeight = (height: number) => {
   keyboardHeight.value = `height: ${height}px;`
+}
+page.$setDialogSlot = (slot: string) => {
+  dialogSlot.value = slot
 }
 
 onAttached(() => onThemeChange(setTheme))

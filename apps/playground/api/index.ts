@@ -7,6 +7,7 @@ import { KdToastOptions, KdActionSheetOptions, KdDialogOptions } from '@/type'
  */
 export function showDialog(options: KdDialogOptions) {
   const page = getPage()
+  page.$setDialogSlot(options.slot)
   page.$showDialog(options)
 }
 

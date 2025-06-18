@@ -2,8 +2,9 @@
   <KdPage title="弹窗组件">
     <View style="padding: 16px">
       <KdButton @tap="onTap1">打开弹窗</KdButton>
-      <KdButton @tap="onTap2">打开弹窗(API)</KdButton>
+      <KdButton @tap="onTap2" style="margin-left: 16px">打开弹窗(API)</KdButton>
     </View>
+    <View slot="dialog">what the fuck!</View>
   </KdPage>
   <KdDialog
     :show="show"
@@ -34,6 +35,7 @@ const onTap1 = () => {
 
 const onTap2 = () => {
   showDialog({
+    slot: 'dialog',
     icon: 'success',
     title: '标题信息',
     image:
