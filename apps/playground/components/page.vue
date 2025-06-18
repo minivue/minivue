@@ -6,7 +6,7 @@
       <slot slot="right" name="navbar_right" />
     </KdNavbar>
     <slot name="top" />
-    <ScrollView class="kd-page__content" scroll-y type="list">
+    <ScrollView class="kd-page__view" scroll-y type="list">
       <slot />
     </ScrollView>
     <slot name="bottom" />
@@ -21,7 +21,13 @@
 
 <script setup lang="ts">
 import { computed, ref, getCurrentInstance, onAttached, onDetached } from '@minivue/core'
-import { getAppBaseInfo, getPage, onThemeChange, offThemeChange } from './utils'
+import {
+  getAppBaseInfo,
+  getPage,
+  onThemeChange,
+  offThemeChange,
+  classObjectToString,
+} from './utils'
 
 import KdNavbar from './navbar.vue'
 import KdToast from './toast.vue'
@@ -40,6 +46,8 @@ interface Action {
 }
 
 interface Props {
+  /** 灰底 */
+  gray?: boolean
   /** 页面标题 */
   title?: string
   /** 左上角按钮 */
@@ -57,13 +65,17 @@ const appBaseInfo = getAppBaseInfo()
 
 const emit = defineEmits<Events>()
 
-const { title, actions = [], hideNavbar } = defineProps<Props>()
+const { title, gray, actions = [], hideNavbar } = defineProps<Props>()
 
 const ctx = getCurrentInstance()
 const page = getPage()
 const keyboardHeight = ref('')
 const theme = ref(appBaseInfo.theme)
-const classes = computed(() => `kd-page kd-theme--default kd-theme--${theme.value}`)
+const classes = computed(() =>
+  classObjectToString(`kd-page kd-theme--default kd-theme--${theme.value}`, {
+    'kd-page--gray': gray,
+  }),
+)
 const dialogSlot = ref('')
 const setTheme = (res: { theme: 'dark' | 'light' }) => (theme.value = res.theme)
 const onNavbarAction = (action: string) => emit('action', action)
@@ -89,7 +101,11 @@ onDetached(() => offThemeChange(setTheme))
   background-color: var(--kd-color-background-middle);
 }
 
-.kd-page__content {
+.kd-page--gray {
+  background-color: var(--kd-color-background-base);
+}
+
+.kd-page__view {
   flex: 1;
   min-height: 0;
 }

@@ -3,8 +3,8 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/list-menu/list-menu",
-          "pathName": "pages/list-menu/list-menu",
+          "name": "pages/cell/cell",
+          "pathName": "pages/cell/cell",
           "query": "",
           "scene": null,
           "launchMode": "default"

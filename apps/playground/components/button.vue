@@ -9,7 +9,7 @@
       >
         <slot />
       </Text>
-      <KdIcon v-if="dropdown" type="dropdown" :size="iconSize" />
+      <KdIcon v-if="dropdown" type="arrow" :size="iconSize" />
     </View>
   </Button>
 </template>
@@ -279,9 +279,10 @@ const classes = computed(() =>
   margin-right: 0;
 }
 
-.kd-button .kd-icon--dropdown {
+.kd-button .kd-icon--arrow {
   margin-right: 0;
   margin-left: 2px;
+  transform: rotate(90deg);
   transition: transform 0.3s;
 }
 
@@ -307,7 +308,7 @@ const classes = computed(() =>
   padding: 8px 2px 4px 4px !important;
 }
 
-.kd-button--vertical .kd-icon--dropdown {
+.kd-button--vertical .kd-icon--arrow {
   width: 14px !important;
   height: 14px !important;
   margin-right: 0;
@@ -316,8 +317,8 @@ const classes = computed(() =>
   font-size: 14px !important;
 }
 
-.kd-button--active .kd-icon--dropdown {
-  transform: rotate(180deg);
+.kd-button--active .kd-icon--arrow {
+  transform: rotate(270deg);
 }
 
 .kd-button--loading,
