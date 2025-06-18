@@ -77,6 +77,7 @@ const onCancelTap = () => {
   actionsheetCancel()
 }
 
+// 这一写是为了不要把page对象在setup函数里面return出去
 const exposeApi = () => {
   const page = getPage()
   page.$showActionSheet = (options: KdActionSheetOptions<string>) => {

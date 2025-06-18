@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" @tap.stop="onChange"></View>
+  <View :class="classes" @tap.stop="onTap"></View>
 </template>
 
 <script setup lang="ts" generic="T extends any">
@@ -54,7 +54,8 @@ const classes = computed(() =>
   }),
 )
 
-const onChange = () => {
+// 注意不要改这个名字，有外部调用
+const onTap = () => {
   if (disabled || innerChecked.value) {
     return
   }

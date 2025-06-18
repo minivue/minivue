@@ -83,3 +83,32 @@ export interface KdToastOptions<T> {
    */
   onHide?: () => void
 }
+
+export interface KdDialogOptions {
+  /** 图标，可选值为 'info', 'success', 'warning', 'error' 或自定义字符串 */
+  icon?: 'info' | 'success' | 'warning' | 'error' | (string & {})
+  /** 图标大小 */
+  iconSize?: number
+  /** 对话框标题 */
+  title?: string
+  /** 图片链接 */
+  image?: string
+  /** 图片尺寸，可选值为 's', 'm' */
+  imageSize?: 's' | 'm'
+  /** 图片宽度（最好设置，避免图片加载导致抖动） */
+  imageWidth?: number | string
+  /** 图片高度（最好设置，避免图片加载导致抖动） */
+  imageHeight?: number | string
+  /** 对话框内容 */
+  content?: string
+  /** 是否显示关闭按钮 */
+  showClose?: boolean
+  /** 是否显示取消按钮 */
+  showCancel?: boolean
+  /** 取消按钮文字 */
+  cancelText?: string
+  /** 确认按钮文字 */
+  confirmText?: string
+  /** 确认按钮类型，可选值为 'danger' */
+  confirmType?: 'danger'
+}

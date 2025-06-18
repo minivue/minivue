@@ -56,6 +56,7 @@ const classes = computed(() =>
   }),
 )
 
+// 注意不要改这个名字，有外部调用
 const onTap = () => {
   if (disabled) {
     return

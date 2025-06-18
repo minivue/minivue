@@ -12,16 +12,18 @@
     <slot name="bottom" />
     <View :style="keyboardHeight"></View>
   </View>
-  <KdActionsheet />
   <KdToast />
+  <KdDialog expose />
+  <KdActionsheet />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, getCurrentInstance, onAttached, onDetached } from '@minivue/core'
 import { getAppBaseInfo, getPage, onThemeChange, offThemeChange } from './utils'
 
-import KdToast from './toast.vue'
 import KdNavbar from './navbar.vue'
+import KdToast from './toast.vue'
+import KdDialog from './dialog.vue'
 import KdActionsheet from './actionsheet.vue'
 
 defineOptions({

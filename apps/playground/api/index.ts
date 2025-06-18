@@ -1,5 +1,14 @@
 import { getPage } from '@/components/utils'
-import { KdToastOptions, KdActionSheetOptions } from '@/type'
+import { KdToastOptions, KdActionSheetOptions, KdDialogOptions } from '@/type'
+
+/**
+ * 显示对话框
+ * @param {KdDialogOptions} options dialog参数
+ */
+export function showDialog(options: KdDialogOptions) {
+  const page = getPage()
+  page.$showDialog(options)
+}
 
 /**
  * 显示操作菜单

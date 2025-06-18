@@ -12,14 +12,14 @@ defineOptions({
       type: 'descendant',
       linked: function (target: any) {
         // @ts-ignore
-        this.onTap = target.onChange.bind(target)
+        this.onTap = target.onTap.bind(target)
       },
     },
     '../radio/radio': {
       type: 'descendant',
       linked: function (target: any) {
         // @ts-ignore
-        this.onTap = target.onChange.bind(target)
+        this.onTap = target.onTap.bind(target)
       },
     },
   },

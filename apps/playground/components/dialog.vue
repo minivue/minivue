@@ -53,20 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import KdIcon from './icon.vue'
-import KdButton from './button.vue'
-import KdDivider from './divider.vue'
-import {
-  getRect,
-  fontFamily,
-  onThemeChange,
-  getWindowInfo,
-  offThemeChange,
-  getAppBaseInfo,
-  styleObjectToString,
-  classObjectToString,
-  getMenuButtonBoundingClientRect,
-} from './utils'
 import {
   ref,
   watch,
@@ -77,13 +63,34 @@ import {
   ComponentInstance,
 } from '@minivue/core'
 
+import {
+  getPage,
+  getRect,
+  fontFamily,
+  onThemeChange,
+  getWindowInfo,
+  offThemeChange,
+  getAppBaseInfo,
+  styleObjectToString,
+  classObjectToString,
+  getMenuButtonBoundingClientRect,
+} from './utils'
+
+import { KdDialogOptions } from '../type'
+
+import KdIcon from './icon.vue'
+import KdButton from './button.vue'
+import KdDivider from './divider.vue'
+
 interface Props {
   /** 是否显示对话框 */
   show?: boolean
+  /** 是否暴露 API(作为页面全局弹窗才需要) */
+  expose?: boolean
   /** 图标，可选值为 'info', 'success', 'warning', 'error' 或自定义字符串 */
   icon?: 'info' | 'success' | 'warning' | 'error' | (string & {})
   /** 图标大小 */
-  iconSize?: 44
+  iconSize?: number
   /** 对话框标题 */
   title?: string
   /** 图片链接 */
@@ -121,6 +128,7 @@ defineOptions({
 
 const {
   show = false,
+  expose,
   iconSize = 44,
   imageSize = 's',
   imageWidth,
@@ -135,7 +143,7 @@ const emit = defineEmits<Events>()
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
 const theme = ref(appBaseInfo.theme)
-const innerShow = ref(false)
+const innerShow = ref(show)
 const scrollStyle = ref('')
 const safeAreaStyle = ref('')
 const classes = computed(() =>
@@ -214,17 +222,61 @@ const onInnerShowChange = (show: boolean) => {
     emit('change', show)
   } else {
     // 有200ms的动画延时
-    setTimeout(() => emit('change', show), 200)
+    setTimeout(() => {
+      const props = ctx.__props__ as Props
+      props.show = false
+      emit('change', show)
+    }, 200)
   }
 }
 
-watch(() => show, onShowChange)
+watch(() => show, onShowChange, { flush: 'post' })
 
 watch(innerShow, onInnerShowChange)
 
 onAttached(() => onThemeChange(setTheme))
 
 onDetached(() => offThemeChange(setTheme))
+
+// 这一写是为了不要把page对象在setup函数里面return出去
+const exposeApi = () => {
+  const page = getPage()
+  page.$showDialog = ({
+    icon,
+    iconSize = 44,
+    title,
+    image,
+    imageSize = 's',
+    imageWidth,
+    imageHeight,
+    content,
+    showClose,
+    showCancel = true,
+    cancelText = '取消',
+    confirmText = '确定',
+    confirmType,
+  }: KdDialogOptions) => {
+    const props = ctx.__props__ as Props
+    props.show = true
+    props.icon = icon
+    props.iconSize = iconSize
+    props.title = title
+    props.image = image
+    props.imageSize = imageSize
+    props.imageWidth = imageWidth
+    props.imageHeight = imageHeight
+    props.content = content
+    props.showClose = showClose
+    props.showCancel = showCancel
+    props.cancelText = cancelText
+    props.confirmText = confirmText
+    props.confirmType = confirmType
+  }
+}
+
+if (expose) {
+  exposeApi()
+}
 </script>
 
 <style>
