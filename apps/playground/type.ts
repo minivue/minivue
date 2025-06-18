@@ -111,4 +111,16 @@ export interface KdDialogOptions {
   confirmText?: string
   /** 确认按钮类型，可选值为 'danger' */
   confirmType?: 'danger'
+  /**
+   * 点击操作按钮回调函数
+   */
+  onClose?: () => void
+  /**
+   * 点击取消按钮回调函数
+   */
+  onCancel?: () => void
+  /**
+   * 点击确认按钮回调函数
+   */
+  onConfirm?: () => void
 }

@@ -56,6 +56,7 @@
 import {
   ref,
   watch,
+  toRefs,
   computed,
   onAttached,
   onDetached,
@@ -126,24 +127,39 @@ defineOptions({
   name: 'KdDialog',
 })
 
+const rawProps = withDefaults(defineProps<Props>(), {
+  show: false,
+  iconSize: 44,
+  imageSize: 's',
+  showCancel: true,
+  cancelText: '取消',
+  confirmText: '确定',
+})
+
 const {
-  show = false,
+  show,
   expose,
-  iconSize = 44,
-  imageSize = 's',
+  icon,
+  iconSize,
+  title,
+  image,
+  imageSize,
   imageWidth,
   imageHeight,
-  showCancel = true,
-  cancelText = '取消',
-  confirmText = '确定',
-} = defineProps<Props>()
+  content,
+  showClose,
+  showCancel,
+  cancelText,
+  confirmText,
+  confirmType,
+} = toRefs(rawProps)
 
 const emit = defineEmits<Events>()
 
 const ctx = getCurrentInstance<ComponentInstance>()
 const appBaseInfo = getAppBaseInfo()
 const theme = ref(appBaseInfo.theme)
-const innerShow = ref(show)
+const innerShow = ref(show.value)
 const scrollStyle = ref('')
 const safeAreaStyle = ref('')
 const classes = computed(() =>
@@ -152,15 +168,20 @@ const classes = computed(() =>
   }),
 )
 
+let onClose: () => void = () => undefined
+let onCancel: () => void = () => undefined
+let onConfirm: () => void = () => undefined
+
 const imageStyle = computed(() =>
   styleObjectToString({
     width: '100%',
-    aspectRatio: imageWidth && imageHeight ? `${imageWidth}/${imageHeight}` : '',
+    aspectRatio:
+      imageWidth.value && imageHeight.value ? `${imageWidth.value}/${imageHeight.value}` : '',
   }),
 )
 const imageBoxStyle = computed(() =>
   styleObjectToString({
-    margin: imageSize === 's' ? '24px 24px 0' : '',
+    margin: imageSize.value === 's' ? '24px 24px 0' : '',
   }),
 )
 
@@ -195,19 +216,26 @@ const setStyle = async () => {
   })
 }
 
+const hide = () => {
+  innerShow.value = false
+}
+
 const onCloseTap = () => {
   emit('close')
-  innerShow.value = false
+  hide()
+  onClose()
 }
 
 const onCancelTap = () => {
   emit('cancel')
-  innerShow.value = false
+  hide()
+  onCancel()
 }
 
 const onConfirmTap = () => {
   emit('confirm')
-  innerShow.value = false
+  hide()
+  onConfirm()
 }
 
 const onShowChange = async (show: boolean) => {
@@ -217,20 +245,18 @@ const onShowChange = async (show: boolean) => {
   }
 }
 
-const onInnerShowChange = (show: boolean) => {
-  if (show) {
-    emit('change', show)
-  } else {
-    // 有200ms的动画延时
-    setTimeout(() => {
-      const props = ctx.__props__ as Props
-      props.show = false
-      emit('change', show)
-    }, 200)
-  }
+const onInnerShowChange = (v: boolean) => {
+  // 隐藏有200ms的动画延时
+  setTimeout(
+    () => {
+      show.value = v
+      emit('change', v)
+    },
+    v ? 0 : 200,
+  )
 }
 
-watch(() => show, onShowChange, { flush: 'post' })
+watch(show, onShowChange, { flush: 'post' })
 
 watch(innerShow, onInnerShowChange)
 
@@ -241,40 +267,28 @@ onDetached(() => offThemeChange(setTheme))
 // 这一写是为了不要把page对象在setup函数里面return出去
 const exposeApi = () => {
   const page = getPage()
-  page.$showDialog = ({
-    icon,
-    iconSize = 44,
-    title,
-    image,
-    imageSize = 's',
-    imageWidth,
-    imageHeight,
-    content,
-    showClose,
-    showCancel = true,
-    cancelText = '取消',
-    confirmText = '确定',
-    confirmType,
-  }: KdDialogOptions) => {
-    const props = ctx.__props__ as Props
-    props.show = true
-    props.icon = icon
-    props.iconSize = iconSize
-    props.title = title
-    props.image = image
-    props.imageSize = imageSize
-    props.imageWidth = imageWidth
-    props.imageHeight = imageHeight
-    props.content = content
-    props.showClose = showClose
-    props.showCancel = showCancel
-    props.cancelText = cancelText
-    props.confirmText = confirmText
-    props.confirmType = confirmType
+  page.$showDialog = (options: KdDialogOptions) => {
+    onClose = options.onClose || (() => undefined)
+    onCancel = options.onCancel || (() => undefined)
+    onConfirm = options.onConfirm || (() => undefined)
+    show.value = true
+    icon.value = options.icon
+    iconSize.value = options.iconSize || 44
+    title.value = options.title
+    image.value = options.image
+    imageSize.value = options.imageSize || 's'
+    imageWidth.value = options.imageWidth
+    imageHeight.value = options.imageHeight
+    content.value = options.content
+    showClose.value = !!options.showClose
+    showCancel.value = options.showCancel === undefined ? true : options.showCancel
+    cancelText.value = options.cancelText || '取消'
+    confirmText.value = options.confirmText || '确定'
+    confirmType.value = options.confirmType
   }
 }
 
-if (expose) {
+if (expose.value) {
   exposeApi()
 }
 </script>

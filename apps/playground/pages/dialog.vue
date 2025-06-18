@@ -1,8 +1,11 @@
 <template>
   <KdPage title="弹窗组件">
-    <KdButton @tap="onTap">打开弹窗</KdButton>
+    <View style="padding: 16px">
+      <KdButton @tap="onTap1">打开弹窗</KdButton>
+      <KdButton @tap="onTap2">打开弹窗(API)</KdButton>
+    </View>
   </KdPage>
-  <!-- <KdDialog
+  <KdDialog
     :show="show"
     icon="success"
     title="标题信息"
@@ -13,18 +16,23 @@
     confirm-text="删除"
     confirm-type="danger"
     @change="onShowChange"
-  /> -->
+  />
 </template>
 
 <script setup lang="ts">
 import KdPage from '@/components/page.vue'
-// import KdDialog from '@/components/dialog.vue'
+import KdDialog from '@/components/dialog.vue'
 import KdButton from '@/components/button.vue'
 import { showDialog } from '@/api'
+import { ref } from '@minivue/core'
 
-// const show = ref(false)
+const show = ref(false)
 
-const onTap = () => {
+const onTap1 = () => {
+  show.value = true
+}
+
+const onTap2 = () => {
   showDialog({
     icon: 'success',
     title: '标题信息',
@@ -35,13 +43,21 @@ const onTap = () => {
     content: '1行正文居中对齐，大于等于2行正文左对齐',
     confirmText: '删除',
     confirmType: 'danger',
+    onCancel() {
+      console.warn('onCancel')
+    },
+    onClose() {
+      console.warn('onClose')
+    },
+    onConfirm() {
+      console.warn('onConfirm')
+    },
   })
-  // show.value = true
 }
 
-// const onShowChange = (val: boolean) => {
-//   show.value = val
-// }
+const onShowChange = (val: boolean) => {
+  show.value = val
+}
 </script>
 
 <config lang="json">
