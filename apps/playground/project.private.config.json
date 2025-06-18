@@ -11,5 +11,8 @@
         }
       ]
     }
+  },
+  "setting": {
+    "skylineRenderEnable": true
   }
 }
