@@ -47,6 +47,7 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/dialog/dialog')"> 弹窗组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/cell/cell')"> 单元格组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/grid/grid')"> 宫格组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/list/list')"> 列表组件 </KdButton>
     </View>
   </KdPage>
 </template>

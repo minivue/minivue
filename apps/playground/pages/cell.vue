@@ -1,5 +1,5 @@
 <template>
-  <KdPage title="单元格组件" gray>
+  <KdPage title="单元格组件" gray safe-bottom>
     <View style="padding: 12px">
       <KdCellGroup more title="菜单列表小标题" note="描述文本">
         <KdCell title="列表名称" desc="辅助文本" append :hover="false">

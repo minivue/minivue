@@ -7,7 +7,9 @@
     </KdNavbar>
     <slot name="top" />
     <ScrollView class="kd-page__view" scroll-y type="list">
+      <View v-if="safeTop" class="kd-page__safe-top"></View>
       <slot />
+      <View v-if="safeBottom" class="kd-page__safe-bottom"></View>
     </ScrollView>
     <slot name="bottom" />
     <View :style="keyboardHeight"></View>
@@ -54,6 +56,10 @@ interface Props {
   actions?: Action[]
   /** 是否隐藏导航栏 */
   hideNavbar?: boolean
+  /** 开启滚动区域的顶部安全区域 */
+  safeTop?: boolean
+  /** 开启滚动区域的底部安全区域 */
+  safeBottom?: boolean
 }
 
 interface Events {
@@ -108,6 +114,14 @@ onDetached(() => offThemeChange(setTheme))
 .kd-page__view {
   flex: 1;
   min-height: 0;
+}
+
+.kd-page__safe-top {
+  height: env(safe-area-inset-top);
+}
+
+.kd-page__safe-bottom {
+  height: env(safe-area-inset-bottom);
 }
 </style>
 
