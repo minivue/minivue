@@ -1,51 +1,40 @@
 <template>
   <KdPage title="单元格组件" gray safe-bottom>
-    <View style="padding: 12px">
-      <KdCellGroup more title="菜单列表小标题" note="描述文本">
-        <KdCell title="列表名称" desc="辅助文本" append :hover="false">
-          <KdSwitch slot="append" />
-        </KdCell>
-        <KdCell title="列表名称" append arrow>
-          <KdAvatar slot="append" :src="src" size="m" circle />
-        </KdCell>
-      </KdCellGroup>
-      <KdCellGroup tips="它是一个描述文本，位于白色卡片之外的描述。">
-        <KdCell title="列表名称" note="描述文本" prepend arrow>
-          <KdAvatar slot="prepend" :src="src" size="xl" circle />
-        </KdCell>
-        <KdCell title="列表名称" prepend append :hover="false">
-          <KdAvatar slot="prepend" :src="src" size="xl" circle />
-          <KdButton slot="append" type="light" dropdown>操作按钮</KdButton>
-        </KdCell>
-      </KdCellGroup>
-      <KdRadioGroup>
-        <KdCellGroup>
-          <KdCell title="列表名称" prepend>
-            <KdRadio mark slot="prepend" :value="1" checked />
-          </KdCell>
-          <KdCell title="列表名称" prepend>
-            <KdRadio mark slot="prepend" :value="2" />
-          </KdCell>
-        </KdCellGroup>
-      </KdRadioGroup>
-      <KdCheckboxGroup :value="checkList">
-        <KdCellGroup>
-          <KdCell title="列表名称" prepend>
-            <KdCheckbox slot="prepend" :value="1" />
-          </KdCell>
-          <KdCell title="列表名称" prepend>
-            <KdCheckbox slot="prepend" :value="2" />
-          </KdCell>
-          <KdCell title="列表名称" prepend>
-            <KdCheckbox slot="prepend" :value="2" />
-          </KdCell>
-        </KdCellGroup>
-        <KdCellGroup>
-          <KdCell icon="more" title="列表名称" />
-          <KdCell icon="more" title="列表名称" />
-        </KdCellGroup>
-      </KdCheckboxGroup>
-    </View>
+    <KdCell title="列表名称" desc="辅助文本" append :hover="false">
+      <KdSwitch slot="append" />
+    </KdCell>
+    <KdCell title="列表名称" append arrow>
+      <KdAvatar slot="append" :src="src" size="m" circle />
+    </KdCell>
+
+    <KdCell title="列表名称" note="描述文本" prepend arrow>
+      <KdAvatar slot="prepend" :src="src" size="xl" circle />
+    </KdCell>
+    <KdCell title="列表名称" prepend append :hover="false">
+      <KdAvatar slot="prepend" :src="src" size="xl" circle />
+      <KdButton slot="append" type="light" dropdown>操作按钮</KdButton>
+    </KdCell>
+    <KdRadioGroup>
+      <KdCell title="列表名称" prepend>
+        <KdRadio mark slot="prepend" :value="1" checked />
+      </KdCell>
+      <KdCell title="列表名称" prepend>
+        <KdRadio mark slot="prepend" :value="2" />
+      </KdCell>
+    </KdRadioGroup>
+    <KdCheckboxGroup :value="checkList">
+      <KdCell title="列表名称" prepend>
+        <KdCheckbox slot="prepend" :value="1" />
+      </KdCell>
+      <KdCell title="列表名称" prepend>
+        <KdCheckbox slot="prepend" :value="2" />
+      </KdCell>
+      <KdCell title="列表名称" prepend>
+        <KdCheckbox slot="prepend" :value="2" />
+      </KdCell>
+      <KdCell icon="more" title="列表名称" />
+      <KdCell icon="more" title="列表名称" />
+    </KdCheckboxGroup>
   </KdPage>
 </template>
 
@@ -59,7 +48,6 @@ import KdCheckbox from '@/components/checkbox.vue'
 import KdCheckboxGroup from '@/components/checkbox-group.vue'
 import KdRadio from '@/components/radio.vue'
 import KdRadioGroup from '@/components/radio-group.vue'
-import KdCellGroup from '@/components/cell-group.vue'
 import { ref } from '@minivue/core'
 
 const checkList = ref<number[]>([])

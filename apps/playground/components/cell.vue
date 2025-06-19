@@ -18,7 +18,7 @@
         <Text overflow="ellipsis">{{ desc }}</Text>
       </View>
     </View>
-    <View v-if="append || note || arrow" class="kd-cell__append">
+    <View v-if="append || note || arrow" :class="appendClass">
       <slot name="append" />
       <View v-if="note" class="kd-cell__note">
         <Text overflow="ellipsis">{{ note }}</Text>
@@ -74,16 +74,29 @@ interface Props {
   prepend?: boolean
   /** 是否有后置元素 */
   append?: boolean
+  /** 后置元素类型(因为不同元素内边距不一样，所有需要设置) */
+  appendType?: 'normal' | 'switch' | 'icon' | 'avatar' | 'button' | 'text'
   /** 是否开启点击反馈 */
   hover?: boolean
 }
 
-const { size = 'm', hover = true, disabled, prepend, append } = defineProps<Props>()
+const {
+  size = 'm',
+  hover = true,
+  disabled,
+  prepend,
+  append,
+  appendType = 'normal',
+} = defineProps<Props>()
 
 const classes = computed(() =>
   classObjectToString('kd-cell', `kd-cell--${size}`, {
     'kd-cell--disabled': disabled,
   }),
+)
+
+const appendClass = computed(() =>
+  classObjectToString('kd-cell__append', `kd-cell__append--${appendType}`),
 )
 
 // eslint-disable-next-line
@@ -163,8 +176,35 @@ const onTap = () => {}
   gap: 2px;
   align-items: center;
   justify-content: flex-end;
-  padding: 11px 12px 11px 0;
   color: var(--kd-color-text-tertiary);
+}
+
+.kd-cell__append--normal {
+  padding: 11px 12px 11px 0;
+}
+
+.kd-cell__append--switch {
+  padding: 8px 16px 8px 0;
+}
+
+.kd-cell__append--icon {
+  padding-right: 5px;
+}
+
+.kd-cell__append--button {
+  gap: 20px;
+  padding-right: 4px;
+}
+
+.kd-cell__append--text {
+  gap: 2px;
+  padding: 11px 16px 11px 0;
+}
+
+.kd-cell__append--avatar {
+  gap: 2px;
+  height: 44px;
+  padding-right: 12px;
 }
 
 .kd-cell__note {

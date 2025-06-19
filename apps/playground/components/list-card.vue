@@ -21,6 +21,10 @@ defineOptions({
   background: var(--kd-color-background-bottom);
   border-radius: 12px;
 }
+
+.kd-list-card + .kd-list-card {
+  margin-top: 8px;
+}
 </style>
 
 <config lang="json">

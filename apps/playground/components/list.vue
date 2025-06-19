@@ -16,7 +16,7 @@ defineOptions({
   flex-direction: column;
   align-items: center;
   align-self: stretch;
-  padding: 12px;
+  padding: 12px 12px env(safe-area-inset-bottom);
 }
 </style>
 

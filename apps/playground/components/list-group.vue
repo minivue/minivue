@@ -12,9 +12,7 @@
         <KdIcon v-if="more" type="arrow" size="18" />
       </View>
     </View>
-    <View class="kd-list-group__box">
-      <slot />
-    </View>
+    <slot />
     <View v-if="tips" class="kd-list-group__tips">
       {{ tips }}
     </View>
@@ -98,17 +96,6 @@ const onMoreTap = () => {
   flex-shrink: 0;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
-}
-
-.kd-list-group__box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-self: stretch;
-  padding: 4px 0;
-  overflow: hidden;
-  background: var(--kd-color-background-bottom);
-  border-radius: 12px;
 }
 
 .kd-list-group__tips {
