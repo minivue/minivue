@@ -236,6 +236,10 @@ const classes = computed(() =>
   border-radius: 8px;
 }
 
+.kd-button--m.kd-button--dropdown {
+  padding: 5px 8px 5px 12px;
+}
+
 .kd-button--l {
   min-width: 64px;
   height: 40px;
@@ -245,6 +249,10 @@ const classes = computed(() =>
   border-radius: 8px;
 }
 
+.kd-button--l.kd-button--dropdown {
+  padding: 8px 12px 8px 20px;
+}
+
 .kd-button--xl {
   min-width: 72px;
   height: 48px;
@@ -252,6 +260,10 @@ const classes = computed(() =>
   font-size: var(--kd-font-size-middle);
   line-height: var(--kd-font-line-height-middle);
   border-radius: 12px;
+}
+
+.kd-button--xl.kd-button--dropdown {
+  padding: 12px 16px 12px 20px;
 }
 
 .kd-button--m .kd-icon {

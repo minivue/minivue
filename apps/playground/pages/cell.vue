@@ -1,8 +1,8 @@
 <template>
   <KdPage title="单元格组件" gray>
     <View style="padding: 12px">
-      <KdCellGroup more title="菜单列表小标题" desc="描述文本">
-        <KdCell title="列表名称" subtitle="辅助文本" append>
+      <KdCellGroup more title="菜单列表小标题" note="描述文本">
+        <KdCell title="列表名称" desc="辅助文本" append :hover="false">
           <KdSwitch slot="append" />
         </KdCell>
         <KdCell title="列表名称" append arrow>
@@ -10,10 +10,10 @@
         </KdCell>
       </KdCellGroup>
       <KdCellGroup tips="它是一个描述文本，位于白色卡片之外的描述。">
-        <KdCell title="列表名称" desc="描述文本" prepend arrow>
+        <KdCell title="列表名称" note="描述文本" prepend arrow>
           <KdAvatar slot="prepend" :src="src" size="xl" circle />
         </KdCell>
-        <KdCell title="列表名称" prepend append>
+        <KdCell title="列表名称" prepend append :hover="false">
           <KdAvatar slot="prepend" :src="src" size="xl" circle />
           <KdButton slot="append" type="light" dropdown>操作按钮</KdButton>
         </KdCell>

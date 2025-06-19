@@ -1,21 +1,27 @@
 <template>
-  <View :class="classes" :hover-stay-time="200" hover-class="kd-cell--pressed" @tap="onTap">
+  <View
+    :class="classes"
+    :hover-stay-time="200"
+    :hover-class="hover ? 'kd-cell--pressed' : ''"
+    @tap="onTap"
+  >
     <View v-if="prepend || icon" class="kd-cell__prepend">
       <slot name="prepend" />
       <KdIcon v-if="icon" :type="icon" size="22" />
     </View>
     <View class="kd-cell__center">
-      <View class="kd-cell__title">
+      <slot />
+      <View v-if="title" class="kd-cell__title">
         <Text overflow="ellipsis" :max-lines="2"> {{ title }} </Text>
       </View>
-      <View class="kd-cell__subtitle">
-        <Text overflow="ellipsis">{{ subtitle }}</Text>
-      </View>
-    </View>
-    <View v-if="append || desc || arrow" class="kd-cell__append">
-      <slot name="append" />
       <View v-if="desc" class="kd-cell__desc">
         <Text overflow="ellipsis">{{ desc }}</Text>
+      </View>
+    </View>
+    <View v-if="append || note || arrow" class="kd-cell__append">
+      <slot name="append" />
+      <View v-if="note" class="kd-cell__note">
+        <Text overflow="ellipsis">{{ note }}</Text>
       </View>
       <KdIcon v-if="arrow" type="arrow" size="18" />
     </View>
@@ -50,18 +56,29 @@ defineOptions({
 })
 
 interface Props {
+  /** 尺寸 */
   size?: 'm' | 's'
+  /** 图标 */
   icon?: string
+  /** 是否有箭头 */
   arrow?: boolean
+  /** 标题呢人 */
   title?: string
+  /** 右侧说明 */
+  note?: string
+  /** 描述 */
   desc?: string
-  subtitle?: string
+  /** 是否禁用 */
   disabled?: boolean
+  /** 是否有前置元素 */
   prepend?: boolean
+  /** 是否有后置元素 */
   append?: boolean
+  /** 是否开启点击反馈 */
+  hover?: boolean
 }
 
-const { size = 'm', disabled, prepend, append } = defineProps<Props>()
+const { size = 'm', hover = true, disabled, prepend, append } = defineProps<Props>()
 
 const classes = computed(() =>
   classObjectToString('kd-cell', `kd-cell--${size}`, {
@@ -133,7 +150,7 @@ const onTap = () => {}
   -webkit-box-orient: vertical;
 }
 
-.kd-cell__subtitle {
+.kd-cell__desc {
   align-self: stretch;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base,);
@@ -150,7 +167,7 @@ const onTap = () => {}
   color: var(--kd-color-text-tertiary);
 }
 
-.kd-cell__desc {
+.kd-cell__note {
   flex-shrink: 0;
   font-size: var(--kd-font-size-base);
   line-height: var(--kd-font-line-height-base);
@@ -181,6 +198,10 @@ const onTap = () => {}
 
 .kd-cell:last-child .kd-divider {
   display: none;
+}
+
+.kd-cell__append .kd-button--light {
+  color: var(--kd-color-text-tertiary);
 }
 </style>
 

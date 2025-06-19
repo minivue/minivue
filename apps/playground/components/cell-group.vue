@@ -7,7 +7,7 @@
       <View class="kd-cell-group__append" @tap="onMoreTap">
         <slot name="append" />
         <View class="kd-cell-group__desc">
-          <Text overflow="ellipsis">{{ desc }}</Text>
+          <Text overflow="ellipsis">{{ note }}</Text>
         </View>
         <KdIcon v-if="more" type="arrow" size="18" />
       </View>
@@ -31,11 +31,13 @@ defineOptions({
 })
 
 interface Props {
-  size?: 'm' | 's'
-  type?: 'line' | ''
+  /** 标题 */
   title?: string
-  desc?: string
+  /** 右侧描述 */
+  note?: string
+  /** 底部提示 */
   tips?: string
+  /** 是否显示右边箭头，true则可以触发more事件 */
   more?: boolean
 }
 
@@ -44,9 +46,9 @@ interface Events {
 }
 
 const emit = defineEmits<Events>()
-const { size = 'm', more } = defineProps<Props>()
+const { more } = defineProps<Props>()
 
-const classes = computed(() => classObjectToString('kd-cell-group', `kd-cell-group--${size}`))
+const classes = computed(() => classObjectToString('kd-cell-group'))
 
 const onMoreTap = () => {
   if (more) {

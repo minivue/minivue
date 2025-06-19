@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" @tap.stop="onTap"></View>
+  <View :class="classes" @tap.stop="onTap" hover-stop-propagation></View>
 </template>
 
 <script setup lang="ts">
