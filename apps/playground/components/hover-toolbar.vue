@@ -29,6 +29,7 @@ defineProps<Props>()
 .kd-hover-toolbar {
   box-sizing: border-box;
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   gap: 4px;
   align-items: flex-start;
