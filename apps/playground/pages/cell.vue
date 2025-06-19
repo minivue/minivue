@@ -1,5 +1,5 @@
 <template>
-  <KdPage title="单元格组件" gray safe-bottom>
+  <KdPage title="单元格组件">
     <KdCell title="列表名称" desc="辅助文本" append :hover="false">
       <KdSwitch slot="append" />
     </KdCell>
