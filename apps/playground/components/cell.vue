@@ -32,15 +32,14 @@ import { classObjectToString } from './utils'
 defineOptions({
   name: 'KdCell',
   relations: {
-    '../checkbox/checkbox': {
+    '../radio/radio': {
       type: 'descendant',
       linked: function (target: any) {
-        console.warn('ta')
         // @ts-ignore
         this.onTap = target.onTap.bind(target)
       },
     },
-    '../radio/radio': {
+    '../checkbox/checkbox': {
       type: 'descendant',
       linked: function (target: any) {
         // @ts-ignore
@@ -69,6 +68,7 @@ const classes = computed(() =>
     'kd-cell--disabled': disabled,
   }),
 )
+
 // eslint-disable-next-line
 const onTap = () => {}
 </script>

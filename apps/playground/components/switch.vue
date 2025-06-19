@@ -1,5 +1,5 @@
 <template>
-  <View :class="classes" @tap.stop="onChange"></View>
+  <View :class="classes" @tap.stop="onTap"></View>
 </template>
 
 <script setup lang="ts">
@@ -35,7 +35,7 @@ const classes = computed(() =>
   }),
 )
 
-const onChange = () => {
+const onTap = () => {
   if (!disabled) {
     vibrateShort()
     innerChecked.value = !innerChecked.value

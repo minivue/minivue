@@ -9,6 +9,9 @@ import { classObjectToString, getRelationNodes } from './utils'
 defineOptions({
   name: 'KdRadio',
   relations: {
+    '../cell/cell': {
+      type: 'ancestor',
+    },
     '../label/label': {
       type: 'ancestor',
     },
