@@ -1,12 +1,12 @@
 <template>
-  <KdPage title="悬浮工具栏">
-    <KdHoverToolbar :items="items" @action="onAction" />
+  <KdPage title="宫格组件">
+    <KdGrid :items="items" @action="onAction" />
   </KdPage>
 </template>
 
 <script setup lang="ts">
-import KdHoverToolbar from '@/components/hover-toolbar.vue'
 import KdPage from '@/components/page.vue'
+import KdGrid from '@/components/grid.vue'
 
 const items = [
   {
@@ -63,7 +63,7 @@ const onAction = (action: string) => {
 
 <config lang="json">
 {
-  "navigationBarTitleText": "悬浮工具栏",
+  "navigationBarTitleText": "宫格组件",
   "disableScroll": true
 }
 </config>

@@ -1,6 +1,13 @@
 <template>
   <View class="kd-hover-toolbar">
-    <KdButton v-for="item in items" :key="item.text" type="light" :icon="item.icon" vertical>
+    <KdButton
+      v-for="item in items"
+      :key="item.text"
+      type="light"
+      :icon="item.icon"
+      vertical
+      @tap="onTap(item.action)"
+    >
       {{ item.text }}
     </KdButton>
   </View>
@@ -13,9 +20,18 @@ defineOptions({
   name: 'KdHoverToolbar',
 })
 
+interface Events {
+  /** 点击动作 */
+  action: [value: string]
+}
+
 interface Item {
+  /** 图标 */
   icon: string
+  /** 文字 */
   text: string
+  /** 动作 */
+  action: string
 }
 
 interface Props {
@@ -23,6 +39,12 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const emit = defineEmits<Events>()
+
+const onTap = (action: string) => {
+  emit('action', action)
+}
 </script>
 
 <style>

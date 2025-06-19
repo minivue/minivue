@@ -3,16 +3,23 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/cell/cell",
-          "pathName": "pages/cell/cell",
+          "name": "pages/grid/grid",
+          "pathName": "pages/grid/grid",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/cell/cell",
+          "pathName": "pages/cell/cell",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }
   },
   "setting": {
-    "skylineRenderEnable": true
+    "skylineRenderEnable": false
   }
 }

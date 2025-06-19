@@ -5,12 +5,31 @@ type ClassValue = string | number | boolean | undefined | null | Record<string, 
 
 let id = 0
 
+/** 获取唯一id */
 export function getId() {
   return `key${id++}`
 }
 
+/** 字体族 */
 export const fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC',
     'Noto Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;`
+
+/**
+ * 将数组分成指定列数的二维数组。
+ * @param array 要处理的数组。
+ * @param columns 列数。
+ * @returns 二维数组。
+ */
+export function chunkArray<T>(array: T[], columns: number): T[][] {
+  return array.reduce((resultArray: T[][], item, index) => {
+    const chunkIndex = Math.floor(index / columns)
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = [] // 开始一个新的块
+    }
+    resultArray[chunkIndex].push(item)
+    return resultArray
+  }, [])
+}
 
 /**
  * 将 class 参数转换为字符串。
