@@ -15,9 +15,9 @@
     }
   },
   "dependencies": {
-    "@swc/core": "1.12.1",
-    "@vue/compiler-sfc": "3.5.16",
-    "@vue/compiler-core": "3.5.16"
+    "@swc/core": "1.12.6",
+    "@vue/compiler-sfc": "3.5.17",
+    "@vue/compiler-core": "3.5.17"
   },
   "devDependencies": {
     "@types/node": "latest",

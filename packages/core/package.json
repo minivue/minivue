@@ -14,8 +14,8 @@
     }
   },
   "dependencies": {
-    "@vue/reactivity": "^3.5.16",
-    "vue": "^3.5.16"
+    "@vue/reactivity": "^3.5.17",
+    "vue": "^3.5.17"
   },
   "devDependencies": {
     "@types/node": "latest",
