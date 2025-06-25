@@ -27,6 +27,6 @@
     }
   },
   "setting": {
-    "skylineRenderEnable": false
+    "skylineRenderEnable": true
   }
 }
