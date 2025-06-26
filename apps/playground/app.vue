@@ -45,7 +45,7 @@
     "pages/loading/loading",
     "pages/progress/progress",
     "pages/message-bar/message-bar",
-    "pages/bdage/bdage",
+    "pages/badge/badge",
     "pages/skeleton/skeleton",
     "pages/input/input",
     "pages/avatar/avatar",

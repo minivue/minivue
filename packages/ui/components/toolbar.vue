@@ -1,5 +1,5 @@
 <template>
-  <View class="kd-hover-toolbar">
+  <View class="kd-toolbar">
     <KdButton
       v-for="item in items"
       :key="item.text"
@@ -17,7 +17,7 @@
 import KdButton from './button.vue'
 
 defineOptions({
-  name: 'KdHoverToolbar',
+  name: 'KdToolbar',
 })
 
 interface Events {
@@ -48,7 +48,7 @@ const onTap = (action: string) => {
 </script>
 
 <style>
-.kd-hover-toolbar {
+.kd-toolbar {
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
@@ -62,7 +62,7 @@ const onTap = (action: string) => {
   backdrop-filter: blur(5px);
 }
 
-.kd-hover-toolbar .kd-button {
+.kd-toolbar .kd-button {
   flex-shrink: 0;
   width: 60px !important;
   height: 64px !important;

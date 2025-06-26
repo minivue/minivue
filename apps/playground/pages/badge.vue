@@ -3,44 +3,44 @@
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage />
+        <KdBadge />
       </View>
     </View>
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage content="1" />
+        <KdBadge content="1" />
       </View>
     </View>
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage content="99" />
+        <KdBadge content="99" />
       </View>
     </View>
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage content="99+" />
+        <KdBadge content="99+" />
       </View>
     </View>
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage content="NEW" />
+        <KdBadge content="NEW" />
       </View>
     </View>
     <View class="p-badge__box">
       <View class="p-badge__item">
         有消息
-        <KdBdage content="1" ellipsis />
+        <KdBadge content="1" ellipsis />
       </View>
     </View>
   </KdPage>
 </template>
 
 <script setup lang="ts">
-import KdBdage from '@/components/bdage.vue'
+import KdBadge from '@/components/badge.vue'
 import KdPage from '@/components/page.vue'
 </script>
 
@@ -57,7 +57,7 @@ import KdPage from '@/components/page.vue'
 
 <config lang="json">
 {
-  "navigationBarTitleText": "Toast组件",
+  "navigationBarTitleText": "徽标组件",
   "disableScroll": true
 }
 </config>

@@ -14,7 +14,7 @@ interface Props {
 }
 
 defineOptions({
-  name: 'KdBdage',
+  name: 'KdBadge',
 })
 
 const { content, ellipsis } = defineProps<Props>()
@@ -22,15 +22,15 @@ const { content, ellipsis } = defineProps<Props>()
 const innerContent = computed(() => (ellipsis ? '' : content))
 
 const classes = computed(() =>
-  classObjectToString('kd-bdage', {
-    'kd-bdage--content': innerContent.value,
-    'kd-bdage--ellipsis': ellipsis,
+  classObjectToString('kd-badge', {
+    'kd-badge--content': innerContent.value,
+    'kd-badge--ellipsis': ellipsis,
   }),
 )
 </script>
 
 <style>
-.kd-bdage {
+.kd-badge {
   position: absolute;
   top: 0;
   right: 0;
@@ -49,14 +49,14 @@ const classes = computed(() =>
   transform: translate(50%, -50%);
 }
 
-.kd-bdage--content {
+.kd-badge--content {
   width: auto;
   min-width: 20px;
   height: 20px;
   padding: 4px;
 }
 
-.kd-bdage--ellipsis {
+.kd-badge--ellipsis {
   width: 26px;
   height: 20px;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMiIgaGVpZ2h0PSIxNiIgZmlsbD0ibm9uZSI+PGcgZmlsbD0iI2ZmZiI+PGNpcmNsZSBjeD0iNiIgY3k9IjgiIHI9IjEiLz48Y2lyY2xlIGN4PSIxMSIgY3k9IjgiIHI9IjEiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjgiIHI9IjEiLz48L2c+PC9zdmc+');

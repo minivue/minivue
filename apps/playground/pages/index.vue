@@ -19,7 +19,7 @@
       <KdButton type="primary" size="xl" @tap="onTap('/pages/message-bar/message-bar')">
         消息横幅组件
       </KdButton>
-      <KdButton type="primary" size="xl" @tap="onTap('/pages/bdage/bdage')"> 徽标组件 </KdButton>
+      <KdButton type="primary" size="xl" @tap="onTap('/pages/badge/badge')"> 徽标组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/skeleton/skeleton')">
         骨架屏组件
       </KdButton>
