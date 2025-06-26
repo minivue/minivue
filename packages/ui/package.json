@@ -19,6 +19,7 @@
     "@minivue/core": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "latest",
     "@minivue/cli": "workspace:*",
     "vue": "latest",
     "typescript": "latest",

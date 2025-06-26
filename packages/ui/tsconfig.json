@@ -11,8 +11,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["miniprogram-api-typings"],
-    "target": "es2018",
+    "types": ["miniprogram-api-typings", "@types/node"],
+    "target": "es2019",
     "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitThis": true,

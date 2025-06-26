@@ -162,6 +162,9 @@ importers:
       '@minivue/cli':
         specifier: workspace:*
         version: link:../cli
+      '@types/node':
+        specifier: latest
+        version: 24.0.4
       miniprogram-api-typings:
         specifier: latest
         version: 4.0.7
