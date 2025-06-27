@@ -205,12 +205,18 @@ export async function transformCode(
       // 如果是 Vue 组件或者在组件库中
       if (path.endsWith('.vue') || componentLibs.includes(path)) {
         // 提取导入的组件名称
-        node.specifiers.forEach((specifier) => {
+        node.specifiers = node.specifiers.filter((specifier) => {
           const key = specifier.local.value
-          importedComponentMap.set(key, path)
-          importedComponents.add(key)
+          const isComponent = /^[A-Z]/.test(key)
+          if (isComponent) {
+            importedComponentMap.set(key, path)
+            importedComponents.add(key)
+          }
+          return !isComponent
         })
-        return false // 从源码中删除
+        if (node.specifiers.length === 0) {
+          return false // 从源码中删除
+        }
       } else if (node.source.value === 'vue') {
         // vue 换成@minivue/core
         node.source.value = MINIVUE_PACKAGE_NAME

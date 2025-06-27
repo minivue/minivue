@@ -53,8 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
+import { KdPage, KdButton } from '@minivue/ui'
 
 function onTap(url: string) {
   wx.navigateTo({ url })

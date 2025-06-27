@@ -35,6 +35,8 @@ import KdToast from './components/toast.vue'
 import KdToolbar from './components/toolbar.vue'
 import KdTooltip from './components/tooltip.vue'
 
+export * from './api'
+
 export {
   KdActionsheet,
   KdAvatarGroup,

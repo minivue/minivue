@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from '@minivue/core'
-import KdButton from '@/components/button.vue'
+import KdButton from './button.vue'
 import { chunkArray } from '../utils'
 
 defineOptions({

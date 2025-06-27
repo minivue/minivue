@@ -5,9 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
-import { showActionSheet } from '@/api'
+import { KdPage, KdButton, showActionSheet } from '@minivue/ui'
 
 const onTap = () => {
   showActionSheet({
