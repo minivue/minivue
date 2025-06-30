@@ -11,7 +11,7 @@ import {
 import { existsSync, createReadStream } from 'fs'
 import { createInterface } from 'readline'
 import { dirname, join, resolve, relative } from 'path'
-import { writeFile as _writeFile, mkdir, readFile } from 'fs/promises'
+import { writeFile as _writeFile, mkdir, readdir, readFile } from 'fs/promises'
 import { CompilerOptions } from 'typescript'
 
 interface Component {
@@ -21,6 +21,12 @@ interface Component {
 
 interface PackageJson {
   components?: Component[]
+  exports?: Record<string, string>
+}
+
+interface ComponentLib {
+  prefix: string
+  files: string[]
 }
 
 /**
@@ -361,15 +367,47 @@ export async function parseFile(filePath: string) {
   }
 }
 
-async function getProjectPackageJson() {
-  const packageJsonPath = join(process.cwd(), 'package.json')
+async function getProjectPackageJson(projectPath?: string) {
+  const packageJsonPath = join(projectPath || process.cwd(), 'package.json')
   const content = await readFile(packageJsonPath, 'utf-8')
   return JSON.parse(content) as PackageJson
+}
+
+async function getTargetLibraryCompponents(libraryName: string) {
+  try {
+    const nodeModulesPath = join(process.cwd(), 'node_modules')
+    const packagePath = join(nodeModulesPath, libraryName)
+    const packageJson = await getProjectPackageJson(packagePath)
+
+    const exports = packageJson.exports || {}
+    const componentsPath = exports['./components']
+    if (componentsPath) {
+      const absolutePath = resolve(packagePath, componentsPath)
+      const files = await readdir(absolutePath)
+      return files
+    }
+    return []
+  } catch {
+    return []
+  }
 }
 
 export async function getComponents() {
   const packageJson = await getProjectPackageJson()
   return packageJson.components || []
+}
+
+export async function getLibraryCompponents(component: Component[]) {
+  const libraryCompponents: Record<string, ComponentLib> = {}
+  for (const item of component) {
+    const { libraryName, prefix } = item
+    const files = await getTargetLibraryCompponents(libraryName)
+    libraryCompponents[libraryName] = {
+      prefix: prefix || '',
+      files: files,
+    }
+  }
+  return libraryCompponents
 }
 
 export async function getCompilerOptions(): Promise<CompilerOptions | undefined> {

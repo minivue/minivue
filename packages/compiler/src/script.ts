@@ -2,6 +2,11 @@ import { compileScript, type SFCDescriptor } from '@vue/compiler-sfc'
 import { transformCode } from './component'
 import { hash } from './utils'
 
+interface ComponentLib {
+  prefix: string
+  files: string[]
+}
+
 interface CompileParams {
   descriptor: SFCDescriptor
   path: string
@@ -9,6 +14,7 @@ interface CompileParams {
   eventNames: string[]
   isApp: boolean
   isComponent: boolean
+  libCompponents: Record<string, ComponentLib>
 }
 
 /**
@@ -19,6 +25,7 @@ export async function compile({
   path,
   componentLibs = [],
   eventNames = [],
+  libCompponents = {},
   isApp = false,
   isComponent = false,
 }: CompileParams) {
@@ -28,16 +35,17 @@ export async function compile({
     sourceMap: false,
     hoistStatic: false,
   })
-  const scriptContent = result.content
+  const source = result.content
 
   const type = isApp ? 'App' : isComponent ? 'Component' : 'Page'
 
-  const { code, importedComponentMap } = await transformCode(
+  const { code, importedComponentMap } = await transformCode({
     type,
-    scriptContent,
+    source,
     componentLibs,
     eventNames,
-  )
+    libCompponents,
+  })
 
   return {
     contents: code,

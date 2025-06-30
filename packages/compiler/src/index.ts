@@ -1,11 +1,11 @@
-import { dirname, basename, relative, join, resolve } from 'path'
+import { dirname, basename, relative, join } from 'path'
 import { type Plugin } from 'esbuild'
 import { parse } from '@vue/compiler-sfc'
 import { compile } from './script'
 import { writeWxml } from './wxml'
 import { writeWxss } from './wxss'
 import { writeJson } from './json'
-import { parseFile, getCompilerOptions, getComponents } from './utils'
+import { parseFile, getCompilerOptions, getComponents, getLibraryCompponents } from './utils'
 
 interface Component {
   libraryName: string
@@ -24,30 +24,9 @@ export default function plugin(options: PluginOptions = {}): Plugin {
     async setup(build) {
       const components = options.components || (await getComponents())
       const compilerOptions = await getCompilerOptions()
-      const entryPoints = new Set()
+      const libCompponents = await getLibraryCompponents(components)
       build.initialOptions.charset = 'utf8'
-      build.onStart(() => {
-        const { entryPoints: entries } = build.initialOptions
-        // 处理不同类型的入口点配置
-        if (Array.isArray(entries)) {
-          entries.forEach((entry) => {
-            entryPoints.add(resolve(entry as string))
-          })
-        } else if (typeof entries === 'object') {
-          Object.values(entries).forEach((entry) => {
-            entryPoints.add(resolve(entry))
-          })
-        } else if (typeof entries === 'string') {
-          entryPoints.add(resolve(entries))
-        }
-      })
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
-        if (!entryPoints.has(path)) {
-          // 非入口 .vue 文件，返回空导出
-          return {
-            contents: '',
-          }
-        }
         const { wxs, content } = await parseFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
@@ -70,6 +49,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
           descriptor,
           path,
           componentLibs: components.map((component) => component.libraryName),
+          libCompponents,
           eventNames,
           isApp,
           isComponent,

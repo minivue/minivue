@@ -16,11 +16,12 @@
 </template>
 
 <script setup lang="ts">
+import type { KdToastOptions } from '@minivue/ui'
 import { KdPage, KdButton, showToast, hideToast } from '@minivue/ui'
 
 const examples: {
   title: string
-  options: any
+  options: KdToastOptions<boolean>
 }[] = [
   {
     title: '基本用法',
@@ -179,7 +180,7 @@ const examples: {
 
 let interval: NodeJS.Timeout
 
-const onTap = (options: any) => {
+const onTap = (options: KdToastOptions<boolean>) => {
   if (options.icon === 'loading') {
     showToast(options)
     setTimeout(() => {

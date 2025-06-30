@@ -1,4 +1,5 @@
 import { parse, print, type SpreadElement, type Property } from '@swc/core'
+import { camelToDash } from './utils'
 
 type AstProp = SpreadElement | Property
 
@@ -166,19 +167,34 @@ function removeComponentReferences(
   return properties
 }
 
+interface ComponentLib {
+  prefix: string
+  files: string[]
+}
+
+interface TransformCodeParams {
+  type: 'App' | 'Component' | 'Page'
+  source: string
+  componentLibs: string[]
+  eventNames: string[]
+  libCompponents: Record<string, ComponentLib>
+}
+
 /**
  * 删除组件的导入和引用,并且进行一些代码删除和替换
  * @param source 源代码
  * @param componentLibs 组件库列表(例如: ['vant'])
  * @param eventNames 事件名称列表
+ * @param libCompponents 库组件
  * @returns
  */
-export async function transformCode(
-  type: 'App' | 'Component' | 'Page',
-  source: string,
-  componentLibs: string[] = [],
-  eventNames: string[] = [],
-) {
+export async function transformCode({
+  type,
+  source,
+  componentLibs = [],
+  eventNames = [],
+  libCompponents = {},
+}: TransformCodeParams) {
   // 解析代码为 AST
   const ast = await parse(source, { syntax: 'typescript' })
 
@@ -202,21 +218,30 @@ export async function transformCode(
           specifier.imported.value = `define${type}`
         }
       })
-      // 如果是 Vue 组件或者在组件库中
-      if (path.endsWith('.vue') || componentLibs.includes(path)) {
-        // 提取导入的组件名称
-        node.specifiers = node.specifiers.filter((specifier) => {
+      if (path.endsWith('.vue')) {
+        // [Vue 文件]提取导入的组件名称
+        node.specifiers.forEach((specifier) => {
           const key = specifier.local.value
-          const isComponent = /^[A-Z]/.test(key)
-          if (isComponent) {
-            if (key === 'KdToastOptions') {
-              console.log(specifier)
+          importedComponentMap.set(key, path)
+          importedComponents.add(key)
+        })
+        return false // 从源码中删除
+      } else if (componentLibs.includes(path)) {
+        const libInfo = libCompponents[path]
+        // [在组件库中]提取导入的组件名称
+        node.specifiers = node.specifiers.filter((specifier) => {
+          if (libInfo) {
+            const { prefix, files } = libInfo
+            const key = specifier.local.value
+            const fileName = camelToDash(key).replace(`${prefix}-`, '')
+            const isComponent = files.includes(fileName)
+            if (isComponent) {
+              importedComponentMap.set(key, path)
+              importedComponents.add(key)
             }
-
-            importedComponentMap.set(key, path)
-            importedComponents.add(key)
+            return !isComponent
           }
-          return !isComponent
+          return true
         })
         if (node.specifiers.length === 0) {
           return false // 从源码中删除
