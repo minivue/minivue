@@ -1,4 +1,4 @@
-import { dirname, basename, relative, join } from 'path'
+import { dirname, basename, relative, join, resolve } from 'path'
 import { type Plugin } from 'esbuild'
 import { parse } from '@vue/compiler-sfc'
 import { compile } from './script'
@@ -24,8 +24,30 @@ export default function plugin(options: PluginOptions = {}): Plugin {
     async setup(build) {
       const components = options.components || (await getComponents())
       const compilerOptions = await getCompilerOptions()
+      const entryPoints = new Set()
       build.initialOptions.charset = 'utf8'
+      build.onStart(() => {
+        const { entryPoints: entries } = build.initialOptions
+        // 处理不同类型的入口点配置
+        if (Array.isArray(entries)) {
+          entries.forEach((entry) => {
+            entryPoints.add(resolve(entry as string))
+          })
+        } else if (typeof entries === 'object') {
+          Object.values(entries).forEach((entry) => {
+            entryPoints.add(resolve(entry))
+          })
+        } else if (typeof entries === 'string') {
+          entryPoints.add(resolve(entries))
+        }
+      })
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
+        if (!entryPoints.has(path)) {
+          // 非入口 .vue 文件，返回空导出
+          return {
+            contents: '',
+          }
+        }
         const { wxs, content } = await parseFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
