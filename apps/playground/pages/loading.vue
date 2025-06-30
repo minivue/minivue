@@ -13,8 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdLoading from '@/components/loading.vue'
+import { KdPage, KdLoading } from '@minivue/ui'
 </script>
 
 <config lang="json">

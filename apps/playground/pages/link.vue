@@ -7,8 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdLink from '@/components/link.vue'
+import { KdPage, KdLink } from '@minivue/ui'
 </script>
 
 <config lang="json">

@@ -11,8 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdTabs from '@/components/tabs.vue'
+import { KdTabs } from '@minivue/ui'
 
 const tabs = [
   {

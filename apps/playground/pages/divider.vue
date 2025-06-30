@@ -6,8 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdDivider from '@/components/divider.vue'
+import { KdPage, KdDivider } from '@minivue/ui'
 </script>
 
 <config lang="json">

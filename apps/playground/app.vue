@@ -50,7 +50,7 @@
     "pages/input/input",
     "pages/avatar/avatar",
     "pages/tabbar/tabbar",
-    "pages/hover-toolbar/hover-toolbar",
+    "pages/toolbar/toolbar",
     "pages/tooltip/tooltip",
     "pages/popover/popover",
     "pages/drawer/drawer",

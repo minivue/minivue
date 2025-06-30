@@ -77,9 +77,7 @@
 
 <script setup lang="ts">
 import { ref } from '@minivue/core'
-import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
-import KdButtonGroup from '@/components/button-group.vue'
+import { KdPage, KdButton, KdButtonGroup } from '@minivue/ui'
 
 const active = ref(false)
 

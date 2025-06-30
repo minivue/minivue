@@ -40,8 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import KdBadge from '@/components/badge.vue'
-import KdPage from '@/components/page.vue'
+import { KdPage, KdBadge } from '@minivue/ui'
 </script>
 
 <style>

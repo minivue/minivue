@@ -1,5 +1,22 @@
-import { getPage } from '../utils'
 import { KdToastOptions, KdActionSheetOptions, KdDialogOptions } from '../type'
+
+/**
+ * 获取当前页面栈。
+ * @returns 当前页面栈。
+ */
+export function getPages() {
+  return getCurrentPages()
+}
+
+/**
+ * 获取当前页面实例。
+ * @returns 当前页面实例。
+ */
+export function getPage() {
+  const pages = getPages()
+  const page = pages[pages.length - 1]
+  return page
+}
 
 /**
  * 显示对话框

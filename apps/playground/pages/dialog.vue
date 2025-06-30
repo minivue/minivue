@@ -21,11 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdDialog from '@/components/dialog.vue'
-import KdButton from '@/components/button.vue'
-import { showDialog } from '@/api'
 import { ref } from '@minivue/core'
+import { KdPage, KdDialog, KdButton, showDialog } from '@minivue/ui'
 
 const show = ref(false)
 

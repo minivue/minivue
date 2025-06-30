@@ -1,12 +1,11 @@
 <template>
   <KdPage title="悬浮工具栏">
-    <KdHoverToolbar :items="items" @action="onAction" />
+    <KdToolbar :items="items" @action="onAction" />
   </KdPage>
 </template>
 
 <script setup lang="ts">
-import KdHoverToolbar from '@/components/hover-toolbar.vue'
-import KdPage from '@/components/page.vue'
+import { KdPage, KdToolbar } from '@minivue/ui'
 
 const items = [
   {

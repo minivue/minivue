@@ -66,10 +66,8 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
-import KdDrawer from '@/components/drawer.vue'
 import { ref } from '@minivue/core'
+import { KdPage, KdButton, KdDrawer } from '@minivue/ui'
 
 const showTop = ref(false)
 const showBottom = ref(false)

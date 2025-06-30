@@ -11,8 +11,8 @@
   },
   "exports": {
     ".": {
-      "types": "./index.ts",
-      "import":  "./index.ts"
+      "types": "./index.d.ts",
+      "import":  "./dist/index.js"
     },
     "./components": "./dist/components"
   },

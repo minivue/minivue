@@ -71,20 +71,22 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdCell from '@/components/cell.vue'
-import KdGrid from '@/components/grid.vue'
-import KdAvatar from '@/components/avatar.vue'
-import KdSwitch from '@/components/switch.vue'
-import KdButton from '@/components/button.vue'
-import KdList from '@/components/list.vue'
-import KdListCard from '@/components/list-card.vue'
-import KdListGroup from '@/components/list-group.vue'
-import KdCheckbox from '@/components/checkbox.vue'
-import KdCheckboxGroup from '@/components/checkbox-group.vue'
-import KdRadio from '@/components/radio.vue'
-import KdRadioGroup from '@/components/radio-group.vue'
 import { ref } from '@minivue/core'
+import {
+  KdPage,
+  KdCell,
+  KdGrid,
+  KdAvatar,
+  KdSwitch,
+  KdButton,
+  KdList,
+  KdListCard,
+  KdListGroup,
+  KdCheckbox,
+  KdCheckboxGroup,
+  KdRadio,
+  KdRadioGroup,
+} from '@minivue/ui'
 
 const checkList = ref<number[]>([])
 const items = [

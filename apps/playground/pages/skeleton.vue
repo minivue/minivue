@@ -13,8 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdSkeleton from '@/components/skeleton.vue'
+import { KdPage, KdSkeleton } from '@minivue/ui'
 </script>
 
 <config lang="json">

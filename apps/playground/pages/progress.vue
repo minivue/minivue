@@ -60,10 +60,9 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdProgress from '@/components/progress.vue'
-
 import { ref } from '@minivue/core'
+import { KdPage, KdProgress } from '@minivue/ui'
+
 const percentage = ref(0)
 
 setInterval(() => {

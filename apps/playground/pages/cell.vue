@@ -39,15 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdCell from '@/components/cell.vue'
-import KdAvatar from '@/components/avatar.vue'
-import KdSwitch from '@/components/switch.vue'
-import KdButton from '@/components/button.vue'
-import KdCheckbox from '@/components/checkbox.vue'
-import KdCheckboxGroup from '@/components/checkbox-group.vue'
-import KdRadio from '@/components/radio.vue'
-import KdRadioGroup from '@/components/radio-group.vue'
+import {
+  KdPage,
+  KdCell,
+  KdAvatar,
+  KdSwitch,
+  KdButton,
+  KdCheckbox,
+  KdCheckboxGroup,
+  KdRadio,
+  KdRadioGroup,
+} from '@minivue/ui'
+
 import { ref } from '@minivue/core'
 
 const checkList = ref<number[]>([])

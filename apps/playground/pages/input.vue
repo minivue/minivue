@@ -121,11 +121,8 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdIcon from '@/components/icon.vue'
-import KdInput from '@/components/input.vue'
-import KdLoading from '@/components/loading.vue'
 import { ref, onLoad } from '@minivue/core'
+import { KdPage, KdIcon, KdInput, KdLoading } from '@minivue/ui'
 
 const value = ref('')
 

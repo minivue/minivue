@@ -29,8 +29,8 @@ function getCssEntrys() {
   return files
 }
 
-function getEntryPoints() {
-  const files = fg.sync('**/*.{vue,json}', {
+function getEntryPoints(pattern: string) {
+  const files = fg.sync(pattern, {
     ignore: ['node_modules', 'dist', 'package.json', 'project.config.json', 'tsconfig.json'],
   })
   const entryPoints = Object.fromEntries(
@@ -45,6 +45,14 @@ function getEntryPoints() {
     }),
   )
   return entryPoints
+}
+
+function getApiEntryPoints() {
+  return getEntryPoints('index.ts')
+}
+
+function getComponentEntryPoints() {
+  return getEntryPoints('**/*.{vue,json}')
 }
 
 function getComponentPath(nodeModulesPath: string, libraryName: string) {
@@ -135,7 +143,9 @@ function getComponentsEntryPoints() {
 
 export function getBuildOptions(isLib: boolean, watch = false): Options[] {
   const cssEntrys = getCssEntrys()
-  const entryPoints = getEntryPoints()
+  const apiEntryPoints = getApiEntryPoints()
+  const componentEntryPoints = getComponentEntryPoints()
+
   const {
     themePoints,
     componentJsPoints,
@@ -211,8 +221,36 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
       },
     },
     {
+      entry: apiEntryPoints,
+      watch,
+      bundle: true,
+      silent: true,
+      format: 'esm',
+      sourcemap: false,
+      target: 'es2018',
+      minify: true,
+      minifyIdentifiers: true,
+      minifySyntax: true,
+      minifyWhitespace: true,
+      splitting: true,
+      treeshake: 'smallest',
+      noExternal: [],
+      replaceNodeEnv: true,
+      legacyOutput: false,
+      outExtension() {
+        return {
+          js: '.js',
+        }
+      },
+      esbuildPlugins: [minivue()],
+      esbuildOptions(options) {
+        options.charset = 'utf8'
+        options.chunkNames = '[dir]/[name]-[hash]'
+      },
+    },
+    {
       entry: {
-        ...entryPoints,
+        ...componentEntryPoints,
         ...componentJsPoints,
       },
       watch,

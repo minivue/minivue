@@ -209,6 +209,10 @@ export async function transformCode(
           const key = specifier.local.value
           const isComponent = /^[A-Z]/.test(key)
           if (isComponent) {
+            if (key === 'KdToastOptions') {
+              console.log(specifier)
+            }
+
             importedComponentMap.set(key, path)
             importedComponents.add(key)
           }

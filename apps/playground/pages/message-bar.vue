@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdMessageBar from '@/components/message-bar.vue'
 import { ref } from '@minivue/core'
+import { KdPage, KdMessageBar } from '@minivue/ui'
+
 const show = ref(true)
 
 const onClose = () => {

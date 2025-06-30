@@ -70,9 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdAvatar from '@/components/avatar.vue'
-import KdAvatarGroup from '@/components/avatar-group.vue'
+import { KdPage, KdAvatar, KdAvatarGroup } from '@minivue/ui'
 
 let i = 0
 const src = 'https://s1.imagehub.cc/images/2025/05/14/7f5d2873add5733f8d4cfc2dadf903c1.png'

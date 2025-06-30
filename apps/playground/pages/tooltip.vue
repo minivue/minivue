@@ -11,9 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdButton from '@/components/button.vue'
-import KdTooltip from '@/components/tooltip.vue'
+import { KdPage, KdButton, KdTooltip } from '@minivue/ui'
 </script>
 
 <config lang="json">

@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import KdPage from '@/components/page.vue'
-import KdGrid from '@/components/grid.vue'
+import { KdPage, KdGrid } from '@minivue/ui'
 
 const items = [
   {
