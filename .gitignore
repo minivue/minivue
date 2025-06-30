@@ -41,3 +41,4 @@ yarn-error.log*
 .vercel
 
 dist
+miniprogram_dist
