@@ -17,15 +17,30 @@ jobs:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm install
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-      - run: npx changeset version
+      - name: Install dependencies
+        run: pnpm install
 
-      - run: git config user.name "github-actions[bot]"
-      - run: git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: git commit -am "chore: release"
-      - run: git push
+      - name: Create version bump and changelog
+        run: pnpm changeset version
 
-      - run: npx changeset publish
+      - name: Commit version changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: release"
+        continue-on-error: true # 如果没有变更文件，允许跳过提交
+
+      - name: Push changes
+        run: git push
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Publish packages to npm
+        run: pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

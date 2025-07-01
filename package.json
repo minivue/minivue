@@ -8,6 +8,8 @@
     "check": "turbo run check",
     "stylelint": "stylelint \"**/*.{css,vue}\"",
     "format": "prettier --write \"**/*.{ts,vue}\"",
+    "changeset": "changeset",
+    "release": "changeset version && git add . && git commit -m 'chore: release' && git push && changeset publish",
     "prepare": "husky"
   },
   "devDependencies": {
