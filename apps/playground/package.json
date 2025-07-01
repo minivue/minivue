@@ -7,12 +7,17 @@
     "build": "minivue build",
     "check": "tsc --incremental --noEmit"
   },
-  "components": [{
-    "libraryName": "@minivue/ui",
-    "styleLibraryName": "@kdocs/kdesign-theme",
-    "themes": ["default", "dark"],
-    "prefix": "kd"
-  }],
+  "components": [
+    {
+      "libraryName": "@minivue/ui",
+      "styleLibraryName": "@kdocs/kdesign-theme",
+      "themes": [
+        "default",
+        "dark"
+      ],
+      "prefix": "kd"
+    }
+  ],
   "dependencies": {
     "@minivue/ui": "workspace:*",
     "@minivue/core": "workspace:*",
