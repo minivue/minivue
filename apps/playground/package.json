@@ -10,7 +10,7 @@
   "components": [
     {
       "libraryName": "@minivue/ui",
-      "styleLibraryName": "@kdocs/kdesign-theme",
+      "styleLibraryName": "@minivue/theme",
       "themes": [
         "default",
         "dark"
@@ -21,7 +21,7 @@
   "dependencies": {
     "@minivue/ui": "workspace:*",
     "@minivue/core": "workspace:*",
-    "@kdocs/kdesign-theme": "latest"
+    "@minivue/theme": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "latest",

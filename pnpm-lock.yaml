@@ -68,12 +68,12 @@ importers:
 
   apps/playground:
     dependencies:
-      '@kdocs/kdesign-theme':
-        specifier: latest
-        version: 2.4.1
       '@minivue/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@minivue/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
       '@minivue/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -158,6 +158,8 @@ importers:
       typescript:
         specifier: latest
         version: 5.8.3
+
+  packages/theme: {}
 
   packages/ui:
     dependencies:
@@ -605,9 +607,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
-  '@kdocs/kdesign-theme@2.4.1':
-    resolution: {integrity: sha1-sBKndf7JGNYJJPyu1+Zx57ZmWe4=, tarball: https://registry.npm.wps.cn/@kdocs/kdesign-theme/download/@kdocs/kdesign-theme-2.4.1.tgz}
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
@@ -2814,8 +2813,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
-
-  '@kdocs/kdesign-theme@2.4.1': {}
 
   '@keyv/serialize@1.0.3':
     dependencies:
