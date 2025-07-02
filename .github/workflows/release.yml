@@ -15,12 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2 # 官方提供的 pnpm 安装动作
+      - uses: pnpm/action-setup@v2
         with:
-          version: 10 # 指定 pnpm 版本（如 10.x）
+          version: 10
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Publish packages to npm
+        run: pnpm changeset publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create version bump and changelog
         run: pnpm changeset version
@@ -35,11 +48,3 @@ jobs:
 
       - name: Push changes
         run: git push
-
-      - name: Build all packages
-        run: pnpm build
-
-      - name: Publish packages to npm
-        run: pnpm changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
