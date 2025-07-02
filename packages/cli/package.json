@@ -9,6 +9,10 @@
     "build": "node build",
     "check": "tsc --incremental --noEmit"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "dependencies": {
     "cac": "^6.7.14",
     "rimraf": "^6.0.1",

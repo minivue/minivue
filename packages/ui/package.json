@@ -8,6 +8,15 @@
     "build": "minivue build --lib",
     "check": "tsc --incremental --noEmit"
   },
+  "files": [
+    "api",
+    "components",
+    "dist",
+    "utils",
+    "index.d.ts",
+    "shims-vue.d.ts",
+    "type.ts"
+  ],
   "exports": {
     ".": {
       "types": "./index.d.ts",
