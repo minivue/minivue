@@ -180,13 +180,13 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
         {
           name: 'css',
           renderChunk(code, chunk) {
-            code = code
-              .replace(
-                /html\[theme-mode=['"]?(\w+)['"]?\]/g,
-                (match, theme) => `.kd-theme--${theme}`,
-              )
-              // 替换单独的 html
-              .replace(/\bhtml\b/g, '.kd-theme--default')
+            // code = code
+            //   .replace(
+            //     /html\[theme-mode=['"]?(\w+)['"]?\]/g,
+            //     (match, theme) => `.kd-theme--${theme}`,
+            //   )
+            //   // 替换单独的 html
+            //   .replace(/\bhtml\b/g, '.kd-theme--default')
             chunk.path = chunk.path.replace('.css', '.wxss')
             return {
               code,

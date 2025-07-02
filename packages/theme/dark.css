@@ -1,4 +1,4 @@
-html[theme-mode='dark'] {
+.kd-theme--dark {
   --kd-color-orange-1: 66, 49, 45;
   --kd-color-orange-2: 95, 57, 46;
   --kd-color-orange-3: 124, 67, 45;
