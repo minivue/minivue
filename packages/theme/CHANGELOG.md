@@ -1,5 +1,11 @@
 # @minivue/theme
 
+## 0.1.2
+
+### Patch Changes
+
+- [`4021b52`](https://github.com/minivue/minivue/commit/4021b527c0025d75dfb27f2081996088603cd045) Thanks [@weifeiyue2025](https://github.com/weifeiyue2025)! - ci: update
+
 ## 0.1.1
 
 ### Patch Changes
