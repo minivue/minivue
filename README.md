@@ -5,4 +5,4 @@ Mini Vue 是一个基于 @vue/reactivity 的小程序框架，它简单，强大
 
 ####
 
-ps:[小程序js支持情况](https://wechat-miniprogram.github.io/miniprogram-compat/)
+<!-- [小程序js支持情况](https://wechat-miniprogram.github.io/miniprogram-compat/) -->
