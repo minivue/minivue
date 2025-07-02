@@ -1,0 +1,5 @@
+---
+'@minivue/cli': patch
+---
+
+init
