@@ -1,13 +1,12 @@
-FROM hub-mirror.wps.cn/sreopen/node:20.18.0 AS builder
+FROM node:22.17.0-alpine AS builder
 
-# RUN npm config set registry https://registry.npm.wps.cn
 RUN npm i -g pnpm@latest
 
 # 2. 设置工作目录
 WORKDIR /app
 
 # 1. 复制根目录的 package 文件
-COPY package.json .npmrc pnpm-workspace.yaml ./
+COPY package.json pnpm-workspace.yaml ./
 
 # 2. 自动拷贝所有子包的 package.json
 COPY apps/playground/package.json ./apps/playground/
