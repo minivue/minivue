@@ -1,5 +1,11 @@
 # @minivue/compiler
 
+## 0.1.3
+
+### Patch Changes
+
+- [`4782352`](https://github.com/minivue/minivue/commit/4782352cee2293f053f4c8b769a06181f65b4e83) Thanks [@redhat](https://github.com/redhat)! - output type
+
 ## 0.1.2
 
 ### Patch Changes

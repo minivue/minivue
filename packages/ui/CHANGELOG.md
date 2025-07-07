@@ -1,5 +1,12 @@
 # @minivue/ui
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`4782352`](https://github.com/minivue/minivue/commit/4782352cee2293f053f4c8b769a06181f65b4e83)]:
+  - @minivue/core@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
