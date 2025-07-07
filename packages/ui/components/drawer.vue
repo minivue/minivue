@@ -60,7 +60,7 @@ import {
   styleObjectToString,
   delay,
 } from '../utils'
-import { sharedValue } from '../../../packages/core/src/utils'
+import { sharedValue } from '../utils'
 
 type Placement = 'top' | 'right' | 'bottom' | 'left'
 

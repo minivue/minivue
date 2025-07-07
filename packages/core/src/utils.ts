@@ -11,10 +11,6 @@ export const { isArray } = Array
 
 export const extend = Object.assign
 
-export function sharedValue<T>(val: T) {
-  return wx.worklet.shared(val)
-}
-
 export function exclude<T extends Record<string, unknown>, K extends keyof T>(
   obj: T,
   keys: K[],

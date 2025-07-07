@@ -73,6 +73,15 @@ export function clone<T>(original: T): T {
 }
 
 /**
+ * 共享一个值，确保在多个工作线程之间共享。
+ * @param val 要共享的值
+ * @returns 共享的值
+ */
+export function sharedValue<T>(val: T) {
+  return wx.worklet.shared(val)
+}
+
+/**
  * 获取小程序基本信息。
  * @returns 小程序基本信息。
  * @see https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getAppBaseInfo.html
