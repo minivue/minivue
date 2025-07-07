@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.5
+
+### Patch Changes
+
+- [`c194a7e`](https://github.com/minivue/minivue/commit/c194a7e2b71b16f14b92d006781f99a946fe47ef) Thanks [@redhat](https://github.com/redhat)! - fix: 优化ui库产物
+
 ## 0.1.4
 
 ### Patch Changes
