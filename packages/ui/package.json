@@ -11,6 +11,7 @@
   "files": [
     "api",
     "components",
+    "miniprogram_dist",
     "dist",
     "utils",
     "index.d.ts",
