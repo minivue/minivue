@@ -153,149 +153,164 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     componentWxmlPoints,
     componentWxssPoints,
   } = getComponentsEntryPoints()
+  const cssOptions: Options = {
+    entry: cssEntrys,
+    silent: true,
+    watch,
+    loader: {
+      '.css': 'copy',
+      '.wxss': 'copy',
+    },
+    esbuildOptions(options) {
+      options.outExtension = {
+        '.css': '.wxss',
+      }
+    },
+  }
+  const themeOptions: Options = {
+    entry: themePoints,
+    watch,
+    minify: !watch,
+    silent: true,
+    loader: {
+      '.css': 'copy',
+    },
+    plugins: [
+      {
+        name: 'css',
+        renderChunk(code, chunk) {
+          // code = code
+          //   .replace(
+          //     /html\[theme-mode=['"]?(\w+)['"]?\]/g,
+          //     (match, theme) => `.kd-theme--${theme}`,
+          //   )
+          //   // 替换单独的 html
+          //   .replace(/\bhtml\b/g, '.kd-theme--default')
+          chunk.path = chunk.path.replace('.css', '.wxss')
+          return {
+            code,
+            map: chunk.map,
+          }
+        },
+      },
+    ],
+  }
+  const componentJsonOptions: Options = {
+    entry: componentJsonPoints,
+    watch,
+    silent: true,
+    loader: {
+      '.json': 'copy',
+    },
+  }
+  const componentWxmlOptions: Options = {
+    entry: componentWxmlPoints,
+    watch,
+    silent: true,
+    loader: {
+      '.wxml': 'copy',
+    },
+  }
+  const componentWxssOptions: Options = {
+    entry: componentWxssPoints,
+    watch,
+    silent: true,
+    loader: {
+      '.wxss': 'copy',
+    },
+  }
+  const apiOptions: Options = {
+    entry: apiEntryPoints,
+    watch,
+    bundle: true,
+    silent: true,
+    format: 'esm',
+    sourcemap: false,
+    target: 'es2018',
+    minify: true,
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    splitting: true,
+    treeshake: 'smallest',
+    noExternal: [],
+    replaceNodeEnv: true,
+    legacyOutput: false,
+    outExtension() {
+      return {
+        js: '.js',
+      }
+    },
+    esbuildPlugins: [minivue()],
+    esbuildOptions(options) {
+      options.charset = 'utf8'
+      options.chunkNames = '[dir]/[name]-[hash]'
+    },
+  }
+
+  const entryOptions: Options = {
+    entry: {
+      ...componentEntryPoints,
+      ...componentJsPoints,
+    },
+    watch,
+    bundle: true,
+    silent: true,
+    format: isLib ? 'esm' : 'cjs',
+    sourcemap: false,
+    target: 'es2018',
+    minify: true,
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    splitting: true,
+    treeshake: 'smallest',
+    noExternal: isLib ? [] : [/./],
+    replaceNodeEnv: true,
+    legacyOutput: false,
+    outExtension() {
+      return {
+        js: '.js',
+      }
+    },
+    esbuildPlugins: [minivue()],
+    esbuildOptions(options) {
+      options.charset = 'utf8'
+      options.chunkNames = '[dir]/[name]-[hash]'
+    },
+    plugins: [
+      {
+        name: 'dynamic-import',
+        renderChunk(code, chunk) {
+          if (chunk.imports?.some((i) => i.kind === 'dynamic-import')) {
+            code = code.replace(/import\(/g, 'require.async(')
+          }
+          return {
+            code,
+            map: chunk.map,
+          }
+        },
+      },
+    ],
+    loader: {
+      '.json': 'copy',
+    },
+  }
+  const libOptions: Options = {
+    ...entryOptions,
+    format: 'cjs',
+    noExternal: [/./],
+    outDir: 'miniprogram_dist',
+  }
   const options: Options[] = [
-    {
-      entry: cssEntrys,
-      silent: true,
-      watch,
-      loader: {
-        '.css': 'copy',
-        '.wxss': 'copy',
-      },
-      esbuildOptions(options) {
-        options.outExtension = {
-          '.css': '.wxss',
-        }
-      },
-    },
-    {
-      entry: themePoints,
-      watch,
-      minify: !watch,
-      silent: true,
-      loader: {
-        '.css': 'copy',
-      },
-      plugins: [
-        {
-          name: 'css',
-          renderChunk(code, chunk) {
-            // code = code
-            //   .replace(
-            //     /html\[theme-mode=['"]?(\w+)['"]?\]/g,
-            //     (match, theme) => `.kd-theme--${theme}`,
-            //   )
-            //   // 替换单独的 html
-            //   .replace(/\bhtml\b/g, '.kd-theme--default')
-            chunk.path = chunk.path.replace('.css', '.wxss')
-            return {
-              code,
-              map: chunk.map,
-            }
-          },
-        },
-      ],
-    },
-    {
-      entry: componentJsonPoints,
-      watch,
-      silent: true,
-      loader: {
-        '.json': 'copy',
-      },
-    },
-    {
-      entry: componentWxmlPoints,
-      watch,
-      silent: true,
-      loader: {
-        '.wxml': 'copy',
-      },
-    },
-    {
-      entry: componentWxssPoints,
-      watch,
-      silent: true,
-      loader: {
-        '.wxss': 'copy',
-      },
-    },
-    {
-      entry: apiEntryPoints,
-      watch,
-      bundle: true,
-      silent: true,
-      format: 'esm',
-      sourcemap: false,
-      target: 'es2018',
-      minify: true,
-      minifyIdentifiers: true,
-      minifySyntax: true,
-      minifyWhitespace: true,
-      splitting: true,
-      treeshake: 'smallest',
-      noExternal: [],
-      replaceNodeEnv: true,
-      legacyOutput: false,
-      outExtension() {
-        return {
-          js: '.js',
-        }
-      },
-      esbuildPlugins: [minivue()],
-      esbuildOptions(options) {
-        options.charset = 'utf8'
-        options.chunkNames = '[dir]/[name]-[hash]'
-      },
-    },
-    {
-      entry: {
-        ...componentEntryPoints,
-        ...componentJsPoints,
-      },
-      watch,
-      bundle: true,
-      silent: true,
-      format: isLib ? 'esm' : 'cjs',
-      sourcemap: false,
-      target: 'es2018',
-      minify: true,
-      minifyIdentifiers: true,
-      minifySyntax: true,
-      minifyWhitespace: true,
-      splitting: true,
-      treeshake: 'smallest',
-      noExternal: isLib ? [] : [/./],
-      replaceNodeEnv: true,
-      legacyOutput: false,
-      outExtension() {
-        return {
-          js: '.js',
-        }
-      },
-      esbuildPlugins: [minivue()],
-      esbuildOptions(options) {
-        options.charset = 'utf8'
-        options.chunkNames = '[dir]/[name]-[hash]'
-      },
-      plugins: [
-        {
-          name: 'dynamic-import',
-          renderChunk(code, chunk) {
-            if (chunk.imports?.some((i) => i.kind === 'dynamic-import')) {
-              code = code.replace(/import\(/g, 'require.async(')
-            }
-            return {
-              code,
-              map: chunk.map,
-            }
-          },
-        },
-      ],
-      loader: {
-        '.json': 'copy',
-      },
-    },
+    cssOptions,
+    themeOptions,
+    componentJsonOptions,
+    componentWxmlOptions,
+    componentWxssOptions,
+    apiOptions,
+    entryOptions,
+    libOptions,
   ]
   return options.filter((item) => item.entry && Object.keys(item.entry).length > 0)
 }

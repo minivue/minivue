@@ -17,6 +17,7 @@
     "shims-vue.d.ts",
     "type.ts"
   ],
+  "miniprogram": "miniprogram_dist",
   "exports": {
     ".": {
       "types": "./index.d.ts",
