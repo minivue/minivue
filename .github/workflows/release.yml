@@ -30,13 +30,13 @@ jobs:
       - name: Build all packages
         run: pnpm build
 
+      - name: Create version bump and changelog
+        run: pnpm changeset version
+
       - name: Publish packages to npm
         run: pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create version bump and changelog
-        run: pnpm changeset version
 
       - name: Commit version changes
         run: |
