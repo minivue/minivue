@@ -1,5 +1,11 @@
 # @minivue/theme
 
+## 0.1.3
+
+### Patch Changes
+
+- [`117ed67`](https://github.com/minivue/minivue/commit/117ed67de56c3cf0c986674d9b8b8b7e6c485b71) Thanks [@redhat](https://github.com/redhat)! - fix: 优化产物
+
 ## 0.1.2
 
 ### Patch Changes
