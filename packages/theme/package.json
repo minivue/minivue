@@ -1,5 +1,6 @@
 {
   "name": "@minivue/theme",
   "version": "0.1.2",
-  "description": "theme"
+  "description": "theme",
+  "miniprogram": "."
 }
