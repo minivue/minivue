@@ -1,5 +1,11 @@
 # @minivue/ui
 
+## 0.1.6
+
+### Patch Changes
+
+- [`f926cf4`](https://github.com/minivue/minivue/commit/f926cf4c270e6eebe411e8c25019d642574882b0) Thanks [@redhat](https://github.com/redhat)! - fix: 产物没生成问题
+
 ## 0.1.5
 
 ### Patch Changes
