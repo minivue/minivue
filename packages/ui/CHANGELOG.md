@@ -1,5 +1,11 @@
 # @minivue/ui
 
+## 0.1.4
+
+### Patch Changes
+
+- [`24423c8`](https://github.com/minivue/minivue/commit/24423c844f155c444a7498893db3c132294dd370) Thanks [@redhat](https://github.com/redhat)! - fix: progress change bug
+
 ## 0.1.3
 
 ### Patch Changes
