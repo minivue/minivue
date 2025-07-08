@@ -296,6 +296,7 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
       '.json': 'copy',
     },
   }
+
   const libOptions: Options = {
     ...entryOptions,
     format: 'cjs',
@@ -310,7 +311,9 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     componentWxssOptions,
     apiOptions,
     entryOptions,
-    libOptions,
   ]
+  if (isLib) {
+    options.push(libOptions)
+  }
   return options.filter((item) => item.entry && Object.keys(item.entry).length > 0)
 }
