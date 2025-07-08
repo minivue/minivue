@@ -12,8 +12,8 @@
       "libraryName": "@minivue/ui",
       "styleLibraryName": "@minivue/theme",
       "themes": [
-        "default",
-        "dark"
+        "default.css",
+        "dark.css"
       ],
       "prefix": "kd"
     }

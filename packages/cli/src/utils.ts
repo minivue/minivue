@@ -71,11 +71,11 @@ function getComponentsEntryPoints() {
   const componentFiles: { libName: string; path: string; relativePath: string }[] = []
   const nodeModulesPath = join(process.cwd(), 'node_modules')
   const themeFiles: { libName: string; path: string; relativePath: string }[] = []
-  components.forEach(({ libraryName, styleLibraryName, themes = ['default'] }) => {
+  components.forEach(({ libraryName, styleLibraryName, themes = [] }) => {
     const componentsPath = getComponentPath(nodeModulesPath, libraryName)
     if (styleLibraryName) {
       themes.forEach((item) => {
-        const themePath = join(nodeModulesPath, styleLibraryName, `${item}.css`)
+        const themePath = join(nodeModulesPath, styleLibraryName, item)
         themeFiles.push({
           libName: styleLibraryName,
           path: themePath,
@@ -96,7 +96,7 @@ function getComponentsEntryPoints() {
   })
   const themePoints = Object.fromEntries(
     themeFiles.map(({ path, relativePath }) => {
-      const key = join('miniprogram_npm', relativePath).replace('.css', '')
+      const key = join('miniprogram_npm', relativePath).replace('.css', '').replace('.wxss', '')
       return [key, path]
     }),
   )
@@ -172,28 +172,11 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     watch,
     minify: !watch,
     silent: true,
-    loader: {
-      '.css': 'copy',
+    esbuildOptions(options) {
+      options.outExtension = {
+        '.css': '.wxss',
+      }
     },
-    plugins: [
-      {
-        name: 'css',
-        renderChunk(code, chunk) {
-          // code = code
-          //   .replace(
-          //     /html\[theme-mode=['"]?(\w+)['"]?\]/g,
-          //     (match, theme) => `.kd-theme--${theme}`,
-          //   )
-          //   // 替换单独的 html
-          //   .replace(/\bhtml\b/g, '.kd-theme--default')
-          chunk.path = chunk.path.replace('.css', '.wxss')
-          return {
-            code,
-            map: chunk.map,
-          }
-        },
-      },
-    ],
   }
   const componentJsonOptions: Options = {
     entry: componentJsonPoints,
