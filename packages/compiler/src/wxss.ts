@@ -35,7 +35,7 @@ export function writeWxss({
     components.forEach(({ styleLibraryName, themes = ['default'] }) => {
       if (styleLibraryName) {
         themes.forEach((theme) => {
-          importStyle += `@import 'miniprogram_npm/${styleLibraryName}/${theme}.wxss';\n`
+          importStyle += `@import 'miniprogram_npm/${styleLibraryName}/${theme.replace('.css', '.wxss')}';\n`
         })
       }
     })

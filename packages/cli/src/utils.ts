@@ -170,7 +170,10 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
   const themeOptions: Options = {
     entry: themePoints,
     watch,
-    minify: !watch,
+    loader: {
+      '.css': 'copy',
+      '.wxss': 'copy',
+    },
     silent: true,
     esbuildOptions(options) {
       options.outExtension = {
