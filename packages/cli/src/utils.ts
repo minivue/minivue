@@ -158,6 +158,9 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     silent: true,
     watch,
     minify: !watch,
+    loader: {
+      '.wxss': 'css',
+    },
     esbuildOptions(options) {
       options.outExtension = {
         '.css': '.wxss',
@@ -169,6 +172,9 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     watch,
     minify: true,
     silent: true,
+    loader: {
+      '.wxss': 'css',
+    },
     esbuildOptions(options) {
       options.outExtension = {
         '.css': '.wxss',
