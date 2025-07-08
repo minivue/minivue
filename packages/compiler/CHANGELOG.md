@@ -1,5 +1,11 @@
 # @minivue/compiler
 
+## 0.1.4
+
+### Patch Changes
+
+- [`be8913a`](https://github.com/minivue/minivue/commit/be8913ac5463e4c7255899ca4a3c113844343c15) Thanks [@redhat](https://github.com/redhat)! - chore: update esbuild
+
 ## 0.1.3
 
 ### Patch Changes

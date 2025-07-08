@@ -1,5 +1,12 @@
 # @minivue/cli
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [[`be8913a`](https://github.com/minivue/minivue/commit/be8913ac5463e4c7255899ca4a3c113844343c15)]:
+  - @minivue/compiler@0.1.4
+
 ## 0.1.5
 
 ### Patch Changes
