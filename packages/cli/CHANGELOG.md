@@ -1,5 +1,14 @@
 # @minivue/cli
 
+## 0.1.9
+
+### Patch Changes
+
+- [`938ee94`](https://github.com/minivue/minivue/commit/938ee946ea3e8fca615d0461d7bd3cff689eedbe) Thanks [@redhat](https://github.com/redhat)! - fix: 修复主题包构建问题
+
+- Updated dependencies [[`938ee94`](https://github.com/minivue/minivue/commit/938ee946ea3e8fca615d0461d7bd3cff689eedbe)]:
+  - @minivue/compiler@0.1.5
+
 ## 0.1.8
 
 ### Patch Changes
