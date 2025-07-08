@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.8
+
+### Patch Changes
+
+- [`a5c1528`](https://github.com/minivue/minivue/commit/a5c152827fdfaf0fab864272e8958ad6bb077312) Thanks [@redhat](https://github.com/redhat)! - chore: 调整主题导入方式
+
 ## 0.1.7
 
 ### Patch Changes
