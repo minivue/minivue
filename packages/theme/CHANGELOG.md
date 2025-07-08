@@ -1,5 +1,11 @@
 # @minivue/theme
 
+## 0.1.4
+
+### Patch Changes
+
+- [`e13224d`](https://github.com/minivue/minivue/commit/e13224dff865acda82862469089942a9617087e5) Thanks [@redhat](https://github.com/redhat)! - fix: 修复主题包构建问题
+
 ## 0.1.3
 
 ### Patch Changes
