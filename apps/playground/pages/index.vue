@@ -1,5 +1,5 @@
 <template>
-  <KdPage title="WPS灵犀">
+  <KdPage title="minivue组件库">
     <View class="p-index">
       <KdButton type="primary" size="xl" @tap="onTap('/pages/button/button')"> 按钮组件 </KdButton>
       <KdButton type="primary" size="xl" @tap="onTap('/pages/controls/controls')">
@@ -73,7 +73,7 @@ function onTap(url: string) {
 
 <config lang="json">
 {
-  "navigationBarTitleText": "WPS灵犀",
+  "navigationBarTitleText": "minivue组件库",
   "disableScroll": true
 }
 </config>

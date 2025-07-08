@@ -157,10 +157,7 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     entry: cssEntrys,
     silent: true,
     watch,
-    loader: {
-      '.css': 'copy',
-      '.wxss': 'copy',
-    },
+    minify: !watch,
     esbuildOptions(options) {
       options.outExtension = {
         '.css': '.wxss',
@@ -170,10 +167,7 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
   const themeOptions: Options = {
     entry: themePoints,
     watch,
-    loader: {
-      '.css': 'copy',
-      '.wxss': 'copy',
-    },
+    minify: true,
     silent: true,
     esbuildOptions(options) {
       options.outExtension = {
@@ -201,8 +195,14 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     entry: componentWxssPoints,
     watch,
     silent: true,
+    minify: !watch,
     loader: {
-      '.wxss': 'copy',
+      '.wxss': 'css',
+    },
+    esbuildOptions(options) {
+      options.outExtension = {
+        '.css': '.wxss',
+      }
     },
   }
   const apiOptions: Options = {

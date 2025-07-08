@@ -74,7 +74,7 @@
     }
   ],
   "window": {
-    "navigationBarTitleText": "WPS 灵犀",
+    "navigationBarTitleText": "minivue组件库",
     "navigationBarBackgroundColor": "@navBgColor",
     "navigationBarTextStyle": "@navTxtStyle",
     "navigationStyle": "custom"

@@ -6,7 +6,7 @@
   },
   "miniprogramRoot": "dist/",
   "compileType": "miniprogram",
-  "projectname": "WPS 灵犀",
+  "projectname": "minivue组件库",
   "setting": {
     "urlCheck": true,
     "es6": true,
