@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.10
+
+### Patch Changes
+
+- [`159c95c`](https://github.com/minivue/minivue/commit/159c95c96fe9cf552f8d3eea78a5b228170e1fb2) Thanks [@redhat](https://github.com/redhat)! - fix: 修复主题包构建问题
+
 ## 0.1.9
 
 ### Patch Changes
