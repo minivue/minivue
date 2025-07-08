@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.7
+
+### Patch Changes
+
+- [`1818fc5`](https://github.com/minivue/minivue/commit/1818fc5f03501a056737025ee22223f02ba5054d) Thanks [@redhat](https://github.com/redhat)! - fix: 修复非lib模式的问题
+
 ## 0.1.6
 
 ### Patch Changes
