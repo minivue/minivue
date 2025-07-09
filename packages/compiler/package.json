@@ -18,7 +18,7 @@
     }
   },
   "dependencies": {
-    "@swc/core": "1.12.7",
+    "@swc/core": "1.12.11",
     "@vue/compiler-sfc": "3.5.17",
     "@vue/compiler-core": "3.5.17"
   },
