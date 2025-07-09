@@ -24,14 +24,21 @@ function getProjectPackageJson(projectPath?: string) {
 
 function getCssEntrys() {
   const files = fg.sync('**/*.{wxss,css}', {
-    ignore: ['node_modules', 'dist'],
+    ignore: ['node_modules', 'dist', 'miniprogram_dist'],
   })
   return files
 }
 
 function getEntryPoints(pattern: string) {
   const files = fg.sync(pattern, {
-    ignore: ['node_modules', 'dist', 'package.json', 'project.config.json', 'tsconfig.json'],
+    ignore: [
+      'node_modules',
+      'dist',
+      'miniprogram_dist',
+      'package.json',
+      'project.config.json',
+      'tsconfig.json',
+    ],
   })
   const entryPoints = Object.fromEntries(
     files.map((path) => {
@@ -153,18 +160,22 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     componentWxmlPoints,
     componentWxssPoints,
   } = getComponentsEntryPoints()
+  // console.log(
+  //   themePoints,
+  //   componentJsPoints,
+  //   componentJsonPoints,
+  //   componentWxmlPoints,
+  //   componentWxssPoints,
+  //   componentEntryPoints,
+  // )
   const cssOptions: Options = {
     entry: cssEntrys,
     silent: true,
     watch,
     minify: !watch,
     loader: {
-      '.wxss': 'css',
-    },
-    esbuildOptions(options) {
-      options.outExtension = {
-        '.css': '.wxss',
-      }
+      '.css': 'copy',
+      '.wxss': 'copy',
     },
   }
   const themeOptions: Options = {
@@ -173,13 +184,21 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     minify: true,
     silent: true,
     loader: {
-      '.wxss': 'css',
+      '.css': 'copy',
+      '.wxss': 'copy',
     },
-    esbuildOptions(options) {
-      options.outExtension = {
-        '.css': '.wxss',
-      }
-    },
+    plugins: [
+      {
+        name: 'css',
+        renderChunk(code, chunk) {
+          chunk.path = chunk.path.replace('.css', '.wxss')
+          return {
+            code,
+            map: chunk.map,
+          }
+        },
+      },
+    ],
   }
   const componentJsonOptions: Options = {
     entry: componentJsonPoints,
@@ -201,14 +220,8 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     entry: componentWxssPoints,
     watch,
     silent: true,
-    minify: !watch,
     loader: {
-      '.wxss': 'css',
-    },
-    esbuildOptions(options) {
-      options.outExtension = {
-        '.css': '.wxss',
-      }
+      '.wxss': 'copy',
     },
   }
   const apiOptions: Options = {

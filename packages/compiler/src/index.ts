@@ -25,12 +25,13 @@ export default function plugin(options: PluginOptions = {}): Plugin {
       const components = options.components || (await getComponents())
       const compilerOptions = await getCompilerOptions()
       const libCompponents = await getLibraryCompponents(components)
+      const outdir = build.initialOptions.outdir || 'dist'
       build.initialOptions.charset = 'utf8'
       build.onLoad({ filter: /[^/]\.vue$/ }, async ({ path }) => {
         const { wxs, content } = await parseFile(path)
         const fileName = basename(path, '.vue')
         const isApp = fileName === 'app'
-        const fileOutputDir = join('dist', dirname(relative('', path)), isApp ? '' : fileName)
+        const fileOutputDir = join(outdir, dirname(relative('', path)), isApp ? '' : fileName)
         const { descriptor } = parse(content)
         const { template, styles, customBlocks } = descriptor
         const eventNames: string[] = []
@@ -43,7 +44,7 @@ export default function plugin(options: PluginOptions = {}): Plugin {
           return false
         })
 
-        writeWxml({ template, fileOutputDir, fileName, eventNames, wxs, isComponent })
+        writeWxml({ template, fileOutputDir, fileName, eventNames, wxs, isComponent, outdir })
         writeWxss({ styles, fileOutputDir, fileName, components, isApp })
         const { contents, importedComponentMap } = await compile({
           descriptor,

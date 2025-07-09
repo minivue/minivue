@@ -19,5 +19,5 @@
     "moduleResolution": "Bundler"
   },
   "include": ["./**/*.vue", "./**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "miniprogram_dist"]
 }

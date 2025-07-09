@@ -6,7 +6,7 @@ import globals from 'globals'
 import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
-  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/.nuxt'] },
+  { ignores: ['*.d.ts', '**/coverage', '**/dist', '**/.nuxt', '**/miniprogram_dist'] },
   {
     extends: [
       eslint.configs.recommended,

@@ -350,6 +350,7 @@ interface WriteWxmlParams {
   /** 需要注入的wxs */
   wxs: string
   isComponent: boolean
+  outdir: string
 }
 
 /**
@@ -363,8 +364,9 @@ export function writeWxml({
   eventNames = [],
   wxs,
   isComponent,
+  outdir,
 }: WriteWxmlParams) {
-  const isApp = fileOutputDir === 'dist' && fileName === 'app'
+  const isApp = fileOutputDir === outdir && fileName === 'app'
   if (template && !isApp) {
     const cacheContent = cache.get(fileOutputDir)
     const templateContent = template.ast

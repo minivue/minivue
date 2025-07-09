@@ -11,7 +11,10 @@ cli
   .option('--lib', 'dev a lib')
   .action(async (options) => {
     const buildOpitons = getBuildOptions(options.lib, true)
-    await rimraf('dist')
+    const outDirs = buildOpitons.map((item) => item.outDir || 'dist')
+    for (const item of outDirs) {
+      await rimraf(item)
+    }
     await Promise.all([buildOpitons.map((item) => build(item))])
     console.log('watching...')
   })
@@ -21,8 +24,11 @@ cli
   .option('--lib', 'build a lib')
   .action(async (options) => {
     const buildOpitons = getBuildOptions(options.lib)
+    const outDirs = buildOpitons.map((item) => item.outDir || 'dist')
     console.log('building...')
-    await rimraf('dist')
+    for (const item of outDirs) {
+      await rimraf(item)
+    }
     await Promise.all([buildOpitons.map((item) => build(item))])
   })
 

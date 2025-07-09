@@ -12,5 +12,5 @@
   },
   /* 包含和排除文件 */
   "include": ["src/**/*", "global.d.ts"], // 包含的文件或目录
-  "exclude": ["node_modules", "dist"] // 排除的文件或目录
+  "exclude": ["node_modules", "dist", "miniprogram_dist"] // 排除的文件或目录
 }

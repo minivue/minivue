@@ -61,18 +61,6 @@
     "pages/grid/grid",
     "pages/list/list"
   ],
-  "subpackages": [
-    {
-      "root": "account",
-      "pages": ["index/index"],
-      "plugins": {
-        "account": {
-          "version": "4.1.9",
-          "provider": "wxe5f87d6a233b5aab"
-        }
-      }
-    }
-  ],
   "window": {
     "navigationBarTitleText": "minivue组件库",
     "navigationBarBackgroundColor": "@navBgColor",
