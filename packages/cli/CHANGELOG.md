@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.13
+
+### Patch Changes
+
+- [`5d7f3c5`](https://github.com/minivue/minivue/commit/5d7f3c54168095dc52086aace53944b4de0a57d1) Thanks [@redhat](https://github.com/redhat)! - fix: 修复ui包api构建问题
+
 ## 0.1.12
 
 ### Patch Changes
