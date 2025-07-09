@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.14
+
+### Patch Changes
+
+- [`7736d3c`](https://github.com/minivue/minivue/commit/7736d3c1ca1ceac18c3e1d3f27ec2c42c7362bfa) Thanks [@redhat](https://github.com/redhat)! - chore: 优化包构建
+
 ## 0.1.13
 
 ### Patch Changes
