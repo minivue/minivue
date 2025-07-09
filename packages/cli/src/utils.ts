@@ -301,8 +301,13 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
       '.json': 'copy',
     },
   }
-
-  const libOptions: Options = {
+  const libApiOptions: Options = {
+    ...apiOptions,
+    format: 'cjs',
+    noExternal: [/./],
+    outDir: 'miniprogram_dist',
+  }
+  const libComponentOptions: Options = {
     ...entryOptions,
     format: 'cjs',
     noExternal: [/./],
@@ -318,7 +323,8 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     entryOptions,
   ]
   if (isLib) {
-    options.push(libOptions)
+    options.push(libApiOptions)
+    options.push(libComponentOptions)
   }
   return options.filter((item) => item.entry && Object.keys(item.entry).length > 0)
 }
