@@ -323,13 +323,6 @@ export function getBuildOptions(isLib: boolean, watch = false): Options[] {
     entryOptions,
   ]
   if (isLib) {
-    const entry = libComponentOptions.entry as Record<string, string>
-    if (entry) {
-      const newEntry = Object.fromEntries(
-        Object.entries(entry).map(([key, value]) => [key.replace('components/', ''), value]),
-      )
-      libComponentOptions.entry = newEntry
-    }
     options.push(libApiOptions)
     options.push(libComponentOptions)
   }
