@@ -1,5 +1,11 @@
 # @minivue/core
 
+## 0.1.5
+
+### Patch Changes
+
+- [`d8eef39`](https://github.com/minivue/minivue/commit/d8eef39188d720e1b4e5722f404a11d8d46df714) Thanks [@redhat](https://github.com/redhat)! - fix: 修复组件库构建问题
+
 ## 0.1.4
 
 ### Patch Changes

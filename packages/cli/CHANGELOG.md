@@ -1,5 +1,14 @@
 # @minivue/cli
 
+## 0.1.12
+
+### Patch Changes
+
+- [`d8eef39`](https://github.com/minivue/minivue/commit/d8eef39188d720e1b4e5722f404a11d8d46df714) Thanks [@redhat](https://github.com/redhat)! - fix: 修复组件库构建问题
+
+- Updated dependencies [[`d8eef39`](https://github.com/minivue/minivue/commit/d8eef39188d720e1b4e5722f404a11d8d46df714)]:
+  - @minivue/compiler@0.1.6
+
 ## 0.1.11
 
 ### Patch Changes
