@@ -1,16 +1,13 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./", // 解析非相对模块的基目录
+    "baseUrl": "./",
     "paths": {
-      // 路径映射，esbuild 支持路径别名
       "@/*": ["src/*"]
     },
-    "types": ["miniprogram-api-typings", "@types/node"], // 加载的类型声明文件
-    /* 输出选项 */
-    "outDir": "./dist" // 指定输出目录
+    "types": ["miniprogram-api-typings", "@types/node"],
+    "outDir": "./dist"
   },
-  /* 包含和排除文件 */
-  "include": ["src/**/*", "global.d.ts"], // 包含的文件或目录
-  "exclude": ["node_modules", "dist", "miniprogram_dist"] // 排除的文件或目录
+  "include": ["src/**/*", "global.d.ts"],
+  "exclude": ["node_modules", "dist", "miniprogram_dist"]
 }
