@@ -15,7 +15,7 @@ cli
     for (const item of outDirs) {
       await rimraf(item)
     }
-    await Promise.all([buildOpitons.map((item) => build(item))])
+    await Promise.all(buildOpitons.map((item) => build(item)))
     console.log('watching...')
   })
 
@@ -29,7 +29,7 @@ cli
     for (const item of outDirs) {
       await rimraf(item)
     }
-    await Promise.all([buildOpitons.map((item) => build(item))])
+    await Promise.all(buildOpitons.map((item) => build(item)))
   })
 
 cli.option('--lib', 'build a lib')
