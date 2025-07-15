@@ -1,5 +1,11 @@
 # @minivue/cli
 
+## 0.1.16
+
+### Patch Changes
+
+- [`279baa3`](https://github.com/minivue/minivue/commit/279baa3c2da0a90e97ced68ca10b126dde8a8ed3) Thanks [@redhat](https://github.com/redhat)! - fix: cli build
+
 ## 0.1.15
 
 ### Patch Changes
